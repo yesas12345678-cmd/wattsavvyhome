@@ -8,6 +8,7 @@ import {
   CheckCircle2, Flame, RefreshCw, Clock, Send, X, Lock
 } from "lucide-react";
 import Link from "next/link";
+import VampireCalculator from "./VampireCalculator";
 
 interface HomeClientProps {
   initialArticles: Article[];
@@ -350,6 +351,11 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
           </div>
 
         </div>
+      </section>
+
+      {/* SECCIÓN INTERACTIVA: CALCULADORA DE VAMPIROS */}
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <VampireCalculator />
       </section>
 
       {/* BLOG CONTENT GRID & FILTRADO */}
