@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { Article } from "@/data/articles";
 import { 
-  Zap, Activity, Plug, Sun, Shield, Info, Mail, FileText, 
+  Zap, Activity, Plug, Sun, Shield, Mail, 
   User, ArrowRight, Sliders, Cpu, Database, TrendingDown, 
-  CheckCircle2, Flame, RefreshCw, Clock, Send, X, Lock, Search
+  CheckCircle2, RefreshCw, Clock, Send, X, Lock, Search, ChevronLeft
 } from "lucide-react";
 import Link from "next/link";
 import VampireCalculator from "./VampireCalculator";
@@ -91,7 +91,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
     return matchesCategory && matchesSearch;
   });
 
-  // Manejador del envío del formulario de contacto (simulado estilo consola futurista)
+  // Manejador del envío del formulario de contacto (simulado estilo consola de logs)
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formName || !formEmail || !formMessage) return;
@@ -144,39 +144,39 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#020617] text-slate-100 overflow-hidden font-sans">
+    <div className="relative min-h-screen bg-slate-50 text-slate-900 overflow-hidden font-sans">
       
-      {/* Fondo con Cuadrícula Cyberpunk y Resplandor Radial HUD */}
-      <div className="absolute inset-0 bg-grid-cyber pointer-events-none z-0" />
-      <div className="absolute inset-0 bg-radial-hud pointer-events-none z-0" />
+      {/* Fondo con Degradados de Alta Gama y Resplandor Rosa */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(244,63,94,0.04),transparent_45%)] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(236,72,153,0.03),transparent_40%)] pointer-events-none z-0" />
       
-      {/* Líneas láser decorativas futuristas de fondo */}
-      <div className="absolute top-[15%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent pointer-events-none" />
-      <div className="absolute top-[65%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent pointer-events-none" />
+      {/* Líneas decorativas sutiles */}
+      <div className="absolute top-[15%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-pink-200 to-transparent pointer-events-none" />
+      <div className="absolute top-[65%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-rose-200 to-transparent pointer-events-none" />
 
       {/* NAVBAR / HEADER HUD */}
-      <header className="relative z-10 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-md">
+      <header className="relative z-10 border-b border-pink-100 bg-white/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           
           {/* Logo y estado de red */}
           <div className="flex items-center gap-4">
             <a href="#" className="flex items-center gap-2 group">
-              <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-950 border border-emerald-500/30 group-hover:border-emerald-400 group-hover:scale-105 transition-all glow-green">
-                <Zap className="w-5 h-5 text-emerald-400 group-hover:text-emerald-300 transition-colors" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-pink-50 border border-pink-200 group-hover:border-pink-300 group-hover:scale-105 transition-all">
+                <Zap className="w-5 h-5 text-pink-600 transition-colors" />
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-pink-500 animate-ping" />
               </div>
               <div className="flex flex-col">
-                <span className="font-display font-extrabold text-xl tracking-wider bg-gradient-to-r from-slate-100 via-emerald-300 to-blue-400 bg-clip-text text-transparent">
+                <span className="font-display font-extrabold text-xl tracking-wider bg-gradient-to-r from-slate-900 via-pink-600 to-pink-500 bg-clip-text text-transparent">
                   WattSavvyHome
                 </span>
-                <span className="text-[9px] font-mono text-emerald-500 tracking-widest uppercase glow-text-green -mt-0.5">
+                <span className="text-[9px] font-mono text-pink-650 tracking-widest uppercase -mt-0.5 font-bold">
                   ENERGY PANEL
                 </span>
               </div>
             </a>
 
-            <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-signal" />
+            <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50/50 border border-pink-100/80 text-[11px] font-mono text-pink-650 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-signal" />
               <span>SYS_NET: ONLINE</span>
             </div>
           </div>
@@ -196,27 +196,43 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   }}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs tracking-wide border transition-all-premium uppercase ${
                     isSelected 
-                      ? "bg-slate-900/90 text-emerald-400 border-emerald-500/40 glow-green" 
-                      : "bg-transparent text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-900/40 hover:border-slate-800"
+                      ? "bg-pink-500 text-white border-pink-500 shadow-sm" 
+                      : "bg-transparent text-slate-600 border-transparent hover:text-pink-600 hover:bg-pink-50/50 hover:border-pink-100"
                   }`}
                 >
-                  <IconComp className={`w-3.5 h-3.5 ${isSelected ? "text-emerald-400 animate-pulse" : "text-slate-500"}`} />
+                  <IconComp className={`w-3.5 h-3.5 ${isSelected ? "text-white animate-pulse" : "text-slate-400"}`} />
                   {cat.name}
                 </button>
               );
             })}
+            
             <Link 
               href="/autores"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs tracking-wide border border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900/40 hover:border-slate-800 transition-all uppercase"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs tracking-wide border border-transparent text-slate-600 hover:text-pink-600 hover:bg-pink-50/50 hover:border-pink-100 transition-all uppercase font-semibold"
             >
-              <User className="w-3.5 h-3.5 text-slate-500" />
-              Autores / Buscador
+              <User className="w-3.5 h-3.5 text-slate-400" />
+              Autores
             </Link>
+
+            {/* Lupita de Búsqueda Desacoplada */}
+            <button
+              onClick={() => {
+                scrollToBlog();
+                const searchInput = document.getElementById("blog-search-input");
+                if (searchInput) {
+                  searchInput.focus();
+                }
+              }}
+              className="flex items-center justify-center p-2 rounded-lg border border-transparent text-slate-600 hover:text-pink-600 hover:bg-pink-50/50 hover:border-pink-100 transition-all ml-1 cursor-pointer"
+              title="Buscar artículos"
+            >
+              <Search className="w-4 h-4" />
+            </button>
           </nav>
 
           {/* Reloj y Estado Local */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 font-mono text-xs text-blue-400 bg-slate-900/80 px-3 py-1.5 rounded border border-blue-500/20 glow-blue">
+            <div className="flex items-center gap-2 font-mono text-xs text-pink-600 bg-pink-50/60 px-3 py-1.5 rounded border border-pink-200/50 font-bold">
               <Clock className="w-3.5 h-3.5" />
               <span>[{timeStr}]</span>
             </div>
@@ -225,7 +241,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             {selectedCategory && (
               <button 
                 onClick={() => setSelectedCategory(null)}
-                className="p-2 rounded bg-slate-900 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-950/30 transition-all font-mono text-xs flex items-center gap-1.5"
+                className="p-2 rounded bg-white border border-pink-200 text-pink-600 hover:bg-pink-50 transition-all font-mono text-xs flex items-center gap-1.5 font-bold"
                 title="Limpiar filtros"
               >
                 <RefreshCw className="w-3 h-3 animate-spin" style={{ animationDuration: '6s' }} />
@@ -241,49 +257,48 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Main Hero Panel */}
-          <div className="lg:col-span-8 flex flex-col justify-between p-6 sm:p-10 rounded-2xl border border-slate-800 bg-slate-950/60 backdrop-blur-md relative overflow-hidden">
+          <div className="lg:col-span-8 flex flex-col justify-between p-6 sm:p-10 rounded-2xl border border-pink-100/60 bg-white/80 shadow-sm relative overflow-hidden">
             {/* Decoración de esquina HUD */}
-            <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-emerald-500/20 rounded-tr-2xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-blue-500/20 rounded-bl-2xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-pink-500/20 rounded-tr-2xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-pink-500/20 rounded-bl-2xl pointer-events-none" />
             
             <div>
               {/* Etiqueta de sistema */}
-              <div className="flex items-center gap-2 text-blue-400 font-mono text-xs uppercase tracking-widest mb-6">
+              <div className="flex items-center gap-2 text-pink-600 font-mono text-xs uppercase tracking-widest mb-6 font-bold">
                 <Sliders className="w-4 h-4" />
                 <span>TERMINAL_CONSOLA: WSH_OVERDRIVE</span>
               </div>
 
               {/* Titular Principal */}
-              <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-slate-100 mb-6">
+              <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-slate-900 mb-6">
                 Toma el control de tu red. <br />
-                <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-blue-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-pink-600 via-rose-500 to-pink-500 bg-clip-text text-transparent">
                   Destruye tus vampiros energéticos.
                 </span>
               </h1>
 
               {/* Subtítulo */}
-              <p className="text-slate-400 text-base sm:text-lg max-w-2xl leading-relaxed mb-8">
+              <p className="text-slate-600 text-base sm:text-lg max-w-2xl leading-relaxed mb-8">
                 Auditoría tecnológica e independiente de dispositivos. Sin contratos, sin intermediarios, sin comisiones. Analizamos el hardware de medición eléctrica para recuperar la eficiencia de tu vivienda.
               </p>
             </div>
 
             {/* Fila de Datos Rápidos del Dashboard */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-900 font-mono text-xs">
-              <div className="p-3 rounded bg-slate-900/40 border border-slate-900">
-                <span className="text-slate-500 block mb-1">PROYECTO:</span>
-                <span className="text-emerald-400 font-bold glow-text-green">WSH_PORTAL</span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-100 font-mono text-xs text-slate-600 font-semibold">
+              <div className="p-3 rounded bg-slate-50 border border-slate-100">
+                <span className="text-slate-400 block mb-1">PROYECTO:</span>
+                <span className="text-pink-600 font-bold">WSH_PORTAL</span>
               </div>
-              <div className="p-3 rounded bg-slate-900/40 border border-slate-900">
-                <span className="text-slate-500 block mb-1">ENFOQUE:</span>
-                <span className="text-blue-400 font-bold glow-text-blue">100% LECTURA</span>
+              <div className="p-3 rounded bg-slate-50 border border-slate-100">
+                <span className="text-pink-600 font-bold">100% LECTURA</span>
               </div>
-              <div className="p-3 rounded bg-slate-900/40 border border-slate-900">
-                <span className="text-slate-500 block mb-1">MONETIZACIÓN:</span>
-                <span className="text-slate-300 font-bold">PASIVA / AFILIADOS</span>
+              <div className="p-3 rounded bg-slate-50 border border-slate-100">
+                <span className="text-slate-400 block mb-1">MONETIZACIÓN:</span>
+                <span className="text-slate-800 font-bold">PASIVA / AFILIADOS</span>
               </div>
-              <div className="p-3 rounded bg-slate-900/40 border border-slate-900">
-                <span className="text-slate-500 block mb-1">CARGA_TÉCNICA:</span>
-                <span className="text-emerald-400 font-bold glow-text-green">0% PUBLICIDAD INTRUSIVA</span>
+              <div className="p-3 rounded bg-slate-50 border border-slate-100">
+                <span className="text-slate-400 block mb-1">CARGA_TÉCNICA:</span>
+                <span className="text-pink-600 font-bold">0% PUBLICIDAD INTRUSIVA</span>
               </div>
             </div>
 
@@ -292,9 +307,9 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               <button 
                 onClick={scrollToBlog}
                 id="btn-explore-dashboard"
-                className="group relative inline-flex items-center gap-3 px-6 py-3.5 rounded-lg bg-emerald-500 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider overflow-hidden transition-all duration-300 hover:scale-102 hover:glow-green"
+                className="group relative inline-flex items-center gap-3 px-6 py-3.5 rounded-lg bg-pink-500 text-white font-mono text-xs font-bold uppercase tracking-wider overflow-hidden transition-all duration-300 hover:scale-102 hover:bg-pink-600 hover:shadow-md cursor-pointer"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-rose-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <span className="relative flex items-center gap-2">
                   EXPLORAR PANEL DE ANÁLISIS
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -304,63 +319,63 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
           </div>
 
           {/* "Sobre Nosotros" - Radar Diagnóstico HUD */}
-          <div className="lg:col-span-4 flex flex-col justify-between p-6 rounded-2xl border border-slate-800/80 bg-slate-950/80 backdrop-blur-md relative overflow-hidden">
+          <div className="lg:col-span-4 flex flex-col justify-between p-6 rounded-2xl border border-pink-100/60 bg-white/80 shadow-sm relative overflow-hidden">
             
             {/* Visual Radar Decorator */}
             <div className="relative w-full aspect-square max-w-[200px] mx-auto flex items-center justify-center mb-6">
               
               {/* Líneas concéntricas de radar */}
-              <div className="absolute inset-0 rounded-full border border-emerald-500/10" />
-              <div className="absolute inset-[20%] rounded-full border border-emerald-500/15" />
-              <div className="absolute inset-[45%] rounded-full border border-emerald-500/20" />
-              <div className="absolute inset-[70%] rounded-full border border-emerald-500/25" />
+              <div className="absolute inset-0 rounded-full border border-pink-500/10" />
+              <div className="absolute inset-[20%] rounded-full border border-pink-500/15" />
+              <div className="absolute inset-[45%] rounded-full border border-pink-500/20" />
+              <div className="absolute inset-[70%] rounded-full border border-pink-500/25" />
               
               {/* Ejes del radar */}
-              <div className="absolute w-full h-[1px] bg-emerald-500/10" />
-              <div className="absolute h-full w-[1px] bg-emerald-500/10" />
+              <div className="absolute w-full h-[1px] bg-pink-500/10" />
+              <div className="absolute h-full w-[1px] bg-pink-500/10" />
               
               {/* Línea giratoria de radar */}
               <div 
-                className="absolute w-1/2 h-[2px] bg-gradient-to-r from-transparent to-emerald-400 origin-left left-1/2 top-1/2 animate-spin"
+                className="absolute w-1/2 h-[2px] bg-gradient-to-r from-transparent to-pink-500 origin-left left-1/2 top-1/2 animate-spin"
                 style={{ animationDuration: '4s' }}
               />
               
               {/* Puntos rojos de "Vampiros Energéticos" detectados */}
-              <div className="absolute top-[25%] left-[30%] w-2.5 h-2.5 rounded-full bg-red-500 glow-red animate-ping" />
-              <div className="absolute top-[25%] left-[30%] w-2 h-2 rounded-full bg-red-500" />
+              <div className="absolute top-[25%] left-[30%] w-2.5 h-2.5 rounded-full bg-rose-550 animate-ping" />
+              <div className="absolute top-[25%] left-[30%] w-2 h-2 rounded-full bg-rose-550" />
               
-              <div className="absolute bottom-[28%] right-[25%] w-2.5 h-2.5 rounded-full bg-red-500 glow-red animate-ping" style={{ animationDelay: "1s" }} />
-              <div className="absolute bottom-[28%] right-[25%] w-2.5 h-2.5 rounded-full bg-red-500" />
+              <div className="absolute bottom-[28%] right-[25%] w-2.5 h-2.5 rounded-full bg-rose-550 animate-ping" style={{ animationDelay: "1s" }} />
+              <div className="absolute bottom-[28%] right-[25%] w-2.5 h-2.5 rounded-full bg-rose-550" />
 
-              <div className="absolute top-[60%] left-[65%] w-2 h-2 rounded-full bg-emerald-400 glow-green animate-pulse" />
+              <div className="absolute top-[60%] left-[65%] w-2.5 h-2.5 rounded-full bg-pink-500 animate-pulse" />
               
               {/* Icono central */}
-              <div className="relative z-10 w-12 h-12 rounded-full bg-[#020617] border border-emerald-500/40 flex items-center justify-center">
-                <Activity className="w-5 h-5 text-emerald-400 animate-pulse" />
+              <div className="relative z-10 w-12 h-12 rounded-full bg-white border border-pink-200 flex items-center justify-center">
+                <Activity className="w-5 h-5 text-pink-600 animate-pulse" />
               </div>
             </div>
 
             {/* Consola de Texto */}
-            <div className="space-y-4 font-mono">
-              <div className="flex items-center justify-between border-b border-slate-900 pb-2">
-                <span className="text-[10px] text-slate-500">MÓDULO:</span>
-                <span className="text-[10px] text-emerald-400">SOBRE_NOSOTROS_V1.0</span>
+            <div className="space-y-4 font-mono text-slate-700">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span className="text-[10px] text-slate-450">MÓDULO:</span>
+                <span className="text-[10px] text-pink-600 font-bold">SOBRE_NOSOTROS_V1.0</span>
               </div>
               
-              <div className="text-xs space-y-2 text-slate-300">
+              <div className="text-xs space-y-2 text-slate-650">
                 <p className="leading-relaxed">
-                  <span className="text-emerald-400 font-bold block mb-1">&gt;&gt; MISIÓN DETECTAR &amp; DESTRUIR</span>
+                  <span className="text-pink-600 font-bold block mb-1">&gt;&gt; MISIÓN DETECTAR &amp; DESTRUIR</span>
                   WattSavvyHome surge para cazar el consumo fantasma parásito (stand-by) y optimizar la red eléctrica del hogar mediante domótica. 
                 </p>
                 <p className="leading-relaxed">
-                  <span className="text-blue-400 font-bold block mb-1">&gt;&gt; DIVULGACIÓN INDEPENDIENTE</span>
+                  <span className="text-pink-750 font-bold block mb-1">&gt;&gt; DIVULGACIÓN INDEPENDIENTE</span>
                   No vendemos hardware, ni hacemos asesoría pagada. Este portal se monetiza mediante enlaces de afiliados en análisis rigurosos. Tu lectura es libre y privada.
                 </p>
               </div>
 
               {/* Status Bar */}
-              <div className="flex items-center gap-2 p-2.5 rounded bg-slate-900 border border-slate-800/60 text-[10px] text-slate-400">
-                <Cpu className="w-3.5 h-3.5 text-blue-400" />
+              <div className="flex items-center gap-2 p-2.5 rounded bg-pink-50/50 border border-pink-100/50 text-[10px] text-slate-600">
+                <Cpu className="w-3.5 h-3.5 text-pink-600" />
                 <span className="tracking-wide">VAMPIROS EN RUTA: CAZADOS</span>
               </div>
             </div>
@@ -378,16 +393,16 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
       <section id="content-hub" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
         
         {/* Header del Grid de Contenido */}
-        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-12 border-b border-slate-800 pb-6">
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-12 border-b border-pink-100 pb-6">
           <div>
-            <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase tracking-widest mb-2">
+            <div className="flex items-center gap-2 text-pink-650 font-mono text-xs uppercase tracking-widest mb-2 font-bold">
               <Database className="w-4 h-4 animate-pulse" />
               <span>REGISTRO_BASE_DE_DATOS</span>
             </div>
-            <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-100">
+            <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-900">
               Diagnósticos de Eficiencia
             </h2>
-            <p className="text-slate-400 text-xs sm:text-sm mt-1">
+            <p className="text-slate-600 text-xs sm:text-sm mt-1">
               Explora análisis de medidores, enchufes domóticos y monitorización solar sin sesgos comerciales.
             </p>
           </div>
@@ -396,18 +411,19 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
           <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full xl:w-auto">
             {/* Buscador Integrado */}
             <div className="relative min-w-[280px] w-full md:w-72 lg:w-80">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
               <input
+                id="blog-search-input"
                 type="text"
                 placeholder="Buscar artículos (ej. Shelly, Wibeee)..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-8 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-xs font-mono text-slate-300 placeholder-slate-600 transition-colors"
+                className="w-full pl-9 pr-8 py-2 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-xs font-mono text-slate-800 placeholder-slate-450 transition-colors"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm("")}
-                  className="absolute right-2.5 top-2.5 text-slate-500 hover:text-slate-300"
+                  className="absolute right-2.5 top-2.5 text-slate-450 hover:text-slate-600"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -420,8 +436,8 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 onClick={() => setSelectedCategory(null)}
                 className={`px-3 py-1.5 rounded text-[11px] font-mono uppercase tracking-wide border transition-all ${
                   selectedCategory === null 
-                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" 
-                    : "bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200"
+                    ? "bg-pink-50 text-pink-650 border-pink-200 font-bold" 
+                    : "bg-white text-slate-600 border-slate-200 hover:text-pink-600 hover:bg-pink-50/50"
                 }`}
               >
                 Todos ({initialArticles.length})
@@ -435,8 +451,8 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                     onClick={() => setSelectedCategory(selectedCategory === cat.slug ? null : cat.slug)}
                     className={`px-3 py-1.5 rounded text-[11px] font-mono uppercase tracking-wide border transition-all ${
                       selectedCategory === cat.slug 
-                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" 
-                        : "bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200"
+                        ? "bg-pink-50 text-pink-650 border-pink-200 font-bold" 
+                        : "bg-white text-slate-600 border-slate-200 hover:text-pink-600 hover:bg-pink-50/50"
                     }`}
                   >
                     {cat.name.split(" ")[0]} ({count})
@@ -449,7 +465,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
         {/* MOCK DEL ESTADO DE FILTRADO Y BÚSQUEDA */}
         {(selectedCategory || searchTerm) && (
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8 p-3 rounded-lg bg-emerald-950/20 border border-emerald-500/20 text-xs font-mono text-emerald-400 animate-pulse">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8 p-3 rounded-lg bg-pink-50 border border-pink-200 text-xs font-mono text-pink-600 animate-pulse">
             <span className="flex items-center gap-2 flex-wrap">
               <Sliders className="w-3.5 h-3.5" />
               {selectedCategory && (
@@ -465,7 +481,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 setSelectedCategory(null);
                 setSearchTerm("");
               }}
-              className="hover:underline text-[10px] uppercase font-bold text-left sm:text-right"
+              className="hover:underline text-[10px] uppercase font-bold text-left sm:text-right text-pink-650"
             >
               [Limpiar Filtros]
             </button>
@@ -483,13 +499,14 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             else if (article.category.slug === "guias-de-ahorro") CategoryIcon = TrendingDown;
 
             // Simulación de valores de consumo y estabilidad de hardware para dar estética de widget de dashboard
-            const mockConsumo = (1.2 - (idx * 0.18)).toFixed(2);
+            const mockConsumo = (1.2 - (idx * 0.04)).toFixed(2);
             const mockEstabilidad = (99.9 - (idx * 0.05)).toFixed(1);
 
             return (
               <article 
                 key={article.id}
-                className="group relative flex flex-col justify-between rounded-xl border border-slate-800/80 bg-slate-950/50 hover:bg-slate-950/90 hover:border-slate-700 transition-all-premium overflow-hidden"
+                onClick={() => setActiveArticle(article)}
+                className="group relative flex flex-col justify-between rounded-xl border border-slate-150 bg-white hover:border-pink-300 hover:shadow-md transition-all-premium overflow-hidden cursor-pointer animate-fade-in"
               >
                 {/* Degradado superior sutil decorativo */}
                 <div className={`h-1.5 w-full bg-gradient-to-r ${article.imageGradient}`} />
@@ -501,86 +518,75 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   <div>
                     <div className="flex items-center justify-between font-mono text-[10px] text-slate-500 mb-4">
                       <span>DEV_ID: WSH-00{idx + 1}</span>
-                      <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-pink-50 border border-pink-100/50 text-pink-650 font-bold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-pink-500" />
                         ONLINE
                       </span>
                     </div>
 
                     {/* Categoría */}
-                    <div className="flex items-center gap-1.5 text-blue-400 font-mono text-[10px] uppercase tracking-wider mb-2">
+                    <div className="flex items-center gap-1.5 text-pink-600 font-mono text-[10px] uppercase tracking-wider mb-2 font-bold">
                       <CategoryIcon className="w-3.5 h-3.5" />
                       <span>{article.category.name}</span>
                     </div>
 
                     {/* Título */}
-                    <h3 className="font-display font-bold text-lg text-slate-200 group-hover:text-slate-100 transition-colors mb-3 leading-snug">
+                    <h3 className="font-display font-bold text-lg text-slate-900 group-hover:text-pink-600 transition-colors mb-3 leading-snug">
                       {article.title}
                     </h3>
 
                     {/* Extracto */}
-                    <p className="text-slate-400 text-xs leading-relaxed mb-6">
+                    <p className="text-slate-600 text-xs leading-relaxed mb-6">
                       {article.excerpt}
                     </p>
                   </div>
 
                   {/* Panel de Control Interno (Metrics) */}
-                  <div className="space-y-3 p-3 rounded-lg bg-slate-900/40 border border-slate-900/60 font-mono text-[10px] text-slate-400 mb-6">
+                  <div className="space-y-3 p-3 rounded-lg bg-pink-50/20 border border-pink-100/30 text-slate-600 mb-6 font-mono text-[10px]">
                     <div className="flex justify-between items-center">
                       <span className="text-slate-500">CONSUMO MOCKUP:</span>
-                      <span className="text-emerald-400 font-semibold">{mockConsumo} W</span>
+                      <span className="text-pink-600 font-semibold">{mockConsumo} W</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-slate-500">ESTABILIDAD:</span>
-                      <span className="text-blue-400 font-semibold">{mockEstabilidad}%</span>
+                      <span className="text-pink-750 font-semibold">{mockEstabilidad}%</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-slate-500">TIEMPO LECTURA:</span>
-                      <span className="text-slate-300 font-semibold">{article.readTime}</span>
+                      <span className="text-slate-700 font-semibold">{article.readTime}</span>
                     </div>
                     
                     {/* Barra de progreso de eficiencia simulada */}
                     <div className="space-y-1 pt-1">
                       <div className="flex justify-between text-[9px] text-slate-500">
                         <span>EFICIENCIA DE AHORRO</span>
-                        <span className="text-emerald-400">{95 - (idx * 5)}%</span>
+                        <span className="text-pink-600 font-bold">{95 - (idx * 5)}%</span>
                       </div>
-                      <div className="w-full h-1.5 bg-slate-950 rounded overflow-hidden">
+                      <div className="w-full h-1.5 bg-slate-100 rounded overflow-hidden">
                         <div 
-                          className="h-full bg-emerald-500 rounded transition-all duration-500"
+                          className="h-full bg-pink-500 rounded transition-all duration-500"
                           style={{ width: `${95 - (idx * 5)}%` }}
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Pie de tarjeta con Autor y el Interruptor Inteligente de Lectura */}
-                  <div className="flex items-center justify-between border-t border-slate-900 pt-4 mt-auto">
+                  {/* Pie de tarjeta con Autor y el Lector */}
+                  <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-auto">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-full bg-slate-50 border border-slate-150 flex items-center justify-center">
                         <User className="w-3.5 h-3.5 text-slate-400" />
                       </div>
-                      <span className="text-[10px] font-mono text-slate-400">
+                      <span className="text-[10px] font-mono text-slate-600">
                         {article.author}
                       </span>
                     </div>
 
-                    {/* SMART SWITCH TOGGLE BUTTON */}
-                    <button
-                      onClick={() => setActiveArticle(article)}
-                      id={`switch-${article.id}`}
-                      className="group/switch flex items-center gap-1.5 focus:outline-none"
-                    >
-                      <span className="text-[9px] font-mono text-slate-500 group-hover/switch:text-emerald-400 transition-colors uppercase">
-                        LECTURA
-                      </span>
-                      {/* El interruptor eléctrico */}
-                      <div className="relative w-10 h-5 rounded-full bg-slate-900 border border-slate-700/80 p-0.5 transition-colors group-hover/switch:border-emerald-500/40">
-                        <div className="absolute top-[3px] left-1 text-[8px] font-mono text-slate-600 font-extrabold select-none">I</div>
-                        <div className="absolute top-[3px] right-1 text-[8px] font-mono text-slate-600 font-extrabold select-none">O</div>
-                        <div className="w-3.5 h-3.5 rounded-full bg-slate-500 shadow-sm transition-all group-hover/switch:translate-x-5 group-hover/switch:bg-emerald-400 glow-green" />
-                      </div>
-                    </button>
+                    {/* ENTRAR LECTURA INDICATOR */}
+                    <div className="flex items-center gap-1 font-mono text-[10px] text-pink-600 group-hover:text-pink-700 font-bold group-hover:underline">
+                      <span>LEER REGISTRO</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
 
                   </div>
 
@@ -595,7 +601,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
           <div className="flex justify-center mt-12 mb-6" id="pagination-container">
             <button
               onClick={() => setVisibleCount((prev) => prev + 24)}
-              className="group relative inline-flex items-center gap-2 px-8 py-3.5 overflow-hidden rounded-xl bg-emerald-500 font-mono text-xs font-bold text-slate-950 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              className="group relative inline-flex items-center gap-2 px-8 py-3.5 overflow-hidden rounded-xl bg-pink-500 font-mono text-xs font-bold text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-pink-600 shadow-sm cursor-pointer"
               id="ver-mas-btn"
             >
               <span>CARGAR MÁS MÓDULOS (+24)</span>
@@ -605,9 +611,9 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
         {/* Mensaje si no hay artículos */}
         {filteredArticles.length === 0 && (
-          <div className="text-center py-16 border border-dashed border-slate-800 rounded-xl bg-slate-950/30">
-            <Sliders className="w-12 h-12 text-slate-600 mx-auto mb-4 animate-bounce" />
-            <p className="font-mono text-sm text-slate-400">
+          <div className="text-center py-16 border border-dashed border-pink-200 rounded-xl bg-pink-50/20">
+            <Sliders className="w-12 h-12 text-pink-600 mx-auto mb-4 animate-bounce" />
+            <p className="font-mono text-sm text-slate-600">
               No se han encontrado registros que coincidan con la búsqueda o el filtro actual.
             </p>
             <button 
@@ -615,7 +621,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 setSelectedCategory(null);
                 setSearchTerm("");
               }}
-              className="mt-4 text-xs font-mono text-emerald-400 underline hover:text-emerald-300"
+              className="mt-4 text-xs font-mono text-pink-600 underline hover:text-pink-700 font-bold"
             >
               [Reiniciar búsqueda y filtros]
             </button>
@@ -624,15 +630,15 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
       </section>
 
-      {/* ARTICLE READER MODAL PANEL HUD */}
+      {/* ARTICLE READER MODAL (FULL SCREEN) */}
       {activeArticle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 bg-white text-slate-955 animate-fade-in overflow-y-auto flex flex-col">
           
-          {/* Panel de Control Principal del Lector (Tema Claro de Alto Contraste con Toques Rositas) */}
-          <div className="relative w-full max-w-4xl max-h-[85vh] flex flex-col rounded-2xl border-2 border-pink-100 bg-white text-slate-950 shadow-2xl overflow-hidden animate-slide-up">
+          {/* Constrained Container */}
+          <div className="w-full max-w-4xl mx-auto flex-1 flex flex-col min-h-screen bg-white">
             
             {/* Header del Lector */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-pink-100 bg-white">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-pink-100 bg-white sticky top-0 z-10">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-pink-50 border border-pink-200 flex items-center justify-center">
                   <Zap className="w-4 h-4 text-pink-600" />
@@ -642,8 +648,8 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                     <span className="font-mono text-[10px] text-pink-600 uppercase tracking-widest font-bold">
                       SESSION_ACTIVE: READ_MODE
                     </span>
-                    <span className="text-[10px] text-slate-200 hidden sm:inline">|</span>
-                    <span className="font-mono text-[10px] text-slate-500 uppercase hidden sm:inline">
+                    <span className="text-[10px] text-slate-200">|</span>
+                    <span className="font-mono text-[10px] text-slate-500 uppercase">
                       ID: {activeArticle.id}
                     </span>
                   </div>
@@ -656,30 +662,30 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               {/* Botón Cerrar */}
               <button
                 onClick={() => setActiveArticle(null)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-650 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-600 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer font-bold"
                 title="Cerrar artículo"
               >
                 <X className="w-4 h-4" />
-                <span className="hidden sm:inline">CERRAR LECTURA</span>
+                <span className="hidden sm:inline">CERRAR LECTOR</span>
               </button>
             </div>
 
             {/* Contenido Escrito */}
-            <div className="flex-1 overflow-y-auto p-6 sm:p-10 font-sans space-y-6 bg-white">
+            <div className="flex-1 p-6 sm:p-10 font-sans space-y-6 bg-white">
               
               {/* Encabezado del Artículo */}
               <div className="border-b border-pink-100 pb-6">
                 
                 {/* Título */}
-                <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-950 mb-4 leading-tight">
+                <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-955 mb-4 leading-tight">
                   {activeArticle.title}
                 </h2>
 
                 {/* Metadata */}
-                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-500">
+                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-505">
                   <div className="flex items-center gap-1.5">
                     <User className="w-4 h-4 text-pink-600" />
-                    <span>Escrito por: <strong className="text-slate-950 font-bold">{activeArticle.author}</strong></span>
+                    <span>Escrito por: <strong className="text-slate-955 font-bold">{activeArticle.author}</strong></span>
                   </div>
                   <div className="hidden sm:block text-slate-200">•</div>
                   <div>Fecha: {activeArticle.date}</div>
@@ -689,62 +695,60 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               </div>
 
               {/* Cuerpo del Artículo formateado */}
-              <div className="prose prose-slate prose-pink max-w-none text-slate-950 leading-relaxed text-sm sm:text-base space-y-6">
-                {activeArticle.content.trim().startsWith("<") ? (
-                  <div dangerouslySetInnerHTML={{ __html: activeArticle.content }} />
+              <div className="prose prose-slate prose-pink max-w-none text-slate-955 leading-relaxed text-sm sm:text-base space-y-6">
+                {activeArticle.content ? (
+                  activeArticle.content.trim().startsWith("<") ? (
+                    <div dangerouslySetInnerHTML={{ __html: activeArticle.content }} />
+                  ) : (
+                    activeArticle.content.split("\n\n").map((paragraph, index) => {
+                      if (paragraph.startsWith("## ")) {
+                        return (
+                          <h3 key={index} className="font-display font-bold text-lg sm:text-xl text-slate-955 pt-4 border-b border-pink-100 pb-2">
+                            {paragraph.replace("## ", "")}
+                          </h3>
+                        );
+                      }
+                      if (paragraph.startsWith("* ") || paragraph.startsWith("- ")) {
+                        return (
+                          <ul key={index} className="list-disc list-inside space-y-2 text-slate-955 pl-2">
+                            {paragraph.split("\n").map((item, subIdx) => (
+                              <li key={subIdx} className="marker:text-pink-600">
+                                {item.replace(/^[*-\s]+/, "")}
+                              </li>
+                            ))}
+                          </ul>
+                        );
+                      }
+                      if (/^\d+\.\s/.test(paragraph)) {
+                        return (
+                          <ol key={index} className="list-decimal list-inside space-y-2 text-slate-955 pl-2">
+                            {paragraph.split("\n").map((item, subIdx) => (
+                              <li key={subIdx} className="marker:text-pink-600">
+                                {item.replace(/^\d+\.\s+/, "")}
+                              </li>
+                            ))}
+                          </ol>
+                        );
+                      }
+                      
+                      // Normal text with bold support
+                      const parts = paragraph.split(/(\*\*.*?\*\*)/g);
+                      return (
+                        <p key={index} className="leading-relaxed">
+                          {parts.map((part, partIdx) => {
+                            if (part.startsWith("**") && part.endsWith("**")) {
+                              return <strong key={partIdx} className="text-slate-955 font-bold">{part.slice(2, -2)}</strong>;
+                            }
+                            return part;
+                          })}
+                        </p>
+                      );
+                    })
+                  )
                 ) : (
-                  activeArticle.content.split("\n\n").map((paragraph, index) => {
-                    
-                    // Renderizado de Títulos Secundarios
-                    if (paragraph.startsWith("## ")) {
-                      return (
-                        <h3 key={index} className="font-display font-bold text-lg sm:text-xl text-slate-950 pt-4 border-b border-pink-100 pb-2">
-                          {paragraph.replace("## ", "")}
-                        </h3>
-                      );
-                    }
-
-                    // Renderizado de Listas
-                    if (paragraph.startsWith("* ") || paragraph.startsWith("- ")) {
-                      const listItems = paragraph.split("\n");
-                      return (
-                        <ul key={index} className="list-disc list-inside space-y-2 text-slate-950 pl-2">
-                          {listItems.map((item, subIdx) => (
-                            <li key={subIdx} className="marker:text-pink-600">
-                              {item.replace(/^[*-\s]+/, "")}
-                            </li>
-                          ))}
-                        </ul>
-                      );
-                    }
-
-                    // Renderizado de Listas Enumeradas
-                    if (/^\d+\.\s/.test(paragraph)) {
-                      const listItems = paragraph.split("\n");
-                      return (
-                        <ol key={index} className="list-decimal list-inside space-y-2 text-slate-950 pl-2">
-                          {listItems.map((item, subIdx) => (
-                            <li key={subIdx} className="marker:text-pink-600">
-                              {item.replace(/^\d+\.\s+/, "")}
-                            </li>
-                          ))}
-                        </ol>
-                      );
-                    }
-
-                    // Texto Normal con detección de Negritas Markdown
-                    const parts = paragraph.split(/(\*\*.*?\*\*)/g);
-                    return (
-                      <p key={index} className="leading-relaxed">
-                        {parts.map((part, partIdx) => {
-                          if (part.startsWith("**") && part.endsWith("**")) {
-                            return <strong key={partIdx} className="text-slate-950 font-bold">{part.slice(2, -2)}</strong>;
-                          }
-                          return part;
-                        })}
-                      </p>
-                    );
-                  })
+                  <div className="py-12 border border-dashed border-pink-200 rounded bg-pink-50/20 text-center font-mono text-xs text-pink-700">
+                    Cuerpo del artículo actualmente vacío (0 palabras).
+                  </div>
                 )}
               </div>
 
@@ -758,11 +762,10 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   Este análisis técnico es independiente. No recibimos pagos de fabricantes para alterar valoraciones. Si realizas una compra a través de enlaces en este sitio, podríamos percibir una comisión de afiliación que ayuda a mantener el servidor activo, sin coste extra para ti.
                 </p>
               </div>
-
             </div>
 
             {/* Footer del Lector */}
-            <div className="flex items-center justify-between p-4 bg-white border-t border-pink-100">
+            <div className="flex items-center justify-between p-4 bg-white border-t border-pink-100 sticky bottom-0">
               <span className="text-[10px] font-mono text-slate-500">
                 PROCESAMIENTO TERMINADO: SESIÓN_CERRADA
               </span>
@@ -780,21 +783,21 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
       {/* SECCIÓN DE CONTACTO FUTURISTA */}
       <section className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="p-6 sm:p-8 rounded-2xl border border-slate-800/80 bg-slate-950/80 backdrop-blur-md relative overflow-hidden">
+        <div className="p-6 sm:p-8 rounded-2xl border border-pink-100/60 bg-white/80 shadow-sm relative overflow-hidden">
           
           {/* Decoraciones de esquina HUD */}
-          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-blue-500/30 rounded-tl-xl pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-emerald-500/30 rounded-br-xl pointer-events-none" />
+          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-pink-300/30 rounded-tl-xl pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-pink-300/30 rounded-br-xl pointer-events-none" />
 
           {/* Encabezado del Formulario */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-950 border border-blue-500/30 mb-4">
-              <Mail className="w-5 h-5 text-blue-400" />
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-pink-50 border border-pink-200 mb-4">
+              <Mail className="w-5 h-5 text-pink-600" />
             </div>
-            <h2 className="font-display font-extrabold text-2xl text-slate-100">
+            <h2 className="font-display font-extrabold text-2xl text-slate-955">
               Canal de Comunicación
             </h2>
-            <p className="text-slate-400 text-xs sm:text-sm mt-1">
+            <p className="text-slate-655 text-xs sm:text-sm mt-1">
               ¿Tienes dudas sobre monitorización o quieres sugerir un dispositivo para análisis? Escríbenos.
             </p>
           </div>
@@ -813,7 +816,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   placeholder="ej. Alex Domotica"
-                  className="w-full px-4 py-2.5 rounded bg-slate-900/80 border border-slate-800 focus:border-blue-500 focus:outline-none text-slate-200 text-sm font-mono placeholder-slate-600 transition-colors"
+                  className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm font-mono placeholder-slate-450 transition-colors"
                 />
               </div>
 
@@ -828,7 +831,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   value={formEmail}
                   onChange={(e) => setFormEmail(e.target.value)}
                   placeholder="ej. alex@red.com"
-                  className="w-full px-4 py-2.5 rounded bg-slate-900/80 border border-slate-800 focus:border-blue-500 focus:outline-none text-slate-200 text-sm font-mono placeholder-slate-600 transition-colors"
+                  className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm font-mono placeholder-slate-450 transition-colors"
                 />
               </div>
             </div>
@@ -844,12 +847,12 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 value={formMessage}
                 onChange={(e) => setFormMessage(e.target.value)}
                 placeholder="Escribe tu consulta o sugerencia de hardware de energía..."
-                className="w-full px-4 py-2.5 rounded bg-slate-900/80 border border-slate-800 focus:border-blue-500 focus:outline-none text-slate-200 text-sm font-mono placeholder-slate-600 transition-colors resize-none"
+                className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm font-mono placeholder-slate-450 transition-colors resize-none"
               />
             </div>
 
             {/* Consola de Logs Interactiva */}
-            <div className="p-3 rounded bg-black/50 border border-slate-900 font-mono text-[10px] text-slate-400 space-y-1">
+            <div className="p-3 rounded bg-slate-900 border border-slate-955 font-mono text-[10px] text-slate-400 space-y-1">
               {formConsoleLogs.map((log, index) => (
                 <div key={index} className={log.includes("[OK]") ? "text-emerald-400" : log.includes("info") ? "text-blue-400" : ""}>
                   {log}
@@ -863,12 +866,17 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 id="btn-submit-comms"
                 type="submit"
                 disabled={isFormSubmitting}
-                className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-101 hover:glow-blue flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-lg bg-pink-500 hover:bg-pink-600 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-101 flex items-center justify-center gap-2 cursor-pointer shadow-sm"
               >
                 {isFormSubmitting ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
                     TRANSMITIENDO...
+                  </>
+                ) : isFormSuccess ? (
+                  <>
+                    <CheckCircle2 className="w-4 h-4" />
+                    CONEXIÓN ESTABLECIDA [OK]
                   </>
                 ) : (
                   <>
@@ -884,7 +892,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
       </section>
 
       {/* FOOTER LEGAL */}
-      <footer className="relative z-10 border-t border-slate-800/80 bg-slate-950/90 py-12">
+      <footer className="relative z-10 border-t border-pink-100 bg-white py-12 text-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start mb-8">
@@ -892,51 +900,51 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             {/* Logo y Descripcion */}
             <div className="md:col-span-5 space-y-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-500/30 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-emerald-400" />
+                <div className="w-8 h-8 rounded-lg bg-pink-50 border border-pink-200 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-pink-600" />
                 </div>
-                <span className="font-display font-extrabold text-lg tracking-wider text-slate-200">
+                <span className="font-display font-extrabold text-lg tracking-wider text-slate-900">
                   WattSavvyHome
                 </span>
               </div>
-              <p className="text-slate-500 text-xs leading-relaxed max-w-md">
+              <p className="text-slate-600 text-xs leading-relaxed max-w-md">
                 WattSavvyHome es un portal web de divulgación tecnológica e informativa sobre consumo energético doméstico, domótica y monitorización. No presta servicios comerciales ni de consultoría. Monetizado mediante enlaces de afiliación y publicidad pasiva sin costes adicionales para el lector.
               </p>
             </div>
 
             {/* Enlaces Legales Requeridos */}
             <div className="md:col-span-4 space-y-3">
-              <h4 className="font-mono text-xs text-slate-400 uppercase tracking-widest border-b border-slate-900 pb-2">
+              <h4 className="font-mono text-xs text-slate-700 uppercase tracking-widest border-b border-pink-100 pb-2">
                 POLÍTICAS Y AVISOS LEGALES
               </h4>
-              <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-mono text-slate-500">
+              <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-mono text-slate-655">
                 <li>
-                  <Link href="/privacidad" className="hover:text-slate-300 transition-colors">[Privacidad]</Link>
+                  <Link href="/privacidad" className="hover:text-pink-650 transition-colors">[Privacidad]</Link>
                 </li>
                 <li>
-                  <Link href="/cookies" className="hover:text-slate-300 transition-colors">[Cookies]</Link>
+                  <Link href="/cookies" className="hover:text-pink-650 transition-colors">[Cookies]</Link>
                 </li>
                 <li>
-                  <Link href="/aviso-legal" className="hover:text-slate-300 transition-colors">[Aviso Legal]</Link>
+                  <Link href="/aviso-legal" className="hover:text-pink-650 transition-colors">[Aviso Legal]</Link>
                 </li>
                 <li>
-                  <Link href="/terminos" className="hover:text-slate-300 transition-colors">[Términos]</Link>
+                  <Link href="/terminos" className="hover:text-pink-650 transition-colors">[Términos]</Link>
                 </li>
                 <li>
-                  <Link href="/autores" className="hover:text-slate-300 transition-colors">[Página Autores]</Link>
+                  <Link href="/autores" className="hover:text-pink-650 transition-colors">[Página Autores]</Link>
                 </li>
               </ul>
             </div>
 
             {/* Datos Técnicos de Licencia */}
             <div className="md:col-span-3 space-y-3">
-              <h4 className="font-mono text-xs text-slate-400 uppercase tracking-widest border-b border-slate-900 pb-2">
+              <h4 className="font-mono text-xs text-slate-700 uppercase tracking-widest border-b border-pink-100 pb-2">
                 SISTEMA_INFO
               </h4>
-              <div className="space-y-1.5 font-mono text-[10px] text-slate-500">
+              <div className="space-y-1.5 font-mono text-[10px] text-slate-600">
                 <div>LICENCIA: CREATIVE COMMONS 4.0</div>
                 <div>AUTORÍA: EQUIPO EDITORIAL WSH</div>
-                <div className="flex items-center gap-1.5 text-emerald-500/80">
+                <div className="flex items-center gap-1.5 text-pink-600/80">
                   <Lock className="w-3.5 h-3.5" />
                   <span>CONEXIÓN SEGURA ENTRADA HOGAR</span>
                 </div>
@@ -946,7 +954,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
           </div>
 
           {/* Copyright */}
-          <div className="border-t border-slate-900 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-slate-500">
+          <div className="border-t border-pink-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-slate-600">
             <div>
               &copy; {new Date().getFullYear()} WattSavvyHome. Todos los derechos reservados.
             </div>
@@ -960,29 +968,29 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
       {/* BANNER DE COOKIES CUMPLIMIENTO REAL */}
       {cookieConsent === null && (
-        <div className="fixed bottom-6 left-6 right-6 md:left-auto md:max-w-md z-50 p-6 rounded-xl border border-slate-800 bg-slate-950/95 backdrop-blur-md glow-blue">
-          <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-blue-500/40 rounded-tl pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-emerald-500/40 rounded-br pointer-events-none" />
+        <div className="fixed bottom-6 left-6 right-6 md:left-auto md:max-w-md z-50 p-6 rounded-xl border border-pink-100 bg-white/95 backdrop-blur-md shadow-2xl">
+          <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-pink-300/40 rounded-tl pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-pink-300/40 rounded-br pointer-events-none" />
           
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded bg-blue-950 border border-blue-500/30 flex items-center justify-center shrink-0">
-              <Shield className="w-4.5 h-4.5 text-blue-400" />
+            <div className="w-8 h-8 rounded bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
+              <Shield className="w-4.5 h-4.5 text-pink-600" />
             </div>
             <div className="space-y-3 font-mono text-[11px]">
-              <div className="text-slate-300 leading-normal">
-                <span className="text-blue-400 font-bold block mb-1">REGISTRO_COOKIES: AUTORIZACIÓN</span>
-                Utilizamos cookies tecnicas para asegurar el funcionamiento del panel y de forma opcional cookies de analitica anonima para optimizar la red informativa.
+              <div className="text-slate-700 leading-normal">
+                <span className="text-pink-600 font-bold block mb-1">REGISTRO_COOKIES: AUTORIZACIÓN</span>
+                Utilizamos cookies técnicas para asegurar el funcionamiento del panel y de forma opcional cookies de analítica anónima para optimizar la red informativa.
               </div>
               <div className="flex items-center gap-3">
                 <button
                   onClick={handleRejectCookies}
-                  className="px-3 py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 cursor-pointer uppercase text-[9px] font-bold"
+                  className="px-3 py-1.5 rounded bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 cursor-pointer uppercase text-[9px] font-bold"
                 >
                   Rechazar
                 </button>
                 <button
                   onClick={handleAcceptCookies}
-                  className="px-3 py-1.5 rounded bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 cursor-pointer uppercase text-[9px] font-bold"
+                  className="px-3 py-1.5 rounded bg-pink-500 text-white font-bold hover:bg-pink-600 cursor-pointer uppercase text-[9px] font-bold shadow-sm"
                 >
                   Aceptar
                 </button>
