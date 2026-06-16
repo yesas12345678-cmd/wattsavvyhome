@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020617; /* Slate-950 */
+  --foreground: #f8fafc; /* Slate-50 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-outfit), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  
+  /* Neon and Electric custom accent colors */
+  --color-neon-green: #10b981; /* Emerald-500 */
+  --color-neon-green-glow: #00ff66;
+  --color-electric-blue: #3b82f6; /* Blue-500 */
+  --color-electric-blue-glow: #00d2ff;
+  
+  --color-panel-bg: rgba(15, 23, 42, 0.6); /* Semi-transparent slate-900 */
+  --color-panel-border: rgba(51, 65, 85, 0.5); /* Slate-700/50 */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
+/* Cyber grid background pattern */
+.bg-grid-cyber {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.04) 1px, transparent 1px);
+}
+
+.bg-radial-hud {
+  background: radial-gradient(circle at 50% 25%, rgba(59, 130, 246, 0.12) 0%, transparent 60%);
+}
+
+/* Glow effects */
+.glow-green {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+}
+
+.glow-blue {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
+}
+
+.glow-text-green {
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.glow-text-blue {
+  text-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+/* Custom transitions and scrollbar */
+.transition-all-premium {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
+
+/* Pulse animations */
+@keyframes signal-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.15);
+  }
+}
+
+.animate-signal {
+  animation: signal-pulse 2s infinite ease-in-out;
+}
