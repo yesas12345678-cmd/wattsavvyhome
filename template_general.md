@@ -53,7 +53,7 @@ Debes devolver la respuesta únicamente estructurada como un objeto **JSON** vá
   "meta_title": "[Metatítulo SEO de 50-60 caracteres sin emojis]",
   "meta_description": "[Metadescripción SEO de 140-160 caracteres sin emojis]",
   "excerpt": "[Resumen de 2-3 líneas para la tarjeta de previsualización o redes sociales]",
-  "content": "<div class='space-y-8'><p class='text-lg text-slate-700 leading-relaxed font-sans font-medium'>[Párrafo introductorio destacado]</p><h2 class='font-display text-2xl font-extrabold text-slate-900 mt-10 mb-4 border-b border-slate-100 pb-2'>[Sección principal H2]</h2><p class='text-slate-700 leading-relaxed font-sans mb-4'>[Desarrollo del artículo...]</p><div class='overflow-x-auto my-6 border border-slate-200 rounded-2xl shadow-sm'><table class='w-full text-left border-collapse'><thead class='bg-slate-50 border-b border-slate-200'><tr><th class='py-3 px-4 text-xs font-bold text-slate-700 uppercase'>Concepto</th><th class='py-3 px-4 text-xs font-bold text-slate-700 uppercase'>Estado</th></tr></thead><tbody class='divide-y divide-slate-100 text-sm text-slate-650 font-sans'><tr><td class='py-3 px-4 font-bold text-slate-900'>[Variable]</td><td class='py-3 px-4'><span class='inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-100'>Activo / Sí</span></td></tr></tbody></table></div></div>"
+  "content": "<div class='space-y-8'><p class='text-lg text-slate-750 leading-relaxed font-sans font-medium'>[Párrafo introductorio destacado]</p><h2 class='font-display text-2xl font-extrabold text-slate-950 mt-10 mb-4 border-b border-pink-100 pb-2'>[Sección principal H2]</h2><p class='text-slate-950 leading-relaxed font-sans mb-4'>[Desarrollo del artículo...]</p><div class='overflow-x-auto my-6 border border-pink-100 rounded-2xl shadow-sm'><table class='w-full text-left border-collapse'><thead class='bg-pink-50/20 border-b border-pink-100'><tr><th class='py-3 px-4 text-xs font-bold text-pink-700 uppercase'>Concepto</th><th class='py-3 px-4 text-xs font-bold text-pink-700 uppercase'>Estado</th></tr></thead><tbody class='divide-y divide-pink-50 text-sm text-slate-900 font-sans'><tr><td class='py-3 px-4 font-bold text-slate-950'>[Variable]</td><td class='py-3 px-4'><span class='inline-flex items-center rounded-full bg-pink-50 px-2.5 py-0.5 text-xs font-bold text-pink-700 border border-pink-100'>Activo / Sí</span></td></tr></tbody></table></div></div>"
 }
 ```
 
@@ -64,14 +64,14 @@ El HTML generado en la propiedad `content` debe emplear exactamente las siguient
 
 #### A. Contenedores y Estructura Principal
 *   Contenedor principal: `<div class='space-y-8'>`
-*   Párrafos de texto común: `<p class='text-slate-700 leading-relaxed font-sans mb-4'>`
-*   Párrafo introductorio (destacado): `<p class='text-lg text-slate-700 leading-relaxed font-sans font-medium'>`
+*   Párrafos de texto común: `<p class='text-slate-950 leading-relaxed font-sans mb-4'>` (usar slate-955 o similar para máximo contraste).
+*   Párrafo introductorio (destacado): `<p class='text-lg text-slate-950 leading-relaxed font-sans font-medium'>`
 
 #### B. Encabezados (Jerarquía H2 y H3)
 *   Secciones principales (H2):
-    `<h2 class='font-display text-2xl font-extrabold text-slate-900 mt-10 mb-4 border-b border-slate-100 pb-2'>`
+    `<h2 class='font-display text-2xl font-extrabold text-slate-950 mt-10 mb-4 border-b border-pink-100 pb-2'>`
 *   Subsecciones (H3):
-    `<h3 class='font-display text-xl font-bold text-slate-900 mt-8 mb-3'>`
+    `<h3 class='font-display text-xl font-bold text-slate-950 mt-8 mb-3'>`
 
 #### C. Bloques de Alerta y Recomendación (Llamadas de Atención)
 *   **Caja de Advertencia / Alerta (Fondo ámbar):**
@@ -81,10 +81,10 @@ El HTML generado en la propiedad `content` debe emplear exactamente las siguient
       [Texto detallado de advertencia o precauciones]
     </div>
     ```
-*   **Caja de Consejo / Recomendación (Fondo verde azulado):**
+*   **Caja de Consejo / Recomendación (Fondo rosado/rose):**
     ```html
-    <div class='my-6 p-5 rounded-2xl bg-teal-50/70 border-l-4 border-teal-500 text-teal-900 shadow-sm'>
-      <span class='font-bold uppercase tracking-wider block mb-1 text-[11px] text-teal-800'>Consejo / Recomendación</span>
+    <div class='my-6 p-5 rounded-2xl bg-pink-50/70 border-l-4 border-pink-500 text-pink-900 shadow-sm'>
+      <span class='font-bold uppercase tracking-wider block mb-1 text-[11px] text-pink-800'>Consejo / Recomendación</span>
       [Texto detallado de recomendación o buenas prácticas]
     </div>
     ```
@@ -93,12 +93,12 @@ El HTML generado en la propiedad `content` debe emplear exactamente las siguient
 Utiliza una estructura de grillas de 2 columnas para desglosar elementos:
 ```html
 <div class='grid grid-cols-1 md:grid-cols-2 gap-4 my-6'>
-  <div class='p-5 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow'>
+  <div class='p-5 rounded-xl border border-pink-100 bg-white shadow-sm hover:shadow-md transition-shadow'>
     <h4 class='font-bold text-slate-950 text-base mb-2 flex items-center gap-2'>
-      <span class='h-6 w-6 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 text-xs font-bold'>1</span>
+      <span class='h-6 w-6 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 text-xs font-bold'>1</span>
       [Título de la Tarjeta]
     </h4>
-    <p class='text-slate-655 text-sm font-sans leading-relaxed'>[Descripción detallada]</p>
+    <p class='text-slate-900 text-sm font-sans leading-relaxed'>[Descripción detallada]</p>
   </div>
 </div>
 ```
@@ -106,14 +106,14 @@ Utiliza una estructura de grillas de 2 columnas para desglosar elementos:
 #### E. Listados Elegantes con Icono SVG
 ```html
 <ul class='space-y-4 my-6'>
-  <li class='flex gap-3 text-slate-700'>
-    <div class='flex-shrink-0 h-6 w-6 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600'>
+  <li class='flex gap-3 text-slate-950'>
+    <div class='flex-shrink-0 h-6 w-6 rounded-lg bg-pink-50 flex items-center justify-center text-pink-600'>
       <svg class='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4'/>
       </svg>
     </div>
     <div>
-      <strong class='font-bold text-slate-900 block'>[Concepto Destacado]:</strong>
+      <strong class='font-bold text-slate-950 block'>[Concepto Destacado]:</strong>
       [Explicación de la viñeta].
     </div>
   </li>
@@ -122,28 +122,28 @@ Utiliza una estructura de grillas de 2 columnas para desglosar elementos:
 
 #### F. Tablas Comparativas con Colores Semánticos (Crítico)
 *   **Contenedor con scroll y bordes suaves:**
-    `<div class='overflow-x-auto my-6 border border-slate-200 rounded-2xl shadow-sm'>`
+    `<div class='overflow-x-auto my-6 border border-pink-100 rounded-2xl shadow-sm'>`
 *   **Cabecera de Tabla:**
-    Fondo gris muy claro (`bg-slate-50`) con textos en mayúscula, pequeños y audaces.
+    Fondo rosa muy claro (`bg-pink-50/20`) con textos en mayúscula, pequeños y audaces.
 *   **Filas y Celdas con insignias (Badges) de colores:**
-    *   **Estado Positivo / Incluido (Verde):** Celda con insignia `<span class='inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 border border-emerald-100'>[Texto Verde, Ej: Sí / Aprobado]</span>`
+    *   **Estado Positivo / Incluido (Rosa):** Celda con insignia `<span class='inline-flex items-center rounded-full bg-pink-50 px-2.5 py-0.5 text-xs font-bold text-pink-700 border border-pink-100'>[Texto Rosa, Ej: Sí / Aprobado]</span>`
     *   **Estado Intermedio / Con límites (Ámbar/Amarillo):** Celda con insignia `<span class='inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-bold text-amber-700 border border-amber-100'>[Texto Ámbar, Ej: Opcional / Límite]</span>`
-    *   **Estado Negativo / Excluido (Rojo/Rosa):** Celda con insignia `<span class='inline-flex items-center rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-bold text-rose-700 border border-rose-100'>[Texto Rojo, Ej: Excluido / No]</span>`
+    *   **Estado Negativo / Excluido (Rojo/Rosa fuerte):** Celda con insignia `<span class='inline-flex items-center rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-bold text-rose-700 border border-rose-100'>[Texto Rojo, Ej: Excluido / No]</span>`
 
 #### G. Acordeones Desplegables (FAQ Interactiva Nativa en HTML)
 Utiliza el elemento nativo `<details>` estructurado con Tailwind CSS para añadir secciones interactivas desplegables sin dependencias de JavaScript externo:
 ```html
 <div class='space-y-4 my-6'>
-  <details class='group border border-slate-200 rounded-2xl bg-white p-5 transition-all duration-300 open:shadow-sm'>
-    <summary class='flex justify-between items-center font-bold text-slate-900 cursor-pointer list-none select-none'>
+  <details class='group border border-pink-100 rounded-2xl bg-white p-5 transition-all duration-300 open:shadow-sm'>
+    <summary class='flex justify-between items-center font-bold text-slate-950 cursor-pointer list-none select-none'>
       <span>[Pregunta o Título Desplegable]</span>
-      <span class='transition duration-300 group-open:rotate-180 text-teal-600'>
+      <span class='transition duration-300 group-open:rotate-180 text-pink-600'>
         <svg class='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
           <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' />
         </svg>
       </span>
     </summary>
-    <div class='mt-3 text-slate-650 leading-relaxed font-sans text-sm border-t border-slate-100 pt-3'>
+    <div class='mt-3 text-slate-900 leading-relaxed font-sans text-sm border-t border-pink-50 pt-3'>
       [Contenido detallado o respuesta que se muestra al desplegar...]
     </div>
   </details>

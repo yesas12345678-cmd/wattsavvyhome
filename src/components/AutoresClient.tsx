@@ -213,21 +213,21 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
       {activeArticle && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
           
-          {/* Panel de Control Principal del Lector (Tema Claro para Lectura Cómoda) */}
-          <div className="relative w-full max-w-4xl max-h-[85vh] flex flex-col rounded-2xl border border-slate-300 bg-white text-slate-900 shadow-2xl overflow-hidden animate-slide-up">
+          {/* Panel de Control Principal del Lector (Tema Claro de Alto Contraste con Toques Rositas) */}
+          <div className="relative w-full max-w-4xl max-h-[85vh] flex flex-col rounded-2xl border-2 border-pink-100 bg-white text-slate-950 shadow-2xl overflow-hidden animate-slide-up">
             
             {/* Header del Lector */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 bg-slate-50">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-pink-100 bg-white">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-500/20 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-emerald-600" />
+                <div className="w-8 h-8 rounded-lg bg-pink-50 border border-pink-200 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-pink-600" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] text-emerald-600 uppercase tracking-widest font-bold">
+                    <span className="font-mono text-[10px] text-pink-600 uppercase tracking-widest font-bold">
                       SESSION_ACTIVE: READ_MODE
                     </span>
-                    <span className="text-[10px] text-slate-300 hidden sm:inline">|</span>
+                    <span className="text-[10px] text-slate-200 hidden sm:inline">|</span>
                     <span className="font-mono text-[10px] text-slate-500 uppercase hidden sm:inline">
                       ID: {activeArticle.id}
                     </span>
@@ -241,7 +241,7 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
               {/* Botón Cerrar */}
               <button
                 onClick={() => setActiveArticle(null)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-600 hover:text-slate-900 hover:border-slate-400 hover:bg-slate-50 transition-all font-mono text-xs shadow-sm cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-655 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer"
                 title="Cerrar artículo"
               >
                 <X className="w-4 h-4" />
@@ -250,10 +250,10 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
             </div>
 
             {/* Contenido Escrito */}
-            <div className="flex-1 overflow-y-auto p-6 sm:p-10 font-sans space-y-6 bg-slate-50/30">
+            <div className="flex-1 overflow-y-auto p-6 sm:p-10 font-sans space-y-6 bg-white">
               
               {/* Encabezado del Artículo */}
-              <div className="border-b border-slate-200 pb-6">
+              <div className="border-b border-pink-100 pb-6">
                 
                 {/* Título */}
                 <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-950 mb-4 leading-tight">
@@ -263,18 +263,18 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
                 {/* Metadata */}
                 <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-500">
                   <div className="flex items-center gap-1.5">
-                    <User className="w-4 h-4 text-emerald-600" />
-                    <span>Escrito por: <strong className="text-slate-800">{activeArticle.author}</strong></span>
+                    <User className="w-4 h-4 text-pink-600" />
+                    <span>Escrito por: <strong className="text-slate-950 font-bold">{activeArticle.author}</strong></span>
                   </div>
-                  <div className="hidden sm:block text-slate-300">•</div>
+                  <div className="hidden sm:block text-slate-200">•</div>
                   <div>Fecha: {activeArticle.date}</div>
-                  <div className="hidden sm:block text-slate-300">•</div>
+                  <div className="hidden sm:block text-slate-200">•</div>
                   <div>{activeArticle.readTime}</div>
                 </div>
               </div>
 
               {/* Cuerpo del Artículo formateado */}
-              <div className="prose prose-slate prose-emerald max-w-none text-slate-800 leading-relaxed text-sm sm:text-base space-y-6">
+              <div className="prose prose-slate prose-pink max-w-none text-slate-950 leading-relaxed text-sm sm:text-base space-y-6">
                 {activeArticle.content ? (
                   activeArticle.content.trim().startsWith("<") ? (
                     <div dangerouslySetInnerHTML={{ __html: activeArticle.content }} />
@@ -282,16 +282,16 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
                     activeArticle.content.split("\n\n").map((paragraph, index) => {
                       if (paragraph.startsWith("## ")) {
                         return (
-                          <h3 key={index} className="font-display font-bold text-lg sm:text-xl text-slate-900 pt-4 border-b border-slate-100 pb-2">
+                          <h3 key={index} className="font-display font-bold text-lg sm:text-xl text-slate-950 pt-4 border-b border-pink-100 pb-2">
                             {paragraph.replace("## ", "")}
                           </h3>
                         );
                       }
                       if (paragraph.startsWith("* ") || paragraph.startsWith("- ")) {
                         return (
-                          <ul key={index} className="list-disc list-inside space-y-2 text-slate-800 pl-2">
+                          <ul key={index} className="list-disc list-inside space-y-2 text-slate-955 pl-2">
                             {paragraph.split("\n").map((item, subIdx) => (
-                              <li key={subIdx} className="marker:text-emerald-600">
+                              <li key={subIdx} className="marker:text-pink-600">
                                 {item.replace(/^[*-\s]+/, "")}
                               </li>
                             ))}
@@ -300,9 +300,9 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
                       }
                       if (/^\d+\.\s/.test(paragraph)) {
                         return (
-                          <ol key={index} className="list-decimal list-inside space-y-2 text-slate-800 pl-2">
+                          <ol key={index} className="list-decimal list-inside space-y-2 text-slate-955 pl-2">
                             {paragraph.split("\n").map((item, subIdx) => (
-                              <li key={subIdx} className="marker:text-blue-600">
+                              <li key={subIdx} className="marker:text-pink-600">
                                 {item.replace(/^\d+\.\s+/, "")}
                               </li>
                             ))}
@@ -313,7 +313,7 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
                     })
                   )
                 ) : (
-                  <div className="py-12 border border-dashed border-slate-200 rounded bg-slate-100 text-center font-mono text-xs text-slate-500">
+                  <div className="py-12 border border-dashed border-pink-200 rounded bg-pink-50/20 text-center font-mono text-xs text-pink-700">
                     Cuerpo del articulo actualmente vacio (0 palabras).
                   </div>
                 )}
@@ -321,13 +321,13 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
             </div>
 
             {/* Footer del Lector */}
-            <div className="flex items-center justify-between p-4 bg-slate-50 border-t border-slate-200">
+            <div className="flex items-center justify-between p-4 bg-white border-t border-pink-100">
               <span className="text-[10px] font-mono text-slate-500">
                 PROCESAMIENTO TERMINADO: SESIÓN_CERRADA
               </span>
               <button
                 onClick={() => setActiveArticle(null)}
-                className="px-5 py-2 bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-colors font-mono text-xs font-bold uppercase rounded-lg cursor-pointer"
+                className="px-5 py-2 bg-pink-500 text-white hover:bg-pink-600 transition-colors font-mono text-xs font-bold uppercase rounded-lg cursor-pointer shadow-sm"
               >
                 CERRAR PANEL
               </button>
