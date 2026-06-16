@@ -6,11 +6,11 @@ Este documento describe cómo automatizar la generación en lote (batch) de 100 
 
 ## 1. Requisitos Previos
 
-1. **API Key de la IA**: Cuenta con saldo en la plataforma de desarrollo de DeepSeek (o cualquier otra IA compatible).
+1. **API Key de la IA**: Cuenta con saldo en la plataforma de desarrollo de DeepSeek (puedes utilizar directamente la clave actual: `sk-177cec30fdd74db1ac9b23e204deade4`).
 2. **PostgreSQL pre-poblado**: Una tabla `articles` que contenga los artículos planificados (título, keyword, slug, categoría, fecha, etc.) pero con el cuerpo (`content`) vacío (`''`).
 3. **Variables de Entorno**: El archivo `.env.local` debe contener:
    ```env
-   DEEPSEEK_API_KEY=tu_clave_api_aqui
+   DEEPSEEK_API_KEY=sk-177cec30fdd74db1ac9b23e204deade4
    DATABASE_URL=tu_conexion_postgresql_aqui
    ```
 
@@ -20,7 +20,7 @@ Este documento describe cómo automatizar la generación en lote (batch) de 100 
 
 ### A. Plantilla de Instrucciones (`template_general.md`)
 Crea un archivo en la raíz llamado `template_general.md`. Este archivo contiene las directivas exactas que la IA debe seguir. Su estructura es crítica para evitar errores en el parseado del blog:
-- **Longitud**: Entre 2000 y 2500 palabras de contenido útil.
+- **Longitud**: Entre 2.500 y 3.500+ palabras de contenido útil.
 - **Sin emojis**: Prohibido usar emojis.
 - **Tailwind CSS + HTML**: Indicarle a la IA que use clases CSS específicas para tablas de comparación, grillas de tarjetas, llamadas de atención (callouts) y acordeones nativos de preguntas frecuentes (`<details>`).
 - **Salida JSON Estricta**: Pedirle a la IA que devuelva el contenido estructurado en un objeto JSON con las propiedades `title`, `meta_title`, `meta_description`, `excerpt` y `content` (cuerpo HTML usando comillas simples para las clases de CSS).
@@ -45,14 +45,14 @@ Cuando inicies una nueva web y quieras que una IA (como Antigravity, Claude, Cha
 Hola. Necesito que automatices la generación de contenido para mi nueva web. Por favor, haz lo siguiente:
 
 1. Crea un script en la carpeta 'scripts/generateArticles.mjs' que:
-   - Cargue las variables de entorno de '.env.local' (incluyendo DEEPSEEK_API_KEY y DATABASE_URL).
-   - Lea un archivo de plantilla llamado 'template_general.md' en la raíz.
+   - Cargue las variables de entorno de '.env.local' (incluyendo DEEPSEEK_API_KEY (clave a usar: sk-177cec30fdd74db1ac9b23e204deade4) y DATABASE_URL).
+   - Lea el archivo de plantilla llamado 'template_general.md' en la raíz.
    - Obtenga todos los artículos de la base de datos PostgreSQL que tengan el campo 'content' vacío ('').
    - Llame de forma secuencial a la API de DeepSeek (model: 'deepseek-chat', endpoint: 'https://api.deepseek.com/chat/completions') pasándole la plantilla y los metadatos de cada artículo (título, keyword, categoría).
    - Habilite el formato JSON en la API y parsee las propiedades del JSON devuelto: 'title', 'meta_title', 'meta_description', 'excerpt' y 'content'.
    - Realice un UPDATE en la base de datos PostgreSQL para rellenar estos campos del artículo correspondiente.
    
-2. Crea un archivo 'template_general.md' en la raíz con directivas SEO estrictas: de 2000 a 2500 palabras, estructurado en HTML con Tailwind CSS (tablas de comparativa, callouts), tono experto (EEAT) y sin emojis bajo ninguna circunstancia.
+2. Usa el archivo 'template_general.md' en la raíz con directivas SEO estrictas: de 2500 a 3500+ palabras, estructurado en HTML con Tailwind CSS (tablas de comparativa, callouts), tono experto (EEAT) y sin emojis bajo ninguna circunstancia.
 
 3. Ejecuta el script localmente para procesar los artículos y actualizar la base de datos de producción/desarrollo de forma automática.
 ```

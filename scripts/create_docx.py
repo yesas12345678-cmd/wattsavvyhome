@@ -53,7 +53,7 @@ def create_document():
     doc.add_heading("2. Requisitos Previos", level=1)
     doc.add_paragraph("Para replicar este proceso en un nuevo sitio web, se necesita:")
     doc.add_paragraph("• Una cuenta activa en DeepSeek (con saldo en la plataforma de desarrollo).")
-    doc.add_paragraph("• Una clave de API de DeepSeek (formato sk-...).")
+    doc.add_paragraph("• Una clave de API de DeepSeek directamente (puedes utilizar la clave actual: sk-177cec30fdd74db1ac9b23e204deade4).")
     doc.add_paragraph("• Una base de datos PostgreSQL conectada y con la tabla 'articles' creada y pre-poblada con los datos SEO básicos (título, keyword, slug, categoría, fecha, etc.) pero con el cuerpo de los artículos vacío ('').")
 
     # Configuración paso a paso
@@ -65,15 +65,16 @@ def create_document():
     )
     p_code1 = doc.add_paragraph()
     p_code1.paragraph_format.left_indent = Inches(0.5)
-    r_code1 = p_code1.add_run("DEEPSEEK_API_KEY=tu_clave_api_aqui\nDATABASE_URL=tu_conexion_postgresql_aqui")
+    r_code1 = p_code1.add_run("DEEPSEEK_API_KEY=sk-177cec30fdd74db1ac9b23e204deade4\nDATABASE_URL=tu_conexion_postgresql_aqui")
     r_code1.font.name = 'Courier New'
     r_code1.font.size = Pt(10)
 
-    doc.add_heading("Paso 3.2: Crear el archivo de plantilla (template.md)", level=2)
+    doc.add_heading("Paso 3.2: Configurar la plantilla de redacción (template_general.md)", level=2)
     doc.add_paragraph(
-        "Crea un archivo llamado 'template.md' en la raíz del proyecto. Este archivo contiene las instrucciones editoriales "
-        "detalladas para la IA. Por ejemplo, restricciones de longitud (2000-2500 palabras), la prohibición estricta de emojis, "
-        "la densidad de keywords y la directiva de usar maquetación HTML y Tailwind CSS (como tablas y tarjetas de llamada)."
+        "Como plantilla de redacción se debe utilizar el archivo 'template_general.md' que se encuentra en la carpeta del proyecto. "
+        "Este archivo contiene las instrucciones editoriales detalladas para la IA. Por ejemplo, restricciones de longitud "
+        "(2.500-3.500+ palabras), la prohibición estricta de emojis, la densidad de keywords y la directiva de usar maquetación "
+        "HTML y Tailwind CSS (como tablas y tarjetas de llamada)."
     )
 
     doc.add_heading("Paso 3.3: Crear el script de generación (generateArticles.mjs)", level=2)
@@ -105,12 +106,12 @@ def create_document():
         "=== INSTRUCCIONES DE AUTOMATIZACIÓN EDITORIAL ===\n"
         "Hola. Necesito que automatices la generación de contenido para mi nueva web. Por favor, haz lo siguiente:\n"
         "1. Crea un script en la carpeta 'scripts/generateArticles.mjs' que:\n"
-        "   - Cargue las variables de entorno de '.env.local' (incluyendo DEEPSEEK_API_KEY y DATABASE_URL).\n"
-        "   - Lea un archivo de plantilla llamado 'template.md' en la raíz.\n"
+        "   - Cargue las variables de entorno de '.env.local' (incluyendo DEEPSEEK_API_KEY (clave a usar: sk-177cec30fdd74db1ac9b23e204deade4) y DATABASE_URL).\n"
+        "   - Lea el archivo de plantilla llamado 'template_general.md' en la raíz.\n"
         "   - Obtenga todos los artículos de la base de datos PostgreSQL que tengan el campo 'content' vacío ('').\n"
         "   - Llame de forma secuencial a la API de DeepSeek (model: 'deepseek-chat', endpoint: 'https://api.deepseek.com/chat/completions') pasándole la plantilla y los metadatos de cada artículo (título, keyword, categoría).\n"
         "   - Guarde el resultado HTML devuelto en la columna 'content' de la tabla 'articles'.\n"
-        "2. Crea un archivo 'template.md' en la raíz con directivas SEO estrictas: de 2000 a 2500 palabras, estructurado en HTML con Tailwind CSS (tablas de comparativa, callouts), tono experto (EEAT) y sin emojis bajo ninguna circunstancia.\n"
+        "2. Usa el archivo 'template_general.md' en la raíz con directivas SEO estrictas: de 2500 a 3500+ palabras, estructurado en HTML con Tailwind CSS (tablas de comparativa, callouts), tono experto (EEAT) y sin emojis bajo ninguna circunstancia.\n"
         "3. Ejecuta el script localmente para procesar los artículos y actualizar la base de datos de producción/desarrollo."
     )
     r_prompt = p_prompt.add_run(prompt_text)
@@ -122,8 +123,14 @@ def create_document():
 
     # Guardar documento
     output_filename = "api.docx"
-    doc.save(output_filename)
-    print(f"[OK] Documento '{output_filename}' creado con éxito en la raíz del proyecto.")
+    try:
+        doc.save(output_filename)
+        print(f"[OK] Documento '{output_filename}' creado con éxito en la raíz del proyecto.")
+    except PermissionError:
+        alternative = "api_new.docx"
+        doc.save(alternative)
+        print(f"[ERROR] No se pudo guardar en '{output_filename}' porque está abierto en Word.")
+        print(f"[OK] Se ha guardado una copia en '{alternative}' en su lugar. Cierra Word y renombra el archivo.")
 
 if __name__ == "__main__":
     create_document()
