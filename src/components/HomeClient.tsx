@@ -5,7 +5,7 @@ import { Article } from "@/data/articles";
 import { 
   Zap, Activity, Plug, Sun, Shield, Info, Mail, FileText, 
   User, ArrowRight, Sliders, Cpu, Database, TrendingDown, 
-  CheckCircle2, Flame, RefreshCw, Clock, Send, X, Lock
+  CheckCircle2, Flame, RefreshCw, Clock, Send, X, Lock, Search
 } from "lucide-react";
 import Link from "next/link";
 import VampireCalculator from "./VampireCalculator";
@@ -17,6 +17,9 @@ interface HomeClientProps {
 export default function HomeClient({ initialArticles }: HomeClientProps) {
   // Estado para la categoría seleccionada (filtro del blog)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  
+  // Estado para la búsqueda de artículos
+  const [searchTerm, setSearchTerm] = useState("");
   
   // Estado para limitar artículos y ver más
   const [visibleCount, setVisibleCount] = useState<number>(12);
@@ -31,10 +34,10 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
     }
   }, []);
 
-  // Reset pagination when category changes
+  // Reset pagination when category or search changes
   useEffect(() => {
     setVisibleCount(12);
-  }, [selectedCategory]);
+  }, [selectedCategory, searchTerm]);
 
   const handleAcceptCookies = () => {
     localStorage.setItem("wsh_cookie_consent", "accepted");
@@ -77,10 +80,16 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
     return () => clearInterval(interval);
   }, []);
 
-  // Filtrado de artículos
-  const filteredArticles = selectedCategory 
-    ? initialArticles.filter(art => art.category.slug === selectedCategory)
-    : initialArticles;
+  // Filtrado de artículos por categoría y búsqueda por palabra clave
+  const filteredArticles = initialArticles.filter(art => {
+    const matchesCategory = selectedCategory ? art.category.slug === selectedCategory : true;
+    const matchesSearch = searchTerm.trim() === "" ? true : (
+      art.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      art.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (art.keyword && art.keyword.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    return matchesCategory && matchesSearch;
+  });
 
   // Manejador del envío del formulario de contacto (simulado estilo consola futurista)
   const handleContactSubmit = (e: React.FormEvent) => {
@@ -196,6 +205,13 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 </button>
               );
             })}
+            <Link 
+              href="/autores"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs tracking-wide border border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900/40 hover:border-slate-800 transition-all uppercase"
+            >
+              <User className="w-3.5 h-3.5 text-slate-500" />
+              Autores / Buscador
+            </Link>
           </nav>
 
           {/* Reloj y Estado Local */}
@@ -362,7 +378,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
       <section id="content-hub" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
         
         {/* Header del Grid de Contenido */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-slate-800 pb-6">
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-12 border-b border-slate-800 pb-6">
           <div>
             <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase tracking-widest mb-2">
               <Database className="w-4 h-4 animate-pulse" />
@@ -376,50 +392,82 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             </p>
           </div>
 
-          {/* Filtros locales */}
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              onClick={() => setSelectedCategory(null)}
-              className={`px-3 py-1.5 rounded text-[11px] font-mono uppercase tracking-wide border transition-all ${
-                selectedCategory === null 
-                  ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" 
-                  : "bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200"
-              }`}
-            >
-              Todos ({initialArticles.length})
-            </button>
-            {categoriesList.map((cat) => {
-              const count = initialArticles.filter(a => a.category.slug === cat.slug).length;
-              return (
+          {/* Buscador y Filtros locales */}
+          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full xl:w-auto">
+            {/* Buscador Integrado */}
+            <div className="relative min-w-[280px] w-full md:w-72 lg:w-80">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
+              <input
+                type="text"
+                placeholder="Buscar artículos (ej. Shelly, Wibeee)..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-8 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-xs font-mono text-slate-300 placeholder-slate-600 transition-colors"
+              />
+              {searchTerm && (
                 <button
-                  key={cat.slug}
-                  id={`filter-btn-${cat.slug}`}
-                  onClick={() => setSelectedCategory(selectedCategory === cat.slug ? null : cat.slug)}
-                  className={`px-3 py-1.5 rounded text-[11px] font-mono uppercase tracking-wide border transition-all ${
-                    selectedCategory === cat.slug 
-                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" 
-                      : "bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200"
-                  }`}
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-2.5 top-2.5 text-slate-500 hover:text-slate-300"
                 >
-                  {cat.name.split(" ")[0]} ({count})
+                  <X className="w-3.5 h-3.5" />
                 </button>
-              );
-            })}
+              )}
+            </div>
+
+            {/* Filtros locales */}
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className={`px-3 py-1.5 rounded text-[11px] font-mono uppercase tracking-wide border transition-all ${
+                  selectedCategory === null 
+                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" 
+                    : "bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200"
+                }`}
+              >
+                Todos ({initialArticles.length})
+              </button>
+              {categoriesList.map((cat) => {
+                const count = initialArticles.filter(a => a.category.slug === cat.slug).length;
+                return (
+                  <button
+                    key={cat.slug}
+                    id={`filter-btn-${cat.slug}`}
+                    onClick={() => setSelectedCategory(selectedCategory === cat.slug ? null : cat.slug)}
+                    className={`px-3 py-1.5 rounded text-[11px] font-mono uppercase tracking-wide border transition-all ${
+                      selectedCategory === cat.slug 
+                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" 
+                        : "bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200"
+                    }`}
+                  >
+                    {cat.name.split(" ")[0]} ({count})
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* MOCK DEL ESTADO DE FILTRADO */}
-        {selectedCategory && (
-          <div className="flex items-center justify-between mb-8 p-3 rounded-lg bg-emerald-950/20 border border-emerald-500/20 text-xs font-mono text-emerald-400 animate-pulse">
-            <span className="flex items-center gap-2">
+        {/* MOCK DEL ESTADO DE FILTRADO Y BÚSQUEDA */}
+        {(selectedCategory || searchTerm) && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8 p-3 rounded-lg bg-emerald-950/20 border border-emerald-500/20 text-xs font-mono text-emerald-400 animate-pulse">
+            <span className="flex items-center gap-2 flex-wrap">
               <Sliders className="w-3.5 h-3.5" />
-              FILTRO ACTIVO: {categoriesList.find(c => c.slug === selectedCategory)?.name.toUpperCase()}
+              {selectedCategory && (
+                <span>FILTRO ACTIVO: {categoriesList.find(c => c.slug === selectedCategory)?.name.toUpperCase()}</span>
+              )}
+              {selectedCategory && searchTerm && <span>|</span>}
+              {searchTerm && (
+                <span>BÚSQUEDA ACTIVA: &quot;{searchTerm}&quot;</span>
+              )}
             </span>
             <button 
-              onClick={() => setSelectedCategory(null)}
-              className="hover:underline text-[10px] uppercase font-bold"
+              onClick={() => {
+                setSelectedCategory(null);
+                setSearchTerm("");
+              }}
+              className="hover:underline text-[10px] uppercase font-bold text-left sm:text-right"
             >
-              [Desactivar]
+              [Limpiar Filtros]
             </button>
           </div>
         )}
@@ -560,13 +608,16 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
           <div className="text-center py-16 border border-dashed border-slate-800 rounded-xl bg-slate-950/30">
             <Sliders className="w-12 h-12 text-slate-600 mx-auto mb-4 animate-bounce" />
             <p className="font-mono text-sm text-slate-400">
-              No se han encontrado registros en esta sección del dashboard.
+              No se han encontrado registros que coincidan con la búsqueda o el filtro actual.
             </p>
             <button 
-              onClick={() => setSelectedCategory(null)}
+              onClick={() => {
+                setSelectedCategory(null);
+                setSearchTerm("");
+              }}
               className="mt-4 text-xs font-mono text-emerald-400 underline hover:text-emerald-300"
             >
-              [Reiniciar base de datos completa]
+              [Reiniciar búsqueda y filtros]
             </button>
           </div>
         )}
@@ -577,26 +628,26 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
       {activeArticle && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
           
-          {/* Panel de Control Principal del Lector */}
-          <div className="relative w-full max-w-4xl max-h-[85vh] flex flex-col rounded-2xl border border-slate-800 bg-[#020617] shadow-2xl overflow-hidden animate-slide-up">
+          {/* Panel de Control Principal del Lector (Tema Claro para Lectura Cómoda) */}
+          <div className="relative w-full max-w-4xl max-h-[85vh] flex flex-col rounded-2xl border border-slate-300 bg-white text-slate-900 shadow-2xl overflow-hidden animate-slide-up">
             
             {/* Header del Lector */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-800 bg-slate-950">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 bg-slate-50">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-500/30 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-emerald-400" />
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-500/20 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] text-emerald-500 uppercase tracking-widest glow-text-green">
+                    <span className="font-mono text-[10px] text-emerald-600 uppercase tracking-widest font-bold">
                       SESSION_ACTIVE: READ_MODE
                     </span>
-                    <span className="text-[10px] text-slate-500 hidden sm:inline">|</span>
-                    <span className="font-mono text-[10px] text-slate-400 uppercase hidden sm:inline">
+                    <span className="text-[10px] text-slate-300 hidden sm:inline">|</span>
+                    <span className="font-mono text-[10px] text-slate-500 uppercase hidden sm:inline">
                       ID: {activeArticle.id}
                     </span>
                   </div>
-                  <div className="text-[10px] font-mono text-slate-500 uppercase">
+                  <div className="text-[10px] font-mono text-slate-500 uppercase font-semibold">
                     Categoría: {activeArticle.category.name}
                   </div>
                 </div>
@@ -605,98 +656,102 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               {/* Botón Cerrar */}
               <button
                 onClick={() => setActiveArticle(null)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-all font-mono text-xs"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-600 hover:text-slate-900 hover:border-slate-400 hover:bg-slate-50 transition-all font-mono text-xs shadow-sm cursor-pointer"
                 title="Cerrar artículo"
               >
                 <X className="w-4 h-4" />
-                <span className="hidden sm:inline">ABORTAR LECTURA</span>
+                <span className="hidden sm:inline">CERRAR LECTURA</span>
               </button>
             </div>
 
             {/* Contenido Escrito */}
-            <div className="flex-1 overflow-y-auto p-6 sm:p-10 font-sans space-y-6">
+            <div className="flex-1 overflow-y-auto p-6 sm:p-10 font-sans space-y-6 bg-slate-50/30">
               
               {/* Encabezado del Artículo */}
-              <div className="border-b border-slate-900 pb-6">
+              <div className="border-b border-slate-200 pb-6">
                 
                 {/* Título */}
-                <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-100 mb-4 leading-tight">
+                <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-950 mb-4 leading-tight">
                   {activeArticle.title}
                 </h2>
 
                 {/* Metadata */}
-                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-400">
+                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-500">
                   <div className="flex items-center gap-1.5">
-                    <User className="w-4 h-4 text-emerald-500" />
-                    <span>Escrito por: <strong className="text-slate-300">{activeArticle.author}</strong></span>
+                    <User className="w-4 h-4 text-emerald-600" />
+                    <span>Escrito por: <strong className="text-slate-800">{activeArticle.author}</strong></span>
                   </div>
-                  <div className="hidden sm:block text-slate-700">•</div>
+                  <div className="hidden sm:block text-slate-300">•</div>
                   <div>Fecha: {activeArticle.date}</div>
-                  <div className="hidden sm:block text-slate-700">•</div>
+                  <div className="hidden sm:block text-slate-300">•</div>
                   <div>{activeArticle.readTime}</div>
                 </div>
               </div>
 
               {/* Cuerpo del Artículo formateado */}
-              <div className="prose prose-invert prose-emerald max-w-none text-slate-300 leading-relaxed text-sm sm:text-base space-y-6">
-                {activeArticle.content.split("\n\n").map((paragraph, index) => {
-                  
-                  // Renderizado de Títulos Secundarios
-                  if (paragraph.startsWith("## ")) {
-                    return (
-                      <h3 key={index} className="font-display font-bold text-lg sm:text-xl text-slate-100 pt-4 border-b border-slate-900/60 pb-2">
-                        {paragraph.replace("## ", "")}
-                      </h3>
-                    );
-                  }
+              <div className="prose prose-slate prose-emerald max-w-none text-slate-800 leading-relaxed text-sm sm:text-base space-y-6">
+                {activeArticle.content.trim().startsWith("<") ? (
+                  <div dangerouslySetInnerHTML={{ __html: activeArticle.content }} />
+                ) : (
+                  activeArticle.content.split("\n\n").map((paragraph, index) => {
+                    
+                    // Renderizado de Títulos Secundarios
+                    if (paragraph.startsWith("## ")) {
+                      return (
+                        <h3 key={index} className="font-display font-bold text-lg sm:text-xl text-slate-900 pt-4 border-b border-slate-100 pb-2">
+                          {paragraph.replace("## ", "")}
+                        </h3>
+                      );
+                    }
 
-                  // Renderizado de Listas
-                  if (paragraph.startsWith("* ") || paragraph.startsWith("- ")) {
-                    const listItems = paragraph.split("\n");
-                    return (
-                      <ul key={index} className="list-disc list-inside space-y-2 text-slate-300 pl-2">
-                        {listItems.map((item, subIdx) => (
-                          <li key={subIdx} className="marker:text-emerald-500">
-                            {item.replace(/^[*-\s]+/, "")}
-                          </li>
-                        ))}
-                      </ul>
-                    );
-                  }
+                    // Renderizado de Listas
+                    if (paragraph.startsWith("* ") || paragraph.startsWith("- ")) {
+                      const listItems = paragraph.split("\n");
+                      return (
+                        <ul key={index} className="list-disc list-inside space-y-2 text-slate-800 pl-2">
+                          {listItems.map((item, subIdx) => (
+                            <li key={subIdx} className="marker:text-emerald-600">
+                              {item.replace(/^[*-\s]+/, "")}
+                            </li>
+                          ))}
+                        </ul>
+                      );
+                    }
 
-                  // Renderizado de Listas Enumeradas
-                  if (/^\d+\.\s/.test(paragraph)) {
-                    const listItems = paragraph.split("\n");
-                    return (
-                      <ol key={index} className="list-decimal list-inside space-y-2 text-slate-300 pl-2">
-                        {listItems.map((item, subIdx) => (
-                          <li key={subIdx} className="marker:text-blue-500">
-                            {item.replace(/^\d+\.\s+/, "")}
-                          </li>
-                        ))}
-                      </ol>
-                    );
-                  }
+                    // Renderizado de Listas Enumeradas
+                    if (/^\d+\.\s/.test(paragraph)) {
+                      const listItems = paragraph.split("\n");
+                      return (
+                        <ol key={index} className="list-decimal list-inside space-y-2 text-slate-800 pl-2">
+                          {listItems.map((item, subIdx) => (
+                            <li key={subIdx} className="marker:text-blue-600">
+                              {item.replace(/^\d+\.\s+/, "")}
+                            </li>
+                          ))}
+                        </ol>
+                      );
+                    }
 
-                  // Texto Normal con detección de Negritas Markdown
-                  const parts = paragraph.split(/(\*\*.*?\*\*)/g);
-                  return (
-                    <p key={index} className="leading-relaxed">
-                      {parts.map((part, partIdx) => {
-                        if (part.startsWith("**") && part.endsWith("**")) {
-                          return <strong key={partIdx} className="text-slate-100 font-bold">{part.slice(2, -2)}</strong>;
-                        }
-                        return part;
-                      })}
-                    </p>
-                  );
-                })}
+                    // Texto Normal con detección de Negritas Markdown
+                    const parts = paragraph.split(/(\*\*.*?\*\*)/g);
+                    return (
+                      <p key={index} className="leading-relaxed">
+                        {parts.map((part, partIdx) => {
+                          if (part.startsWith("**") && part.endsWith("**")) {
+                            return <strong key={partIdx} className="text-slate-950 font-bold">{part.slice(2, -2)}</strong>;
+                          }
+                          return part;
+                        })}
+                      </p>
+                    );
+                  })
+                )}
               </div>
 
               {/* Descargo de Responsabilidad en el Lector (E-E-A-T) */}
-              <div className="mt-10 p-4 rounded-lg bg-slate-900/60 border border-slate-800/80 font-mono text-[11px] text-slate-400 space-y-2">
-                <div className="flex items-center gap-2 text-emerald-400 font-bold">
-                  <Shield className="w-4 h-4" />
+              <div className="mt-10 p-4 rounded-xl bg-slate-100 border border-slate-200 font-mono text-[11px] text-slate-600 space-y-2">
+                <div className="flex items-center gap-2 text-emerald-600 font-bold">
+                  <Shield className="w-4 h-4 text-emerald-600" />
                   <span>TRANSPARENCIA INFORMATIVA</span>
                 </div>
                 <p className="leading-relaxed">
@@ -707,13 +762,13 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             </div>
 
             {/* Footer del Lector */}
-            <div className="flex items-center justify-between p-4 bg-slate-950 border-t border-slate-800">
+            <div className="flex items-center justify-between p-4 bg-slate-50 border-t border-slate-200">
               <span className="text-[10px] font-mono text-slate-500">
-                PROCESAMIENTO TERMINADO: SESIÓN_CERRADA_AL_SALIR
+                PROCESAMIENTO TERMINADO: SESIÓN_CERRADA
               </span>
               <button
                 onClick={() => setActiveArticle(null)}
-                className="px-4 py-2 bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-colors font-mono text-xs font-bold uppercase rounded"
+                className="px-5 py-2 bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-colors font-mono text-xs font-bold uppercase rounded-lg cursor-pointer"
               >
                 CERRAR PANEL
               </button>

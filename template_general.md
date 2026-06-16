@@ -37,7 +37,7 @@ Puedes utilizar este documento como plantilla maestra para cualquier proyecto we
 ---
 
 ### 3. Reglas de Contenido y Extensión
-*   **Extensión de Texto Real:** El artículo debe contener estrictamente entre **2.000 y 2.500 palabras de texto real** (sin contar las etiquetas HTML del código). Debe ser exhaustivo, con explicaciones detalladas, casos prácticos, tablas y elementos interactivos nativos.
+*   **Extensión de Texto Real:** El artículo debe contener estrictamente entre **2.500 y 3.500 palabras de texto real** (sin contar las etiquetas HTML del código). Debe ser exhaustivo, con explicaciones muy extensas, guías paso a paso detalladas, casos prácticos completos, tablas y elementos interactivos. Cada sección debe estar ampliamente desarrollada con múltiples párrafos largos y descriptivos. No resumas; profundiza al máximo en cada tema técnico.
 *   **Idioma:** Español (castellano neutro, adaptado al público objetivo).
 *   **Cero Emojis:** Bajo ninguna circunstancia uses emojis en el artículo, títulos, metatítulos o metadescripciones para mantener un tono editorial profesional y serio.
 *   **Estructura SEO:** Introduce las palabras clave de forma natural en los primeros párrafos, en los encabezados principales (H2 y H3), y a lo largo de las explicaciones.
@@ -152,11 +152,11 @@ Utiliza el elemento nativo `<details>` estructurado con Tailwind CSS para añadi
 
 ---
 
-### 6. Estructura Sugerida del Artículo (Para alcanzar las 2.000+ palabras)
-1.  **Introducción Amplia (aprox. 250 palabras):** Planteamiento del tema, antecedentes y su relevancia actual.
-2.  **Sección 1 (aprox. 400 palabras):** Definición profunda de los conceptos centrales del tema con H2 y H3.
-3.  **Sección 2 (aprox. 450 palabras):** Casos prácticos, ejemplos de aplicación o clasificaciones. Uso de grillas de tarjetas.
-4.  **Sección 3 (aprox. 400 palabras):** Exclusiones comunes, errores frecuentes o precauciones (Caja de Alerta).
-5.  **Sección 4 (aprox. 300 palabras):** Tabla comparativa detallada usando la estructura de colores semánticos.
-6.  **Sección 5 (aprox. 200 palabras):** Bloque interactivo de preguntas frecuentes utilizando el acordeón de `<details>`.
-7.  **Sección 6 (aprox. 150 palabras):** Conclusión técnica con recomendaciones finales (Caja de Recomendación).
+### 6. Estructura Sugerida del Artículo (Para alcanzar las 2.500 - 3.500+ palabras)
+1.  **Introducción Amplia (aprox. 350 palabras):** Planteamiento histórico, contexto del sector, relevancia del ahorro o control en este tema y planteamiento de hipótesis iniciales.
+2.  **Sección 1: Análisis Técnico y Conceptos Fundamentales (aprox. 600 palabras):** Desglose detallado de los principios físicos, de comunicación (Wi-Fi, Zigbee, etc.) o teóricos. Subsecciones con H3.
+3.  **Sección 2: Guía de Instalación o Casos Prácticos Completos (aprox. 700 palabras):** Explicación paso a paso de esquemas de cableado, configuración paso a paso en software (ej. Home Assistant) o escenarios de uso detallados. Grillas de tarjetas.
+4.  **Sección 3: Errores Comunes, Limitaciones y Seguridad Eléctrica (aprox. 550 palabras):** Precauciones críticas, advertencias normativas o problemas típicos que cometen los usuarios principiantes (Caja de Alerta).
+5.  **Sección 4: Tabla Comparativa Detallada de Modelos o Alternativas (aprox. 450 palabras):** Tabla exhaustiva de especificaciones, pros/contras con colores semánticos y justificación técnica del ganador de la comparativa.
+6.  **Sección 5: Bloque de Preguntas Frecuentes Desarrolladas (aprox. 400 palabras):** Mínimo 4 acordeones desplegables con respuestas técnicas muy completas e informativas usando `<details>`.
+7.  **Sección 6: Conclusiones y Plan de Acción Recomendado (aprox. 300 palabras):** Resumen final de la investigación y recomendación personalizada de compra o configuración (Caja de Recomendación).
