@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { ALL_ARTICLES } from "@/data/articles";
+import { EDITORIAL_PLAN_ARTICLES } from "./editorialPlan";
 
 const connectionString = process.env.DATABASE_URL || "postgresql://postgres:ttu0km5hxfjepvj8@187.127.233.89:5434/postgres";
 
@@ -8,11 +8,17 @@ export const pool = new Pool({
   ssl: false,
 });
 
+// Helper to format date in Spanish (e.g. "16 Jun 2026")
+function formatSpanishDate(d: Date): string {
+  const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
 // Initialize database tables and seed initial energy articles if empty
 export async function initDB() {
   const client = await pool.connect();
   try {
-    // 1. Create articles table if it doesn't exist (matching the schema of previous projects)
+    // 1. Create articles table if it doesn't exist
     await client.query(`
       CREATE TABLE IF NOT EXISTS articles (
         id VARCHAR(255) PRIMARY KEY,
@@ -53,58 +59,82 @@ export async function initDB() {
       $$;
     `);
 
-    // 4. Check if table is empty
+    // 4. Check if table is empty or needs re-seeding
     const { rows } = await client.query("SELECT COUNT(*) FROM articles");
     const count = parseInt(rows[0].count, 10);
 
-    if (count === 0) {
-      console.log("Database table 'articles' is empty. Seeding with initial energy articles...");
+    // If empty or containing old seed structure, clear and seed 100 empty articles
+    if (count === 0 || count < 10) {
+      console.log("Database table 'articles' is empty or has old mock articles. Wiping and seeding 100 empty articles...");
+      
+      await client.query("DELETE FROM articles");
 
-      for (const article of ALL_ARTICLES) {
+      const currentDate = new Date();
+      const gradients = [
+        "from-emerald-500 to-teal-600",
+        "from-blue-500 to-cyan-600",
+        "from-amber-500 to-orange-600",
+        "from-purple-600 to-indigo-600"
+      ];
+      const authors = ["Alex R. (Domotizador)", "Sofía G. (Ingeniera de Redes)"];
+
+      for (let i = 0; i < EDITORIAL_PLAN_ARTICLES.length; i++) {
+        const article = EDITORIAL_PLAN_ARTICLES[i];
+        
+        // Date offset logic: 
+        // i = 0 to 39: published (past 40 days: -40 to -1)
+        // i = 40 to 99: scheduled (future 60 days: 0 to 59)
+        const pubDate = new Date(currentDate);
+        if (i < 40) {
+          pubDate.setDate(currentDate.getDate() - (40 - i));
+        } else {
+          pubDate.setDate(currentDate.getDate() + (i - 40));
+        }
+
+        // Set random hour between 09:00 and 20:00 to simulate natural posting
+        pubDate.setHours(9 + Math.floor(Math.random() * 12));
+        pubDate.setMinutes(Math.floor(Math.random() * 60));
+        pubDate.setSeconds(0);
+        pubDate.setMilliseconds(0);
+
+        const dateStr = formatSpanishDate(pubDate);
+        const gradient = gradients[i % 4];
+        const author = authors[i % 2];
+
+        // Seed with empty body content (0 words)
+        const content = "";
+
         await client.query(
           `
           INSERT INTO articles (
             id, title, excerpt, category_name, category_slug, 
             date, read_time, image_url, image_gradient, 
-            author, content, meta_title, meta_description, keyword
+            author, content, meta_title, meta_description, published_at, keyword
           )
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
-          ON CONFLICT (id) DO UPDATE SET
-            title = EXCLUDED.title,
-            excerpt = EXCLUDED.excerpt,
-            category_name = EXCLUDED.category_name,
-            category_slug = EXCLUDED.category_slug,
-            date = EXCLUDED.date,
-            read_time = EXCLUDED.read_time,
-            image_url = EXCLUDED.image_url,
-            image_gradient = EXCLUDED.image_gradient,
-            author = EXCLUDED.author,
-            content = EXCLUDED.content,
-            meta_title = EXCLUDED.meta_title,
-            meta_description = EXCLUDED.meta_description,
-            keyword = EXCLUDED.keyword
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
           `,
           [
-            article.id,
+            article.slug, // ID is the slug
             article.title,
             article.excerpt,
-            article.category.name,
-            article.category.slug,
-            article.date,
-            article.readTime,
-            article.imageUrl || '',
-            article.imageGradient,
-            article.author,
-            article.content,
-            article.metaTitle || article.title,
-            article.metaDescription || article.excerpt,
-            `key-${article.id}`
+            article.categoryName,
+            article.categorySlug,
+            dateStr,
+            "Lectura de 8 min", // Default read time mock
+            "", // No images
+            gradient,
+            author,
+            content,
+            article.metaTitle,
+            article.excerpt,
+            pubDate,
+            article.keyword
           ]
         );
       }
-      console.log(`Database successfully seeded with ${ALL_ARTICLES.length} articles!`);
+      console.log(`Database successfully seeded with 100 empty articles!`);
     } else {
-      console.log(`Database already contains ${count} articles. Skipping seeding.`);
+      console.log(`Database already contains ${count} articles. Skipping seeding to prevent wiping user edits.`);
     }
   } catch (err) {
     console.error("Error initializing database for WattSavvyHome:", err);
@@ -112,4 +142,16 @@ export async function initDB() {
   } finally {
     client.release();
   }
+}
+
+// Reset function specifically for the admin panel to rebuild the 100 empty articles if requested
+export async function forceResetDB() {
+  const client = await pool.connect();
+  try {
+    await client.query("DELETE FROM articles");
+    console.log("Database wiped by request.");
+  } finally {
+    client.release();
+  }
+  await initDB();
 }

@@ -1,11 +1,10 @@
 import { pool, initDB } from "@/lib/db";
-import HomeClient from "@/components/HomeClient";
+import AutoresClient from "@/components/AutoresClient";
 import { Article } from "@/data/articles";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
-  // Ensure database is initialized and seeded on startup
+export default async function AutoresPage() {
   await initDB();
 
   let articles: Article[] = [];
@@ -14,10 +13,8 @@ export default async function HomePage() {
     const client = await pool.connect();
     try {
       const { rows } = await client.query(
-        "SELECT id, title, excerpt, category_name, category_slug, date, read_time, image_url, image_gradient, author, content FROM articles WHERE published_at <= NOW() ORDER BY published_at DESC"
+        "SELECT id, title, excerpt, category_name, category_slug, date, read_time, image_url, image_gradient, author, content, keyword FROM articles WHERE published_at <= NOW() ORDER BY published_at DESC"
       );
-      
-      // Map DB row structure to unified camelCase React state props
       articles = rows.map((row) => ({
         id: row.id,
         title: row.title,
@@ -32,13 +29,14 @@ export default async function HomePage() {
         imageGradient: row.image_gradient,
         author: row.author,
         content: row.content || "",
+        keyword: row.keyword || "",
       }));
     } finally {
       client.release();
     }
   } catch (err) {
-    console.error("Error loading articles from PostgreSQL in homepage:", err);
+    console.error("Error loading articles from PostgreSQL in autores page:", err);
   }
 
-  return <HomeClient initialArticles={articles} />;
+  return <AutoresClient publishedArticles={articles} />;
 }

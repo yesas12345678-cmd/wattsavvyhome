@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#020617" stroke="#1e293b" stroke-width="1"/>
+  <path d="M17.5 4L8 16.5H15L13.5 28L24 13.5H16.5L17.5 4Z" fill="url(#energy-grad)" stroke="#10b981" stroke-width="0.5" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="energy-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+</svg>

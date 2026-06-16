@@ -7,6 +7,7 @@ import {
   User, ArrowRight, Sliders, Cpu, Database, TrendingDown, 
   CheckCircle2, Flame, RefreshCw, Clock, Send, X, Lock
 } from "lucide-react";
+import Link from "next/link";
 
 interface HomeClientProps {
   initialArticles: Article[];
@@ -15,6 +16,36 @@ interface HomeClientProps {
 export default function HomeClient({ initialArticles }: HomeClientProps) {
   // Estado para la categoría seleccionada (filtro del blog)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  
+  // Estado para limitar artículos y ver más
+  const [visibleCount, setVisibleCount] = useState<number>(12);
+
+  // Estado para el consentimiento de cookies
+  const [cookieConsent, setCookieConsent] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const consent = localStorage.getItem("wsh_cookie_consent");
+      setCookieConsent(consent);
+    }
+  }, []);
+
+  // Reset pagination when category changes
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [selectedCategory]);
+
+  const handleAcceptCookies = () => {
+    localStorage.setItem("wsh_cookie_consent", "accepted");
+    setCookieConsent("accepted");
+    document.cookie = "wsh_analytics_enabled=true; max-age=31536000; path=/";
+  };
+
+  const handleRejectCookies = () => {
+    localStorage.setItem("wsh_cookie_consent", "rejected");
+    setCookieConsent("rejected");
+    document.cookie = "wsh_analytics_enabled=; max-age=0; path=/";
+  };
   
   // Estado para el artículo activo en el lector de panel de control
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
@@ -389,7 +420,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
         {/* GRID DE ARTÍCULOS (Widgets de Consumo) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredArticles.map((article, idx) => {
+          {filteredArticles.slice(0, visibleCount).map((article, idx) => {
             
             // Asignación de iconos basada en la categoría
             let CategoryIcon = Activity;
@@ -504,6 +535,19 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             );
           })}
         </div>
+
+        {/* Paginación */}
+        {filteredArticles.length > visibleCount && (
+          <div className="flex justify-center mt-12 mb-6" id="pagination-container">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 24)}
+              className="group relative inline-flex items-center gap-2 px-8 py-3.5 overflow-hidden rounded-xl bg-emerald-500 font-mono text-xs font-bold text-slate-950 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+              id="ver-mas-btn"
+            >
+              <span>CARGAR MÁS MÓDULOS (+24)</span>
+            </button>
+          </div>
+        )}
 
         {/* Mensaje si no hay artículos */}
         {filteredArticles.length === 0 && (
@@ -806,19 +850,19 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               </h4>
               <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-mono text-slate-500">
                 <li>
-                  <a href="#privacidad" className="hover:text-slate-300 transition-colors">[Privacidad]</a>
+                  <Link href="/privacidad" className="hover:text-slate-300 transition-colors">[Privacidad]</Link>
                 </li>
                 <li>
-                  <a href="#cookies" className="hover:text-slate-300 transition-colors">[Cookies]</a>
+                  <Link href="/cookies" className="hover:text-slate-300 transition-colors">[Cookies]</Link>
                 </li>
                 <li>
-                  <a href="#legal" className="hover:text-slate-300 transition-colors">[Aviso Legal]</a>
+                  <Link href="/aviso-legal" className="hover:text-slate-300 transition-colors">[Aviso Legal]</Link>
                 </li>
                 <li>
-                  <a href="#terminos" className="hover:text-slate-300 transition-colors">[Términos]</a>
+                  <Link href="/terminos" className="hover:text-slate-300 transition-colors">[Términos]</Link>
                 </li>
                 <li>
-                  <a href="#autores" className="hover:text-slate-300 transition-colors">[Página Autores]</a>
+                  <Link href="/autores" className="hover:text-slate-300 transition-colors">[Página Autores]</Link>
                 </li>
               </ul>
             </div>
@@ -852,6 +896,40 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
         </div>
       </footer>
+
+      {/* BANNER DE COOKIES CUMPLIMIENTO REAL */}
+      {cookieConsent === null && (
+        <div className="fixed bottom-6 left-6 right-6 md:left-auto md:max-w-md z-50 p-6 rounded-xl border border-slate-800 bg-slate-950/95 backdrop-blur-md glow-blue">
+          <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-blue-500/40 rounded-tl pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-emerald-500/40 rounded-br pointer-events-none" />
+          
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded bg-blue-950 border border-blue-500/30 flex items-center justify-center shrink-0">
+              <Shield className="w-4.5 h-4.5 text-blue-400" />
+            </div>
+            <div className="space-y-3 font-mono text-[11px]">
+              <div className="text-slate-300 leading-normal">
+                <span className="text-blue-400 font-bold block mb-1">REGISTRO_COOKIES: AUTORIZACIÓN</span>
+                Utilizamos cookies tecnicas para asegurar el funcionamiento del panel y de forma opcional cookies de analitica anonima para optimizar la red informativa.
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleRejectCookies}
+                  className="px-3 py-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 cursor-pointer uppercase text-[9px] font-bold"
+                >
+                  Rechazar
+                </button>
+                <button
+                  onClick={handleAcceptCookies}
+                  className="px-3 py-1.5 rounded bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 cursor-pointer uppercase text-[9px] font-bold"
+                >
+                  Aceptar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
