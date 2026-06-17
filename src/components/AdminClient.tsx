@@ -4,8 +4,8 @@ import { useState, useTransition, useMemo } from "react";
 import { editArticle } from "@/app/admin/actions";
 import { 
   Sliders, Search, Activity, Plug, Sun, TrendingDown, 
-  Copy, Edit, Eye, Clock, CheckCircle2, AlertCircle, FileText, 
-  X, Save, FileWarning, HelpCircle, ArrowUpRight, RefreshCw
+  Copy, Edit, Eye, Clock, CheckCircle2, AlertCircle, 
+  X, Save, FileWarning, HelpCircle, ArrowUpRight, RefreshCw, Lock
 } from "lucide-react";
 
 interface Article {
@@ -194,16 +194,16 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
     <div className="space-y-6">
       
       {/* SECCIÓN FILTROS Y CONTROLES */}
-      <div className="p-6 rounded-2xl border border-slate-800 bg-slate-950/50 backdrop-blur-md space-y-4">
+      <div className="p-6 rounded-2xl border border-pink-100 bg-white/85 shadow-sm space-y-4">
         
         {/* Pestañas de control general (Todos vs Vacíos) */}
-        <div className="flex border-b border-slate-800 pb-3">
+        <div className="flex border-b border-pink-100 pb-3">
           <button
             onClick={() => setViewTab("all")}
             className={`px-4 py-2 font-mono text-xs uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
               viewTab === "all" 
-                ? "border-emerald-500 text-emerald-400 font-bold" 
-                : "border-transparent text-slate-500 hover:text-slate-300"
+                ? "border-pink-500 text-pink-650 font-bold" 
+                : "border-transparent text-slate-500 hover:text-pink-600"
             }`}
           >
             Todos los Artículos ({articles.length})
@@ -212,8 +212,8 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
             onClick={() => setViewTab("empty")}
             className={`px-4 py-2 font-mono text-xs uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
               viewTab === "empty" 
-                ? "border-emerald-500 text-emerald-400 font-bold" 
-                : "border-transparent text-slate-500 hover:text-slate-300"
+                ? "border-pink-500 text-pink-655 font-bold" 
+                : "border-transparent text-slate-500 hover:text-pink-600"
             }`}
           >
             <FileWarning className="w-3.5 h-3.5" />
@@ -226,13 +226,13 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
           
           {/* Búsqueda */}
           <div className="relative">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
             <input
               type="text"
               placeholder="Buscar por Título / Keyword..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded bg-slate-900 border border-slate-800 focus:border-blue-500 focus:outline-none text-xs font-mono text-slate-300"
+              className="w-full pl-9 pr-4 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-xs font-mono text-slate-800 placeholder-slate-400 transition-colors"
             />
           </div>
 
@@ -241,7 +241,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-blue-500 focus:outline-none text-xs font-mono text-slate-400"
+              className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-xs font-mono text-slate-800 transition-colors"
             >
               <option value="all">TODAS LAS CATEGORÍAS</option>
               <option value="monitores-de-energia">MONITORES DE ENERGÍA</option>
@@ -256,7 +256,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
             <select
               value={statusFilter}
               onChange={(e: any) => setStatusFilter(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-blue-500 focus:outline-none text-xs font-mono text-slate-400"
+              className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-xs font-mono text-slate-800 transition-colors"
             >
               <option value="all">TODOS LOS ESTADOS</option>
               <option value="published">PUBLICADOS</option>
@@ -265,8 +265,8 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
           </div>
 
           {/* Consola Terminal compacta para Logs */}
-          <div className="rounded bg-black/60 border border-slate-900 px-3 py-1.5 font-mono text-[9px] text-slate-500 flex flex-col justify-center overflow-hidden h-[34px] leading-tight">
-            <div className="text-emerald-400/80 truncate">
+          <div className="rounded bg-slate-900 border border-slate-955 px-3 py-1.5 font-mono text-[9px] text-slate-400 flex flex-col justify-center overflow-hidden h-[34px] leading-tight">
+            <div className="text-pink-500 truncate font-semibold">
               {consoleLogs[0]}
             </div>
           </div>
@@ -275,11 +275,11 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
       </div>
 
       {/* LISTADO DE ARTÍCULOS */}
-      <div className="rounded-2xl border border-slate-800 bg-slate-950/70 backdrop-blur-md overflow-hidden">
+      <div className="rounded-2xl border border-pink-100 bg-white/90 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-left font-mono text-xs">
+          <table className="w-full border-collapse text-left font-mono text-xs text-slate-800">
             <thead>
-              <tr className="border-b border-slate-800 bg-slate-950 text-slate-500 uppercase tracking-widest text-[10px]">
+              <tr className="border-b border-pink-100 bg-pink-50/40 text-slate-700 uppercase tracking-widest text-[10px]">
                 <th className="py-4 px-6">ID / TÍTULO</th>
                 <th className="py-4 px-4">CATEGORÍA</th>
                 <th className="py-4 px-4">FECHA Y HORA</th>
@@ -289,7 +289,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                 <th className="py-4 px-6 text-right">ACCIONES</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-900">
+            <tbody className="divide-y divide-slate-100">
               {processedArticles.map((article) => {
                 const wordCount = getWordCount(article.content);
                 const published = isPublished(article);
@@ -297,27 +297,27 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                 return (
                   <tr 
                     key={article.id}
-                    className="hover:bg-slate-900/30 transition-colors group"
+                    className="hover:bg-pink-50/10 transition-colors group"
                   >
                     {/* Título y Slug */}
                     <td className="py-4 px-6 max-w-sm">
-                      <div className="font-bold text-slate-200 group-hover:text-emerald-400 transition-colors truncate" title={article.title}>
+                      <div className="font-bold text-slate-900 group-hover:text-pink-600 transition-colors truncate" title={article.title}>
                         {article.title}
                       </div>
-                      <div className="text-[10px] text-slate-600 truncate mt-0.5">
+                      <div className="text-[10px] text-slate-400 truncate mt-0.5">
                         slug: /{article.id}
                       </div>
                     </td>
                     
                     {/* Categoría */}
-                    <td className="py-4 px-4 text-slate-400">
+                    <td className="py-4 px-4 text-slate-600">
                       {article.category.name}
                     </td>
 
                     {/* Fecha de publicación */}
-                    <td className="py-4 px-4 text-slate-400">
+                    <td className="py-4 px-4 text-slate-600">
                       <div className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-slate-500" />
+                        <Clock className="w-3.5 h-3.5 text-pink-500" />
                         <span>
                           {article.date} {article.publishedAt ? new Date(article.publishedAt).toTimeString().slice(0, 5) : ""}
                         </span>
@@ -325,13 +325,13 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                     </td>
 
                     {/* Keyword */}
-                    <td className="py-4 px-4 text-slate-500 font-bold">
+                    <td className="py-4 px-4 text-slate-700 font-bold">
                       {article.keyword}
                     </td>
 
                     {/* Número de palabras */}
                     <td className="py-4 px-4 text-center font-bold">
-                      <span className={wordCount === 0 ? "text-red-500" : "text-emerald-400"}>
+                      <span className={wordCount === 0 ? "text-red-500 font-bold" : "text-pink-600 font-bold"}>
                         {wordCount}
                       </span>
                     </td>
@@ -339,11 +339,11 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                     {/* Estado */}
                     <td className="py-4 px-4">
                       {published ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/20 glow-green/10">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-pink-50 text-pink-650 border border-pink-200/50">
                           PUBLICADO
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-950 text-blue-400 border border-blue-500/20 glow-blue/10">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-50 text-slate-600 border border-slate-200">
                           PROGRAMADO
                         </span>
                       )}
@@ -355,7 +355,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                         {/* Copy for AI */}
                         <button
                           onClick={() => handleCopyToIA(article)}
-                          className="p-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/35 transition-all cursor-pointer"
+                          className="p-1.5 rounded-lg bg-white border border-slate-250 text-slate-500 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all cursor-pointer font-bold"
                           title="Copiar para IA"
                         >
                           <Copy className="w-3.5 h-3.5" />
@@ -364,7 +364,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                         {/* View Preview */}
                         <button
                           onClick={() => setPreviewArticle(article)}
-                          className="p-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-blue-400 hover:border-blue-500/35 transition-all cursor-pointer"
+                          className="p-1.5 rounded-lg bg-white border border-slate-250 text-slate-500 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all cursor-pointer font-bold"
                           title="Previsualizar"
                         >
                           <Eye className="w-3.5 h-3.5" />
@@ -373,7 +373,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                         {/* Edit */}
                         <button
                           onClick={() => setEditingArticle(article)}
-                          className="p-1.5 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-emerald-400 hover:border-emerald-500/35 transition-all cursor-pointer"
+                          className="p-1.5 rounded-lg bg-white border border-slate-250 text-slate-500 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all cursor-pointer font-bold"
                           title="Editar artículo"
                         >
                           <Edit className="w-3.5 h-3.5" />
@@ -398,14 +398,14 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
 
       {/* MODAL DE EDICIÓN */}
       {editingArticle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="relative w-full max-w-3xl max-h-[90vh] flex flex-col rounded-2xl border border-slate-800 bg-[#020617] shadow-2xl overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-955/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-3xl max-h-[90vh] flex flex-col rounded-2xl border-2 border-pink-100 bg-white text-slate-950 shadow-2xl overflow-hidden">
             
             {/* Header del Modal */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-800 bg-slate-950">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-pink-100 bg-white">
               <div className="flex items-center gap-2">
-                <Edit className="w-5 h-5 text-emerald-400" />
-                <span className="font-mono text-xs font-bold text-slate-300">
+                <Edit className="w-5 h-5 text-pink-600" />
+                <span className="font-mono text-xs font-bold text-slate-700">
                   EDITAR REGISTRO EDITORIAL: {editingArticle.id}
                 </span>
               </div>
@@ -414,7 +414,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                   setEditingArticle(null);
                   setEditError("");
                 }}
-                className="p-1.5 rounded bg-slate-900 border border-slate-800 text-slate-500 hover:text-slate-300 cursor-pointer"
+                className="flex items-center justify-center p-1.5 rounded-lg bg-white border border-slate-250 text-slate-550 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -435,7 +435,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                     name="title"
                     required
                     defaultValue={editingArticle.title}
-                    className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-200"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850"
                   />
                 </div>
 
@@ -447,7 +447,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                     name="slug"
                     required
                     defaultValue={editingArticle.id}
-                    className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-200"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850"
                   />
                 </div>
               </div>
@@ -459,7 +459,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                   <select
                     name="category"
                     defaultValue={editingArticle.category.slug}
-                    className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-400"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-700 transition-colors"
                   >
                     <option value="monitores-de-energia">Monitores de Energía</option>
                     <option value="enchufes-inteligentes">Enchufes Inteligentes</option>
@@ -476,7 +476,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                     name="keyword"
                     required
                     defaultValue={editingArticle.keyword}
-                    className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-200"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-855"
                   />
                 </div>
 
@@ -488,7 +488,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                     name="metaTitle"
                     required
                     defaultValue={editingArticle.metaTitle}
-                    className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-200"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-855"
                   />
                 </div>
               </div>
@@ -506,7 +506,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                         ? new Date(editingArticle.publishedAt).toISOString().split("T")[0] 
                         : ""
                     }
-                    className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-450"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-700"
                   />
                 </div>
 
@@ -522,7 +522,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                         ? new Date(editingArticle.publishedAt).toTimeString().slice(0, 5) 
                         : "12:00"
                     }
-                    className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-450"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-700"
                   />
                 </div>
               </div>
@@ -535,11 +535,11 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                   required
                   rows={2}
                   defaultValue={editingArticle.excerpt}
-                  className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-200 resize-none"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 resize-none"
                 />
               </div>
 
-              {/* CUERPO DEL ARTÍCULO (Para escribir y guardar texto real, logrando salir de 0 palabras) */}
+              {/* CUERPO DEL ARTÍCULO */}
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
                   <label className="text-slate-500 block">CUERPO_DEL_ARTÍCULO (TEXTO / HTML)</label>
@@ -552,34 +552,34 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                   rows={10}
                   placeholder="Escribe el artículo aquí. Admite texto plano y elementos HTML/Tailwind CSS para un acabado profesional (tablas, tarjetas, etc.)."
                   defaultValue={editingArticle.content}
-                  className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none text-slate-200 font-sans text-sm resize-y"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 font-sans text-sm resize-y"
                 />
               </div>
 
               {/* Feedbacks de envío */}
               {editError && (
-                <div className="p-3 rounded bg-red-950/20 border border-red-500/30 text-red-400 flex items-center gap-2">
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-650 flex items-center gap-2 font-bold">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{editError}</span>
                 </div>
               )}
 
               {editSuccess && (
-                <div className="p-3 rounded bg-emerald-950/20 border border-emerald-500/30 text-emerald-400 flex items-center gap-2">
+                <div className="p-3 rounded-lg bg-pink-50 border border-pink-200 text-pink-650 flex items-center gap-2 font-bold">
                   <CheckCircle2 className="w-4 h-4 shrink-0" />
                   <span>{editSuccess}</span>
                 </div>
               )}
 
               {/* Footer acciones */}
-              <div className="pt-4 border-t border-slate-900 flex justify-end gap-3">
+              <div className="pt-4 border-t border-pink-100 flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => {
                     setEditingArticle(null);
                     setEditError("");
                   }}
-                  className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-white border border-slate-255 text-slate-500 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer font-bold"
                 >
                   CANCELAR
                 </button>
@@ -587,7 +587,7 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="px-5 py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold flex items-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2 rounded-lg bg-pink-500 hover:bg-pink-600 text-white font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
                 >
                   {isPending ? (
                     <>
@@ -611,20 +611,20 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
 
       {/* MODAL DE PREVISUALIZACIÓN */}
       {previewArticle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="relative w-full max-w-3xl max-h-[85vh] flex flex-col rounded-2xl border border-slate-800 bg-[#020617] shadow-2xl overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-955/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-3xl max-h-[85vh] flex flex-col rounded-2xl border-2 border-pink-100 bg-white text-slate-950 shadow-2xl overflow-hidden">
             
             {/* Header del Modal */}
-            <div className="flex items-center justify-between p-4 bg-slate-950 border-b border-slate-800">
+            <div className="flex items-center justify-between p-4 bg-white border-b border-pink-100">
               <div className="flex items-center gap-2">
-                <Eye className="w-5 h-5 text-blue-400" />
-                <span className="font-mono text-xs font-bold text-slate-300">
+                <Eye className="w-5 h-5 text-pink-600" />
+                <span className="font-mono text-xs font-bold text-slate-700">
                   PREVISUALIZAR ARTÍCULO
                 </span>
               </div>
               <button
                 onClick={() => setPreviewArticle(null)}
-                className="p-1.5 rounded bg-slate-900 border border-slate-800 text-slate-500 hover:text-slate-300 cursor-pointer"
+                className="flex items-center justify-center p-1.5 rounded-lg bg-white border border-slate-250 text-slate-500 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all cursor-pointer font-bold"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -632,29 +632,29 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
 
             {/* Cuerpo del artículo */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6 font-sans">
-              <div className="border-b border-slate-900 pb-4 font-mono text-xs space-y-1 text-slate-500">
-                <div>URL Slug: <strong className="text-slate-300">/articulos/{previewArticle.id}</strong></div>
-                <div>Palabra Clave: <strong className="text-slate-300">{previewArticle.keyword}</strong></div>
-                <div>Meta Title: <strong className="text-slate-300">{previewArticle.metaTitle}</strong></div>
-                <div>Palabras Totales: <strong className={getWordCount(previewArticle.content) === 0 ? "text-red-500" : "text-emerald-400"}>{getWordCount(previewArticle.content)}</strong></div>
+              <div className="border-b border-pink-100 pb-4 font-mono text-xs space-y-1 text-slate-500 bg-white">
+                <div>URL Slug: <strong className="text-slate-800">/articulos/{previewArticle.id}</strong></div>
+                <div>Palabra Clave: <strong className="text-slate-800">{previewArticle.keyword}</strong></div>
+                <div>Meta Title: <strong className="text-slate-800">{previewArticle.metaTitle}</strong></div>
+                <div>Palabras Totales: <strong className={getWordCount(previewArticle.content) === 0 ? "text-red-500 font-bold" : "text-pink-600 font-bold"}>{getWordCount(previewArticle.content)}</strong></div>
               </div>
 
               <div>
-                <h1 className="font-display font-extrabold text-2xl text-slate-100 mb-2">
+                <h1 className="font-display font-extrabold text-2xl text-slate-955 mb-2 leading-tight">
                   {previewArticle.title}
                 </h1>
-                <p className="text-slate-400 italic text-sm mb-6">
+                <p className="text-slate-600 italic text-sm mb-6">
                   {previewArticle.excerpt}
                 </p>
                 
                 {/* Content Render */}
                 {previewArticle.content ? (
                   <div 
-                    className="prose prose-invert prose-emerald max-w-none text-slate-300 text-sm space-y-4"
+                    className="prose prose-slate prose-pink max-w-none text-slate-950 text-sm space-y-4"
                     dangerouslySetInnerHTML={{ __html: previewArticle.content }}
                   />
                 ) : (
-                  <div className="p-10 border border-dashed border-slate-800 rounded bg-slate-900/30 text-center font-mono text-xs text-slate-500">
+                  <div className="p-10 border border-dashed border-pink-200 rounded bg-pink-50/20 text-center font-mono text-xs text-pink-700">
                     Cuerpo del artículo vacío (0 palabras). Edita este artículo para añadirle contenido.
                   </div>
                 )}
@@ -662,10 +662,10 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
             </div>
 
             {/* Footer */}
-            <div className="p-4 bg-slate-950 border-t border-slate-800 flex justify-end">
+            <div className="p-4 bg-white border-t border-pink-100 flex justify-end">
               <button
                 onClick={() => setPreviewArticle(null)}
-                className="px-4 py-2 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 cursor-pointer text-xs font-mono"
+                className="px-4 py-2 rounded-lg bg-white border border-slate-250 text-slate-500 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer font-bold"
               >
                 CERRAR PREVENTA
               </button>
