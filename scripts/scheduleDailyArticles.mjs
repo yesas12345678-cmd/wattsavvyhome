@@ -2,30 +2,43 @@ import { Pool } from "pg";
 import fs from "fs";
 import path from "path";
 
-// Cargar variables de entorno de .env.local
-try {
-  const envPath = path.join(process.cwd(), ".env.local");
-  if (fs.existsSync(envPath)) {
-    const envContent = fs.readFileSync(envPath, "utf-8");
-    envContent.split("\n").forEach(line => {
-      const trimmed = line.trim();
-      if (trimmed && !trimmed.startsWith("#") && trimmed.includes("=")) {
-        const index = trimmed.indexOf("=");
-        const key = trimmed.slice(0, index).trim();
-        const val = trimmed.slice(index + 1).trim();
-        process.env[key] = val;
-      }
-    });
+// Cargar variables de entorno de archivos locales si existen (.env.local, .env, .env.production)
+const envFiles = [".env.local", ".env", ".env.production"];
+for (const file of envFiles) {
+  try {
+    const envPath = path.join(process.cwd(), file);
+    if (fs.existsSync(envPath)) {
+      const envContent = fs.readFileSync(envPath, "utf-8");
+      envContent.split("\n").forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith("#") && trimmed.includes("=")) {
+          const index = trimmed.indexOf("=");
+          const key = trimmed.slice(0, index).trim();
+          const val = trimmed.slice(index + 1).trim();
+          process.env[key] = val;
+        }
+      });
+      console.log(`[ENV] Cargadas variables desde: ${file}`);
+    }
+  } catch (e) {
+    console.warn(`No se pudo leer ${file}:`, e.message);
   }
-} catch (e) {
-  console.warn("No se pudo leer .env.local:", e.message);
 }
 
 const connectionString = process.env.DATABASE_URL || "postgresql://postgres:ttu0km5hxfjepvj8@187.127.233.89:5434/postgres";
 const apiKey = process.env.DEEPSEEK_API_KEY;
 
 if (!apiKey) {
-  console.error("ERROR: No se ha encontrado la variable DEEPSEEK_API_KEY en .env.local.");
+  console.error("\n=====================================================================");
+  console.error("ERROR: No se ha encontrado la variable DEEPSEEK_API_KEY.");
+  console.error("Para solucionarlo en producción (Dokploy/VPS):");
+  console.error("1. Ve al panel de Dokploy de esta aplicación.");
+  console.error("2. Haz clic en la pestaña 'Environment' (como en tu captura).");
+  console.error("3. Añade la variable:");
+  console.error("   - Key: DEEPSEEK_API_KEY");
+  console.error("   - Value: [Tu clave de API de DeepSeek]");
+  console.error("4. Guarda los cambios (Save) y haz clic en 'Deploy' para redesplegar.");
+  console.error("=====================================================================\n");
   process.exit(1);
 }
 
