@@ -8,6 +8,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+const getAuthorPhoto = (authorName: string) => {
+  if (authorName === "Alex R.") return "/alex_author.png";
+  if (authorName === "Sofía G.") return "/sofia_author.png";
+  return null;
+};
+
 interface AutoresClientProps {
   publishedArticles: Article[];
 }
@@ -265,8 +271,16 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
                   {/* Metadata */}
                   <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-505">
                     <div className="flex items-center gap-1.5">
-                      <User className="w-4 h-4 text-pink-600" />
-                      <span>Escrito por: <strong className="text-slate-950 font-bold">{activeArticle.author}</strong></span>
+                      {getAuthorPhoto(activeArticle.author) ? (
+                        <img 
+                          src={getAuthorPhoto(activeArticle.author) || ""} 
+                          alt={activeArticle.author} 
+                          className="w-6 h-6 rounded-full border border-pink-200 object-cover shadow-sm animate-fade-in"
+                        />
+                      ) : (
+                        <User className="w-4 h-4 text-pink-600" />
+                      )}
+                      <span>Escrito por: <strong className="text-slate-955 font-bold">{activeArticle.author}</strong></span>
                     </div>
                     <div className="hidden sm:block text-slate-200">•</div>
                     <div>Fecha: {activeArticle.date}</div>
