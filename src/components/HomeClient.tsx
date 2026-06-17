@@ -67,10 +67,6 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
   const [formName, setFormName] = useState("");
   const [formEmail, setFormEmail] = useState("");
   const [formMessage, setFormMessage] = useState("");
-  const [formConsoleLogs, setFormConsoleLogs] = useState<string[]>([
-    "SYS_COMMS: En espera de entrada...",
-    "CONEXIÓN: Encriptación AES-256 habilitada."
-  ]);
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSuccess, setIsFormSuccess] = useState(false);
 
@@ -103,34 +99,15 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
     if (!formName || !formEmail || !formMessage) return;
 
     setIsFormSubmitting(true);
-    setFormConsoleLogs(prev => [
-      ...prev,
-      `[info] Iniciando transmisión para: ${formEmail}...`,
-      ">> Conectando con puerto remoto de Wattsavvyhome...",
-    ]);
 
     setTimeout(() => {
-      setFormConsoleLogs(prev => [
-        ...prev,
-        ">> Paquetes de datos estructurados.",
-        ">> Despachando mensaje de contacto..."
-      ]);
-      
-      setTimeout(() => {
-        setIsFormSubmitting(false);
-        setIsFormSuccess(true);
-        setFormConsoleLogs(prev => [
-          ...prev,
-          ">> TRANSMISIÓN COMPLETADA [OK]",
-          ">> ID de Transmisión: TX-WSH-" + Math.floor(Math.random() * 900000 + 100000),
-          ">> ¡Gracias! Tu mensaje ha sido recibido con éxito en la red central."
-        ]);
-        // Reset inputs
-        setFormName("");
-        setFormEmail("");
-        setFormMessage("");
-      }, 1000);
-    }, 1200);
+      setIsFormSubmitting(false);
+      setIsFormSuccess(true);
+      // Reset inputs
+      setFormName("");
+      setFormEmail("");
+      setFormMessage("");
+    }, 1500);
   };
 
   // Desplazamiento suave al grid del blog
@@ -160,31 +137,25 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
       <div className="absolute top-[15%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-pink-200 to-transparent pointer-events-none" />
       <div className="absolute top-[65%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-rose-200 to-transparent pointer-events-none" />
 
-      {/* NAVBAR / HEADER HUD */}
+      {/* NAVBAR / HEADER */}
       <header className="relative z-10 border-b border-pink-100 bg-white/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           
-          {/* Logo y estado de red */}
+          {/* Logo */}
           <div className="flex items-center gap-4">
             <a href="#" className="flex items-center gap-2 group">
               <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-pink-50 border border-pink-200 group-hover:border-pink-300 group-hover:scale-105 transition-all">
                 <Zap className="w-5 h-5 text-pink-600 transition-colors" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-pink-500 animate-ping" />
               </div>
               <div className="flex flex-col">
                 <span className="font-display font-extrabold text-xl tracking-wider bg-gradient-to-r from-slate-900 via-pink-600 to-pink-500 bg-clip-text text-transparent">
                   WattSavvyHome
                 </span>
-                <span className="text-[9px] font-mono text-pink-650 tracking-widest uppercase -mt-0.5 font-bold">
-                  ENERGY PANEL
+                <span className="text-[9px] font-mono text-pink-655 tracking-widest uppercase -mt-0.5 font-bold">
+                  EFICIENCIA Y AHORRO
                 </span>
               </div>
             </a>
-
-            <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50/50 border border-pink-100/80 text-[11px] font-mono text-pink-650 font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-signal" />
-              <span>SYS_NET: ONLINE</span>
-            </div>
           </div>
 
           {/* Navegación por Categorías */}
@@ -236,22 +207,22 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             </button>
           </nav>
 
-          {/* Reloj y Estado Local */}
+          {/* Hora y Limpiar Filtros */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 font-mono text-xs text-pink-600 bg-pink-50/60 px-3 py-1.5 rounded border border-pink-200/50 font-bold">
-              <Clock className="w-3.5 h-3.5" />
-              <span>[{timeStr}]</span>
+            <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-pink-650 bg-pink-50/60 px-3 py-1.5 rounded border border-pink-200/50 font-bold">
+              <Clock className="w-3.5 h-3.5 text-pink-500" />
+              <span>{timeStr}</span>
             </div>
             
             {/* Reset Filter Button */}
             {selectedCategory && (
               <button 
                 onClick={() => setSelectedCategory(null)}
-                className="p-2 rounded bg-white border border-pink-200 text-pink-600 hover:bg-pink-50 transition-all font-mono text-xs flex items-center gap-1.5 font-bold"
+                className="p-2 rounded bg-white border border-pink-200 text-pink-650 hover:bg-pink-50 transition-all font-mono text-xs flex items-center gap-1.5 font-bold cursor-pointer"
                 title="Limpiar filtros"
               >
-                <RefreshCw className="w-3 h-3 animate-spin" style={{ animationDuration: '6s' }} />
-                <span className="hidden sm:inline">RESET</span>
+                <RefreshCw className="w-3 h-3 text-pink-500 animate-spin" style={{ animationDuration: '6s' }} />
+                <span className="hidden sm:inline">LIMPIAR</span>
               </button>
             )}
           </div>
@@ -271,8 +242,8 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             <div>
               {/* Etiqueta de sistema */}
               <div className="flex items-center gap-2 text-pink-600 font-mono text-xs uppercase tracking-widest mb-6 font-bold">
-                <Sliders className="w-4 h-4" />
-                <span>TERMINAL_CONSOLA: WSH_OVERDRIVE</span>
+                <Sliders className="w-4 h-4 text-pink-500" />
+                <span>Monitoreo y Ahorro en el Hogar</span>
               </div>
 
               {/* Titular Principal */}
@@ -289,22 +260,23 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               </p>
             </div>
 
-            {/* Fila de Datos Rápidos del Dashboard */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-100 font-mono text-xs text-slate-600 font-semibold">
+            {/* Fila de Datos Rápidos */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-100 font-mono text-[11px] text-slate-600 font-semibold">
               <div className="p-3 rounded bg-slate-50 border border-slate-100">
-                <span className="text-slate-400 block mb-1">PROYECTO:</span>
-                <span className="text-pink-600 font-bold">WSH_PORTAL</span>
+                <span className="text-slate-400 block mb-1">ANÁLISIS:</span>
+                <span className="text-pink-600 font-bold">INDEPENDIENTE</span>
               </div>
               <div className="p-3 rounded bg-slate-50 border border-slate-100">
-                <span className="text-pink-600 font-bold">100% LECTURA</span>
+                <span className="text-pink-655 font-bold block mb-1">LECTURA:</span>
+                <span className="text-pink-600 font-bold">100% LIBRE</span>
               </div>
               <div className="p-3 rounded bg-slate-50 border border-slate-100">
-                <span className="text-slate-400 block mb-1">MONETIZACIÓN:</span>
-                <span className="text-slate-800 font-bold">PASIVA / AFILIADOS</span>
+                <span className="text-slate-400 block mb-1">FINANCIACIÓN:</span>
+                <span className="text-slate-800 font-bold">ENLACES DE AFILIADOS</span>
               </div>
               <div className="p-3 rounded bg-slate-50 border border-slate-100">
-                <span className="text-slate-400 block mb-1">CARGA_TÉCNICA:</span>
-                <span className="text-pink-600 font-bold">0% PUBLICIDAD INTRUSIVA</span>
+                <span className="text-slate-400 block mb-1">PUBLICIDAD:</span>
+                <span className="text-pink-600 font-bold">SIN ANUNCIOS MOLESTOS</span>
               </div>
             </div>
 
@@ -317,72 +289,52 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-rose-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <span className="relative flex items-center gap-2">
-                  EXPLORAR PANEL DE ANÁLISIS
+                  EXPLORAR ARTÍCULOS
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </button>
             </div>
           </div>
 
-          {/* "Sobre Nosotros" - Radar Diagnóstico HUD */}
+          {/* "Sobre Nosotros" */}
           <div className="lg:col-span-4 flex flex-col justify-between p-6 rounded-2xl border border-pink-100/60 bg-white/80 shadow-sm relative overflow-hidden">
             
-            {/* Visual Radar Decorator */}
+            {/* Visual Decorator */}
             <div className="relative w-full aspect-square max-w-[200px] mx-auto flex items-center justify-center mb-6">
-              
-              {/* Líneas concéntricas de radar */}
-              <div className="absolute inset-0 rounded-full border border-pink-500/10" />
-              <div className="absolute inset-[20%] rounded-full border border-pink-500/15" />
-              <div className="absolute inset-[45%] rounded-full border border-pink-500/20" />
-              <div className="absolute inset-[70%] rounded-full border border-pink-500/25" />
-              
-              {/* Ejes del radar */}
-              <div className="absolute w-full h-[1px] bg-pink-500/10" />
-              <div className="absolute h-full w-[1px] bg-pink-500/10" />
-              
-              {/* Línea giratoria de radar */}
-              <div 
-                className="absolute w-1/2 h-[2px] bg-gradient-to-r from-transparent to-pink-500 origin-left left-1/2 top-1/2 animate-spin"
-                style={{ animationDuration: '4s' }}
-              />
-              
-              {/* Puntos rojos de "Vampiros Energéticos" detectados */}
-              <div className="absolute top-[25%] left-[30%] w-2.5 h-2.5 rounded-full bg-rose-550 animate-ping" />
-              <div className="absolute top-[25%] left-[30%] w-2 h-2 rounded-full bg-rose-550" />
-              
-              <div className="absolute bottom-[28%] right-[25%] w-2.5 h-2.5 rounded-full bg-rose-550 animate-ping" style={{ animationDelay: "1s" }} />
-              <div className="absolute bottom-[28%] right-[25%] w-2.5 h-2.5 rounded-full bg-rose-550" />
-
-              <div className="absolute top-[60%] left-[65%] w-2.5 h-2.5 rounded-full bg-pink-500 animate-pulse" />
+              {/* Glowing background */}
+              <div className="absolute inset-0 rounded-full bg-pink-50/60 border border-pink-100 flex items-center justify-center shadow-inner animate-pulse" style={{ animationDuration: '4s' }} />
+              <div className="absolute inset-[10%] rounded-full bg-white border border-pink-200/50 flex items-center justify-center shadow-sm" />
               
               {/* Icono central */}
-              <div className="relative z-10 w-12 h-12 rounded-full bg-white border border-pink-200 flex items-center justify-center">
-                <Activity className="w-5 h-5 text-pink-600 animate-pulse" />
+              <div className="relative z-10 w-20 h-20 rounded-full bg-white border border-pink-200 flex items-center justify-center shadow-sm">
+                <Activity className="w-8 h-8 text-pink-655 animate-pulse" />
               </div>
             </div>
 
-            {/* Consola de Texto */}
-            <div className="space-y-4 font-mono text-slate-700">
+            {/* Bloque de Información */}
+            <div className="space-y-4 text-slate-700">
               <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                <span className="text-[10px] text-slate-450">MÓDULO:</span>
-                <span className="text-[10px] text-pink-600 font-bold">SOBRE_NOSOTROS_V1.0</span>
+                <span className="text-xs text-slate-500 font-semibold">SOBRE EL PROYECTO</span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-pink-50 text-pink-655 border border-pink-100">
+                  ACTIVO
+                </span>
               </div>
               
-              <div className="text-xs space-y-2 text-slate-650">
+              <div className="text-xs space-y-3 text-slate-600">
                 <p className="leading-relaxed">
-                  <span className="text-pink-600 font-bold block mb-1">&gt;&gt; MISIÓN DETECTAR &amp; DESTRUIR</span>
-                  WattSavvyHome surge para cazar el consumo fantasma parásito (stand-by) y optimizar la red eléctrica del hogar mediante domótica. 
+                  <strong className="text-pink-600 font-bold block mb-0.5">Optimización del Consumo Eléctrico</strong>
+                  WattSavvyHome nace con el propósito de ayudarte a identificar el consumo fantasma (stand-by) y optimizar el uso de energía en tu hogar mediante la domótica y automatizaciones sencillas.
                 </p>
                 <p className="leading-relaxed">
-                  <span className="text-pink-750 font-bold block mb-1">&gt;&gt; DIVULGACIÓN INDEPENDIENTE</span>
-                  No vendemos hardware, ni hacemos asesoría pagada. Este portal se monetiza mediante enlaces de afiliados en análisis rigurosos. Tu lectura es libre y privada.
+                  <strong className="text-pink-655 font-bold block mb-0.5">Divulgación Independiente y Honesta</strong>
+                  No vendemos equipos ni recibimos comisiones para favorecer a ninguna marca. Este portal se financia a través de enlaces de afiliación transparentes en nuestros análisis de hardware recomendados.
                 </p>
               </div>
 
               {/* Status Bar */}
-              <div className="flex items-center gap-2 p-2.5 rounded bg-pink-50/50 border border-pink-100/50 text-[10px] text-slate-600">
-                <Cpu className="w-3.5 h-3.5 text-pink-600" />
-                <span className="tracking-wide">VAMPIROS EN RUTA: CAZADOS</span>
+              <div className="flex items-center gap-2 p-2.5 rounded bg-pink-50/50 border border-pink-100/50 text-xs text-slate-655 font-medium">
+                <Cpu className="w-4 h-4 text-pink-500" />
+                <span className="tracking-wide">Foco de Ahorro: Reducción del Gasto Pasivo</span>
               </div>
             </div>
           </div>
@@ -401,9 +353,9 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
         {/* Header del Grid de Contenido */}
         <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 mb-12 border-b border-pink-100 pb-6">
           <div>
-            <div className="flex items-center gap-2 text-pink-650 font-mono text-xs uppercase tracking-widest mb-2 font-bold">
-              <Database className="w-4 h-4 animate-pulse" />
-              <span>REGISTRO_BASE_DE_DATOS</span>
+            <div className="flex items-center gap-2 text-pink-600 font-mono text-xs uppercase tracking-widest mb-2 font-bold">
+              <Database className="w-4 h-4 text-pink-500" />
+              <span>Artículos y Guías</span>
             </div>
             <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-900">
               Diagnósticos de Eficiencia
@@ -504,10 +456,6 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             else if (article.category.slug === "monitorizacion-solar") CategoryIcon = Sun;
             else if (article.category.slug === "guias-de-ahorro") CategoryIcon = TrendingDown;
 
-            // Simulación de valores de consumo y estabilidad de hardware para dar estética de widget de dashboard
-            const mockConsumo = (1.2 - (idx * 0.04)).toFixed(2);
-            const mockEstabilidad = (99.9 - (idx * 0.05)).toFixed(1);
-
             return (
               <article 
                 key={article.id}
@@ -523,10 +471,9 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   {/* Encabezado del widget */}
                   <div>
                     <div className="flex items-center justify-between font-mono text-[10px] text-slate-500 mb-4">
-                      <span>DEV_ID: WSH-00{idx + 1}</span>
-                      <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-pink-50 border border-pink-100/50 text-pink-650 font-bold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-pink-500" />
-                        ONLINE
+                      <span>Publicado: {article.date}</span>
+                      <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-pink-50 border border-pink-100/50 text-pink-655 font-bold">
+                        {article.readTime}
                       </span>
                     </div>
 
@@ -547,36 +494,6 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                     </p>
                   </div>
 
-                  {/* Panel de Control Interno (Metrics) */}
-                  <div className="space-y-3 p-3 rounded-lg bg-pink-50/20 border border-pink-100/30 text-slate-600 mb-6 font-mono text-[10px]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">CONSUMO MOCKUP:</span>
-                      <span className="text-pink-600 font-semibold">{mockConsumo} W</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">ESTABILIDAD:</span>
-                      <span className="text-pink-750 font-semibold">{mockEstabilidad}%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">TIEMPO LECTURA:</span>
-                      <span className="text-slate-700 font-semibold">{article.readTime}</span>
-                    </div>
-                    
-                    {/* Barra de progreso de eficiencia simulada */}
-                    <div className="space-y-1 pt-1">
-                      <div className="flex justify-between text-[9px] text-slate-500">
-                        <span>EFICIENCIA DE AHORRO</span>
-                        <span className="text-pink-600 font-bold">{95 - (idx * 5)}%</span>
-                      </div>
-                      <div className="w-full h-1.5 bg-slate-100 rounded overflow-hidden">
-                        <div 
-                          className="h-full bg-pink-500 rounded transition-all duration-500"
-                          style={{ width: `${95 - (idx * 5)}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Pie de tarjeta con Autor y el Lector */}
                   <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-auto">
                     <div className="flex items-center gap-2">
@@ -589,8 +506,8 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                     </div>
 
                     {/* ENTRAR LECTURA INDICATOR */}
-                    <div className="flex items-center gap-1 font-mono text-[10px] text-pink-600 group-hover:text-pink-700 font-bold group-hover:underline">
-                      <span>LEER REGISTRO</span>
+                    <div className="flex items-center gap-1 font-mono text-[10px] text-pink-650 group-hover:text-pink-750 font-bold group-hover:underline">
+                      <span>Leer Artículo</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                     </div>
 
@@ -610,7 +527,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               className="group relative inline-flex items-center gap-2 px-8 py-3.5 overflow-hidden rounded-xl bg-pink-500 font-mono text-xs font-bold text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-pink-600 shadow-sm cursor-pointer"
               id="ver-mas-btn"
             >
-              <span>CARGAR MÁS MÓDULOS (+24)</span>
+              <span>MOSTRAR MÁS ARTÍCULOS</span>
             </button>
           </div>
         )}
@@ -650,17 +567,13 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   <Zap className="w-4 h-4 text-pink-600" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] text-pink-600 uppercase tracking-widest font-bold">
-                      SESSION_ACTIVE: READ_MODE
+                  <div className="flex flex-col">
+                    <span className="text-xs text-pink-600 font-semibold">
+                      Estás leyendo en WattSavvyHome
                     </span>
-                    <span className="text-[10px] text-slate-200">|</span>
-                    <span className="font-mono text-[10px] text-slate-500 uppercase">
-                      ID: {activeArticle.id}
+                    <span className="text-[11px] text-slate-500 font-medium">
+                      Categoría: {activeArticle.category.name}
                     </span>
-                  </div>
-                  <div className="text-[10px] font-mono text-slate-500 uppercase font-semibold">
-                    Categoría: {activeArticle.category.name}
                   </div>
                 </div>
               </div>
@@ -668,11 +581,11 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               {/* Botón Cerrar */}
               <button
                 onClick={() => setActiveArticle(null)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-600 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer font-bold"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-650 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer font-bold"
                 title="Cerrar artículo"
               >
                 <X className="w-4 h-4" />
-                <span className="hidden sm:inline">CERRAR LECTOR</span>
+                <span className="hidden sm:inline">CERRAR</span>
               </button>
             </div>
 
@@ -780,14 +693,14 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
             {/* Footer del Lector */}
             <div className="flex items-center justify-between p-4 bg-white border-t border-pink-100 sticky bottom-0">
-              <span className="text-[10px] font-mono text-slate-500">
-                PROCESAMIENTO TERMINADO: SESIÓN_CERRADA
+              <span className="text-xs text-slate-550">
+                Gracias por leer WattSavvyHome.
               </span>
               <button
                 onClick={() => setActiveArticle(null)}
                 className="px-5 py-2 bg-pink-500 text-white hover:bg-pink-600 transition-colors font-mono text-xs font-bold uppercase rounded-lg cursor-pointer shadow-sm"
               >
-                CERRAR PANEL
+                CERRAR LECTOR
               </button>
             </div>
 
@@ -820,8 +733,8 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
           <form onSubmit={handleContactSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label htmlFor="name-input" className="block font-mono text-[10px] text-slate-500 uppercase">
-                  Nombre_Usuario
+                <label htmlFor="name-input" className="block text-xs font-semibold text-slate-700">
+                  Nombre
                 </label>
                 <input
                   id="name-input"
@@ -829,14 +742,14 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   required
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
-                  placeholder="ej. Alex Domotica"
-                  className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm font-mono placeholder-slate-450 transition-colors"
+                  placeholder="ej. Juan Pérez"
+                  className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm placeholder-slate-450 transition-colors"
                 />
               </div>
 
               <div className="space-y-1">
-                <label htmlFor="email-input" className="block font-mono text-[10px] text-slate-500 uppercase">
-                  Email_Contacto
+                <label htmlFor="email-input" className="block text-xs font-semibold text-slate-700">
+                  Correo electrónico
                 </label>
                 <input
                   id="email-input"
@@ -844,15 +757,15 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   required
                   value={formEmail}
                   onChange={(e) => setFormEmail(e.target.value)}
-                  placeholder="ej. alex@red.com"
-                  className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm font-mono placeholder-slate-450 transition-colors"
+                  placeholder="ej. juan@gmail.com"
+                  className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm placeholder-slate-450 transition-colors"
                 />
               </div>
             </div>
 
             <div className="space-y-1">
-              <label htmlFor="msg-input" className="block font-mono text-[10px] text-slate-500 uppercase">
-                Mensaje_Cuerpo
+              <label htmlFor="msg-input" className="block text-xs font-semibold text-slate-700">
+                Mensaje
               </label>
               <textarea
                 id="msg-input"
@@ -860,19 +773,17 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 rows={4}
                 value={formMessage}
                 onChange={(e) => setFormMessage(e.target.value)}
-                placeholder="Escribe tu consulta o sugerencia de hardware de energía..."
-                className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm font-mono placeholder-slate-450 transition-colors resize-none"
+                placeholder="Escribe tu consulta o sugerencia aquí..."
+                className="w-full px-4 py-2.5 rounded bg-white border border-slate-250 focus:border-pink-500 focus:outline-none text-slate-850 text-sm placeholder-slate-450 transition-colors resize-none"
               />
             </div>
 
-            {/* Consola de Logs Interactiva */}
-            <div className="p-3 rounded bg-slate-900 border border-slate-955 font-mono text-[10px] text-slate-400 space-y-1">
-              {formConsoleLogs.map((log, index) => (
-                <div key={index} className={log.includes("[OK]") ? "text-emerald-400" : log.includes("info") ? "text-blue-400" : ""}>
-                  {log}
-                </div>
-              ))}
-            </div>
+            {/* Mensaje de éxito */}
+            {isFormSuccess && (
+              <div className="p-3 rounded bg-pink-50 border border-pink-200 text-pink-655 text-xs font-semibold animate-fade-in">
+                ¡Gracias! Tu mensaje ha sido recibido con éxito.
+              </div>
+            )}
 
             {/* Botón Enviar */}
             <div className="pt-2">
@@ -885,17 +796,17 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 {isFormSubmitting ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    TRANSMITIENDO...
+                    ENVIANDO...
                   </>
                 ) : isFormSuccess ? (
                   <>
                     <CheckCircle2 className="w-4 h-4" />
-                    CONEXIÓN ESTABLECIDA [OK]
+                    ENVIADO [OK]
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    TRANSMITIR MENSAJE
+                    ENVIAR MENSAJE
                   </>
                 )}
               </button>
@@ -950,17 +861,17 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
               </ul>
             </div>
 
-            {/* Datos Técnicos de Licencia */}
+            {/* Datos de Licencia */}
             <div className="md:col-span-3 space-y-3">
               <h4 className="font-mono text-xs text-slate-700 uppercase tracking-widest border-b border-pink-100 pb-2">
-                SISTEMA_INFO
+                INFORMACIÓN
               </h4>
               <div className="space-y-1.5 font-mono text-[10px] text-slate-600">
                 <div>LICENCIA: CREATIVE COMMONS 4.0</div>
                 <div>AUTORÍA: EQUIPO EDITORIAL WSH</div>
-                <div className="flex items-center gap-1.5 text-pink-600/80">
+                <div className="flex items-center gap-1.5 text-pink-655/80">
                   <Lock className="w-3.5 h-3.5" />
-                  <span>CONEXIÓN SEGURA ENTRADA HOGAR</span>
+                  <span>Sitio seguro de ahorro</span>
                 </div>
               </div>
             </div>
@@ -968,12 +879,12 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
           </div>
 
           {/* Copyright */}
-          <div className="border-t border-pink-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-slate-600">
+          <div className="border-t border-pink-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-slate-655">
             <div>
               &copy; {new Date().getFullYear()} WattSavvyHome. Todos los derechos reservados.
             </div>
             <div>
-              [CODED_BY_ANTIGRAVITY_SYS_V4.0]
+              Portal de Ahorro y Eficiencia Eléctrica
             </div>
           </div>
 
@@ -990,10 +901,10 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             <div className="w-8 h-8 rounded bg-pink-50 border border-pink-200 flex items-center justify-center shrink-0">
               <Shield className="w-4.5 h-4.5 text-pink-600" />
             </div>
-            <div className="space-y-3 font-mono text-[11px]">
+            <div className="space-y-3 font-sans text-xs">
               <div className="text-slate-700 leading-normal">
-                <span className="text-pink-600 font-bold block mb-1">REGISTRO_COOKIES: AUTORIZACIÓN</span>
-                Utilizamos cookies técnicas para asegurar el funcionamiento del panel y de forma opcional cookies de analítica anónima para optimizar la red informativa.
+                <span className="text-pink-655 font-bold block mb-1">Uso de cookies</span>
+                Utilizamos cookies técnicas para asegurar el funcionamiento de la web y de forma opcional cookies de analítica anónima para entender cómo visitas nuestro sitio y seguir mejorándolo.
               </div>
               <div className="flex items-center gap-3">
                 <button

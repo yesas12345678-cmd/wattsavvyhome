@@ -74,9 +74,9 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
         
         {/* Encabezado de la página */}
         <div className="text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-pink-50 border border-pink-200/60 px-3 py-1 text-[10px] font-mono text-pink-650 uppercase mb-4 font-bold">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-pink-50 border border-pink-200/60 px-3 py-1 text-[10px] font-mono text-pink-655 uppercase mb-4 font-bold">
             <User className="w-3 h-3 text-pink-600" />
-            <span>CONEXIÓN: EQUIPO EDITORIAL CENTRAL</span>
+            <span>EQUIPO EDITORIAL</span>
           </div>
           <h1 className="font-display font-extrabold text-3xl sm:text-5xl text-slate-900">
             Nuestros Autores
@@ -152,7 +152,7 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
           
           <div className="max-w-xl mx-auto space-y-4">
             <h3 className="font-display font-bold text-lg text-slate-900 text-center">
-              Buscador del Repositorio Editorial
+              Buscador de Artículos
             </h3>
             
             <div className="relative">
@@ -222,7 +222,7 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
           <div className="fixed inset-0 z-50 bg-white text-slate-950 animate-fade-in overflow-y-auto flex flex-col">
             
             {/* Constrained Container */}
-            <div className="w-full max-w-4xl mx-auto flex-1 flex flex-col min-h-screen bg-white">
+            <div className="w-full max-w-4xl mx-auto flex-1 flex flex-col min-h-screen">
               
               {/* Header del Lector */}
               <div className="flex items-center justify-between p-4 sm:p-6 border-b border-pink-100 bg-white sticky top-0 z-10">
@@ -231,17 +231,13 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
                     <Zap className="w-4 h-4 text-pink-600" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] text-pink-600 uppercase tracking-widest font-bold">
-                        SESSION_ACTIVE: READ_MODE
+                    <div className="flex flex-col">
+                      <span className="text-xs text-pink-600 font-semibold">
+                        Estás leyendo en WattSavvyHome
                       </span>
-                      <span className="text-[10px] text-slate-200">|</span>
-                      <span className="font-mono text-[10px] text-slate-500 uppercase">
-                        ID: {activeArticle.id}
+                      <span className="text-[11px] text-slate-500 font-medium">
+                        Categoría: {activeArticle.category.name}
                       </span>
-                    </div>
-                    <div className="text-[10px] font-mono text-slate-500 uppercase font-semibold">
-                      Categoría: {activeArticle.category.name}
                     </div>
                   </div>
                 </div>
@@ -249,11 +245,11 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
                 {/* Botón Cerrar */}
                 <button
                   onClick={() => setActiveArticle(null)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-600 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer font-bold"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-650 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer font-bold"
                   title="Cerrar artículo"
                 >
                   <X className="w-4 h-4" />
-                  <span className="hidden sm:inline">CERRAR LECTOR</span>
+                  <span className="hidden sm:inline">CERRAR</span>
                 </button>
               </div>
 
@@ -338,8 +334,8 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
 
               {/* Footer del Lector */}
               <div className="flex items-center justify-between p-4 bg-white border-t border-pink-100 sticky bottom-0">
-                <span className="text-[10px] font-mono text-slate-500">
-                  PROCESAMIENTO TERMINADO: SESIÓN_CERRADA
+                <span className="text-xs text-slate-550">
+                  Gracias por leer WattSavvyHome.
                 </span>
                 <button
                   onClick={() => setActiveArticle(null)}
@@ -403,14 +399,14 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
             {/* Datos Técnicos de Licencia */}
             <div className="md:col-span-3 space-y-3">
               <h4 className="font-mono text-xs text-slate-700 uppercase tracking-widest border-b border-pink-100 pb-2">
-                SISTEMA_INFO
+                INFORMACIÓN
               </h4>
               <div className="space-y-1.5 font-mono text-[10px] text-slate-600">
                 <div>LICENCIA: CREATIVE COMMONS 4.0</div>
                 <div>AUTORÍA: EQUIPO EDITORIAL WSH</div>
-                <div className="flex items-center gap-1.5 text-pink-600/80">
+                <div className="flex items-center gap-1.5 text-pink-655/80">
                   <Lock className="w-3.5 h-3.5" />
-                  <span>CONEXIÓN SEGURA ENTRADA HOGAR</span>
+                  <span>Sitio seguro de ahorro</span>
                 </div>
               </div>
             </div>
@@ -418,12 +414,12 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
           </div>
 
           {/* Copyright */}
-          <div className="border-t border-pink-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-slate-600">
+          <div className="border-t border-pink-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px] text-slate-655">
             <div>
               &copy; {new Date().getFullYear()} WattSavvyHome. Todos los derechos reservados.
             </div>
             <div>
-              [CODED_BY_ANTIGRAVITY_SYS_V4.0]
+              Portal de Ahorro y Eficiencia Eléctrica
             </div>
           </div>
 

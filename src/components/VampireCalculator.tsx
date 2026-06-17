@@ -176,11 +176,11 @@ export default function VampireCalculator() {
           {/* Cabecera */}
           <div>
             <div className="flex items-center gap-2 text-pink-600 font-mono text-[10px] uppercase tracking-widest mb-1.5 font-bold">
-              <Cpu className="w-4 h-4 animate-pulse" />
-              <span>DIAGNOSTIC_TOOL: VAMPIRE_ENERGY_CALCULATOR</span>
+              <Cpu className="w-4 h-4 text-pink-500" />
+              <span>Herramienta de Ahorro Eléctrico</span>
             </div>
             <h3 className="font-display font-extrabold text-2xl text-slate-900">
-              Calculadora de Fuga de Stand-by
+              Calculadora de Consumo en Espera (Stand-by)
             </h3>
             <p className="text-slate-600 text-xs mt-1 leading-relaxed">
               Descubre cuánta electricidad consumen tus electrodomésticos apagados y calcula el tiempo necesario para amortizar un enchufe inteligente.
@@ -312,7 +312,7 @@ export default function VampireCalculator() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-pink-500 hover:bg-pink-600 text-white font-mono text-[10px] font-bold uppercase disabled:opacity-40 disabled:hover:bg-pink-500 cursor-pointer shadow-sm"
               >
                 <Plus className="w-3.5 h-3.5" />
-                Añadir al Panel
+                Añadir dispositivo
               </button>
             </div>
 
@@ -348,22 +348,22 @@ export default function VampireCalculator() {
             
             {/* Header del Diagnóstico */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <span className="font-mono text-[10px] text-slate-500 uppercase">DIAGNOSIS_OUTPUT</span>
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-pink-50 text-pink-650 border border-pink-200/60">
-                ACTIVE
+              <span className="font-mono text-[10px] text-slate-500 uppercase">Resumen</span>
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-pink-50 text-pink-655 border border-pink-200/60">
+                ACTIVO
               </span>
             </div>
 
             {/* Gran métrica de coste */}
             <div className="text-center py-6 bg-pink-50/15 border border-pink-100 rounded-xl relative overflow-hidden">
-              <span className="font-mono text-[10px] text-slate-500 block uppercase tracking-wider mb-1">
-                Fuga Financiera Estimada (Anual)
+              <span className="font-mono text-[10px] text-slate-555 block uppercase tracking-wider mb-1">
+                Gasto Estimado al Año en Stand-by
               </span>
               <div className="font-display font-extrabold text-4xl sm:text-5xl text-pink-600 tracking-tight">
                 {stats.yearlyCost} €
               </div>
-              <span className="font-mono text-[9px] text-slate-500 block uppercase mt-2">
-                Consumo Total: <strong className="text-slate-700">{stats.yearlyKwh} kWh/año</strong>
+              <span className="font-mono text-[9px] text-slate-555 block uppercase mt-2">
+                Consumo total acumulado: <strong className="text-slate-700">{stats.yearlyKwh} kWh/año</strong>
               </span>
             </div>
 
@@ -384,16 +384,16 @@ export default function VampireCalculator() {
 
             {/* Diagnóstico de Equivalencia / Impacto */}
             {parseFloat(stats.dailyKwh) > 0 ? (
-              <div className="p-3.5 rounded-lg bg-rose-50 border border-rose-200 font-mono text-[10px] text-rose-700 leading-relaxed flex items-start gap-2.5">
+              <div className="p-3.5 rounded-lg bg-rose-550/5 border border-rose-200 font-mono text-[10px] text-rose-700 leading-relaxed flex items-start gap-2.5">
                 <ShieldAlert className="w-4.5 h-4.5 text-rose-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold block text-rose-700 mb-0.5">ALERTA DE DESPERDICIO PARÁSITO:</span>
-                  El consumo pasivo actual de {stats.dailyKwh} kWh/día equivale a dejar una bombilla LED encendida continuamente durante <strong className="text-slate-900 font-bold">{stats.ledEquivalentDays} días</strong> cada año.
+                  <span className="font-bold block text-rose-700 mb-0.5">Impacto estimado del gasto parásito:</span>
+                  El consumo en espera actual de {stats.dailyKwh} kWh/día equivale a dejar una bombilla LED encendida continuamente durante <strong className="text-slate-900 font-bold">{stats.ledEquivalentDays} días</strong> cada año.
                 </div>
               </div>
             ) : (
               <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-150 font-mono text-[10px] text-slate-450 text-center">
-                Selecciona o añade dispositivos en la izquierda para diagnosticar la fuga energética de tu hogar.
+                Selecciona o añade dispositivos en la izquierda para ver el resumen de tu hogar.
               </div>
             )}
 
@@ -402,24 +402,24 @@ export default function VampireCalculator() {
           {/* Amortización de enchufe inteligente */}
           {parseFloat(stats.yearlyCost) > 0 && (
             <div className="mt-6 pt-4 border-t border-slate-100 space-y-3">
-              <div className="flex items-center gap-1.5 text-pink-600 font-mono text-[10px] uppercase tracking-wider font-bold">
+              <div className="flex items-center gap-1.5 text-pink-655 font-mono text-[10px] uppercase tracking-wider font-bold">
                 <Plug className="w-4 h-4 text-pink-500" />
-                <span>Plan de Mitigación Recomendado</span>
+                <span>Solución de Ahorro Recomendada</span>
               </div>
               
               <div className="p-3.5 rounded-xl border border-pink-100 bg-pink-50/20 font-sans text-xs text-slate-650 leading-relaxed">
-                Si domotizas estos dispositivos usando un enchufe inteligente o regleta (inversión de 12€) para cortarlos por completo durante sus horas inactivas:
+                Si apagas estos dispositivos por completo durante sus horas inactivas usando un enchufe inteligente o regleta con programador (inversión estimada de 12€):
                 
                 <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-pink-100/30 font-mono text-[10px]">
                   <div>
-                    <span className="text-slate-450 block">Tiempo de Retorno (ROI):</span>
-                    <span className="text-xs font-bold text-pink-600">
+                    <span className="text-slate-500 block">Recuperación de la inversión:</span>
+                    <span className="text-xs font-bold text-pink-655">
                       {parseFloat(stats.paybackMonths) <= 1 ? `${Math.round(parseFloat(stats.paybackMonths) * 30)} Días` : `${stats.paybackMonths} Meses`}
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-455 block">Estado Amortización:</span>
-                    <span className="text-xs font-bold text-pink-650 uppercase">MUY RÁPIDO</span>
+                    <span className="text-slate-500 block">Nivel de ahorro:</span>
+                    <span className="text-xs font-bold text-pink-655 uppercase">Muy alto</span>
                   </div>
                 </div>
               </div>
