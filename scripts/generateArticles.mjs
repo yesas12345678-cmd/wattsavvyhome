@@ -167,15 +167,13 @@ async function main() {
     isJsonMode = false;
   }
 
-  // Conectar a PostgreSQL
-  const client = await pool.connect();
   try {
     // RESETEAR el primer artículo que falló para volverlo a procesar correctamente
-    await client.query("UPDATE articles SET content = '' WHERE id = 'shelly-em-precision-cuadro-monofasico'");
+    await pool.query("UPDATE articles SET content = '' WHERE id = 'shelly-em-precision-cuadro-monofasico'");
     console.log("[DB] Reseteado artículo 'shelly-em-precision-cuadro-monofasico' para procesamiento limpio.");
 
     // 2. Buscar artículos vacíos
-    const { rows } = await client.query(
+    const { rows } = await pool.query(
       "SELECT id, title, keyword, category_name, excerpt FROM articles WHERE content = '' OR LENGTH(content) = 0 ORDER BY published_at ASC"
     );
 
@@ -264,7 +262,7 @@ async function main() {
         const result = extractContentHTML(generatedResponse, article.title, article.excerpt, article.keyword);
 
         console.log(`>> Guardando contenido y metadatos del artículo en la base de datos...`);
-        await client.query(
+        await pool.query(
           `UPDATE articles 
            SET title = $1, meta_title = $2, meta_description = $3, excerpt = $4, content = $5 
            WHERE id = $6`,
@@ -290,7 +288,6 @@ async function main() {
   } catch (err) {
     console.error("Excepción durante el proceso principal:", err);
   } finally {
-    client.release();
     await pool.end();
   }
 }
