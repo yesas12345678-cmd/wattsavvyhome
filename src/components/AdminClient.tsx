@@ -646,6 +646,16 @@ export default function AdminClient({ initialArticles }: AdminClientProps) {
                 <p className="text-slate-600 italic text-sm mb-6">
                   {previewArticle.excerpt}
                 </p>
+
+                {previewArticle.imageUrl && (
+                  <div className="w-full h-48 sm:h-64 rounded-xl overflow-hidden bg-slate-100 shadow-sm mb-6">
+                    <img 
+                      src={previewArticle.imageUrl} 
+                      alt={previewArticle.title} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 
                 {/* Content Render */}
                 {previewArticle.content ? (

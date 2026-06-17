@@ -285,8 +285,19 @@ export default function AutoresClient({ publishedArticles }: AutoresClientProps)
                   </div>
                 </div>
 
+                {/* Imagen de Portada Hero */}
+                {activeArticle.imageUrl && (
+                  <div className="w-full h-64 sm:h-80 rounded-xl overflow-hidden bg-slate-100 shadow-sm mb-6">
+                    <img 
+                      src={activeArticle.imageUrl} 
+                      alt={activeArticle.title} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+
                 {/* Cuerpo del Artículo formateado */}
-                <div className="prose prose-slate prose-pink max-w-none text-slate-950 leading-relaxed text-sm sm:text-base space-y-6">
+                <div className="prose prose-slate prose-pink max-w-none text-slate-955 leading-relaxed text-sm sm:text-base space-y-6">
                   {activeArticle.content ? (
                     activeArticle.content.trim().startsWith("<") ? (
                       <div dangerouslySetInnerHTML={{ __html: activeArticle.content }} />

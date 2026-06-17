@@ -8,6 +8,34 @@ export const pool = new Pool({
   ssl: false,
 });
 
+// Banco de imágenes premium por categoría para garantizar estética de alta gama
+const CATEGORY_IMAGES = {
+  "monitores-de-energia": [
+    "https://images.unsplash.com/photo-1558441719-ff34b0524a24?w=800&auto=format&fit=crop&q=60", // Cuadro eléctrico / medidor
+    "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&auto=format&fit=crop&q=60", // Técnico revisando cableado
+    "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&auto=format&fit=crop&q=60", // Panel de monitorización
+    "https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=800&auto=format&fit=crop&q=60"  // Componentes eléctricos
+  ],
+  "enchufes-inteligentes": [
+    "https://images.unsplash.com/photo-1558002038-1055907df827?w=800&auto=format&fit=crop&q=60", // Dispositivos domóticos
+    "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop&q=60", // Enchufe inteligente de dormitorio
+    "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&auto=format&fit=crop&q=60", // Hogar inteligente moderno
+    "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=800&auto=format&fit=crop&q=60"  // Bombilla y enchufe
+  ],
+  "monitorizacion-solar": [
+    "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&auto=format&fit=crop&q=60", // Paneles solares
+    "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=800&auto=format&fit=crop&q=60", // Techo con paneles
+    "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&auto=format&fit=crop&q=60", // Granja solar
+    "https://images.unsplash.com/photo-1620038634493-27dc0ad63673?w=800&auto=format&fit=crop&q=60"  // Medidor solar
+  ],
+  "guias-de-ahorro": [
+    "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&auto=format&fit=crop&q=60", // Bombilla led eficiente
+    "https://images.unsplash.com/photo-1548613053-220a29df1013?w=800&auto=format&fit=crop&q=60", // Red eléctrica general
+    "https://images.unsplash.com/photo-1426024120108-99cc76989c71?w=800&auto=format&fit=crop&q=60", // Casa acogedora y cálida
+    "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=800&auto=format&fit=crop&q=60"  // Monitoreo de oficina
+  ]
+};
+
 // Helper to format date in Spanish (e.g. "16 Jun 2026")
 function formatSpanishDate(d: Date): string {
   const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
@@ -59,7 +87,15 @@ export async function initDB() {
       $$;
     `);
 
-    // 4. Check if table is empty or needs re-seeding
+    // 4. Update existing articles that don't have an image_url
+    const emptyImagesRes = await client.query("SELECT id, category_slug FROM articles WHERE image_url = '' OR image_url IS NULL");
+    for (const row of emptyImagesRes.rows) {
+      const imgList = CATEGORY_IMAGES[row.category_slug as keyof typeof CATEGORY_IMAGES] || CATEGORY_IMAGES["guias-de-ahorro"];
+      const randomImg = imgList[Math.floor(Math.random() * imgList.length)];
+      await client.query("UPDATE articles SET image_url = $1 WHERE id = $2", [randomImg, row.id]);
+    }
+
+    // 5. Check if table is empty or needs re-seeding
     const { rows } = await client.query("SELECT COUNT(*) FROM articles");
     const count = parseInt(rows[0].count, 10);
 
@@ -104,6 +140,10 @@ export async function initDB() {
         // Seed with empty body content (0 words)
         const content = "";
 
+        // Seleccionar imagen aleatoria del banco para la categoría
+        const imgList = CATEGORY_IMAGES[article.categorySlug as keyof typeof CATEGORY_IMAGES] || CATEGORY_IMAGES["guias-de-ahorro"];
+        const randomImg = imgList[Math.floor(Math.random() * imgList.length)];
+
         await client.query(
           `
           INSERT INTO articles (
@@ -121,7 +161,7 @@ export async function initDB() {
             article.categorySlug,
             dateStr,
             "Lectura de 8 min", // Default read time mock
-            "", // No images
+            randomImg, // Selected random image
             gradient,
             author,
             content,

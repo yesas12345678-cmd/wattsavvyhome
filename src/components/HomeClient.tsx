@@ -462,8 +462,19 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                 onClick={() => setActiveArticle(article)}
                 className="group relative flex flex-col justify-between rounded-xl border border-slate-150 bg-white hover:border-pink-300 hover:shadow-md transition-all-premium overflow-hidden cursor-pointer animate-fade-in"
               >
-                {/* Degradado superior sutil decorativo */}
-                <div className={`h-1.5 w-full bg-gradient-to-r ${article.imageGradient}`} />
+                {/* Imagen de Portada o Degradado superior decorativo */}
+                {article.imageUrl ? (
+                  <div className="h-44 w-full overflow-hidden bg-slate-100 relative">
+                    <img 
+                      src={article.imageUrl} 
+                      alt={article.title} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent pointer-events-none" />
+                  </div>
+                ) : (
+                  <div className={`h-1.5 w-full bg-gradient-to-r ${article.imageGradient}`} />
+                )}
 
                 {/* Cuerpo del widget */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
@@ -620,6 +631,17 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   <div>{activeArticle.readTime}</div>
                 </div>
               </div>
+
+              {/* Imagen de Portada Hero */}
+              {activeArticle.imageUrl && (
+                <div className="w-full h-64 sm:h-80 rounded-xl overflow-hidden bg-slate-100 shadow-sm mb-6">
+                  <img 
+                    src={activeArticle.imageUrl} 
+                    alt={activeArticle.title} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
 
               {/* Cuerpo del Artículo formateado */}
               <div className="prose prose-slate prose-pink max-w-none text-slate-955 leading-relaxed text-sm sm:text-base space-y-6">
