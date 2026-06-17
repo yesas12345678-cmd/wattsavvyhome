@@ -50,7 +50,7 @@ const pool = new Pool({
 // Banco de imágenes premium por categoría para garantizar estética de alta gama
 const CATEGORY_IMAGES = {
   "monitores-de-energia": [
-    "https://images.unsplash.com/photo-1558441719-ff34b0524a24?w=800&auto=format&fit=crop&q=60", // Cuadro eléctrico / medidor
+    "https://images.unsplash.com/photo-1604177420682-0c840feb01de?w=800&auto=format&fit=crop&q=60", // Cuadro eléctrico / medidor
     "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&auto=format&fit=crop&q=60", // Técnico revisando cableado
     "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&auto=format&fit=crop&q=60", // Panel de monitorización
     "https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=800&auto=format&fit=crop&q=60"  // Componentes eléctricos
@@ -65,11 +65,11 @@ const CATEGORY_IMAGES = {
     "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&auto=format&fit=crop&q=60", // Paneles solares
     "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=800&auto=format&fit=crop&q=60", // Techo con paneles
     "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&auto=format&fit=crop&q=60", // Granja solar
-    "https://images.unsplash.com/photo-1620038634493-27dc0ad63673?w=800&auto=format&fit=crop&q=60"  // Medidor solar
+    "https://images.unsplash.com/photo-1724041875334-0a6397111c7e?w=800&auto=format&fit=crop&q=60"  // Medidor solar
   ],
   "guias-de-ahorro": [
     "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&auto=format&fit=crop&q=60", // Bombilla led eficiente
-    "https://images.unsplash.com/photo-1548613053-220a29df1013?w=800&auto=format&fit=crop&q=60", // Red eléctrica general
+    "https://images.unsplash.com/photo-1529310399831-ed472b81d589?w=800&auto=format&fit=crop&q=60", // Red eléctrica general
     "https://images.unsplash.com/photo-1426024120108-99cc76989c71?w=800&auto=format&fit=crop&q=60", // Casa acogedora y cálida
     "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?w=800&auto=format&fit=crop&q=60"  // Monitoreo de oficina
   ]
