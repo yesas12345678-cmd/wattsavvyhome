@@ -37,7 +37,7 @@ Puedes utilizar este documento como plantilla maestra para cualquier proyecto we
 ---
 
 ### 3. Reglas de Contenido y Extensión
-*   **Extensión de Texto Real:** El artículo debe contener estrictamente entre **2.500 y 3.500 palabras de texto real** (sin contar las etiquetas HTML del código). Debe ser exhaustivo, con explicaciones muy extensas, guías paso a paso detalladas, casos prácticos completos, tablas y elementos interactivos. Cada sección debe estar ampliamente desarrollada con múltiples párrafos largos y descriptivos. No resumas; profundiza al máximo en cada tema técnico.
+*   **Extensión de Texto Real:** El artículo debe contener estrictamente entre **2.000 y 3.000 palabras de texto real** (sin contar las etiquetas HTML del código). Debe ser exhaustivo, con explicaciones muy extensas, guías paso a paso detalladas, casos prácticos completos, tablas y elementos interactivos. Cada sección debe estar ampliamente desarrollada con múltiples párrafos largos y descriptivos. No resumas; profundiza al máximo en cada tema técnico.
 *   **Idioma:** Español (castellano neutro, adaptado al público objetivo).
 *   **Cero Emojis:** Bajo ninguna circunstancia uses emojis en el artículo, títulos, metatítulos o metadescripciones para mantener un tono editorial profesional y serio.
 *   **Estructura SEO:** Introduce las palabras clave de forma natural en los primeros párrafos, en los encabezados principales (H2 y H3), y a lo largo de las explicaciones.
@@ -152,7 +152,7 @@ Utiliza el elemento nativo `<details>` estructurado con Tailwind CSS para añadi
 
 ---
 
-### 6. Estructura Sugerida del Artículo (Para alcanzar las 2.500 - 3.500+ palabras)
+### 6. Estructura Sugerida del Artículo (Para alcanzar las 2.000 - 3.000 palabras)
 1.  **Introducción Amplia (aprox. 350 palabras):** Planteamiento histórico, contexto del sector, relevancia del ahorro o control en este tema y planteamiento de hipótesis iniciales.
 2.  **Sección 1: Análisis Técnico y Conceptos Fundamentales (aprox. 600 palabras):** Desglose detallado de los principios físicos, de comunicación (Wi-Fi, Zigbee, etc.) o teóricos. Subsecciones con H3.
 3.  **Sección 2: Guía de Instalación o Casos Prácticos Completos (aprox. 700 palabras):** Explicación paso a paso de esquemas de cableado, configuración paso a paso en software (ej. Home Assistant) o escenarios de uso detallados. Grillas de tarjetas.

@@ -158,7 +158,7 @@ async function main() {
     templateContent = `
     Eres un redactor experto en SEO y eficiencia energética doméstica. 
     Escribe un artículo completo en Español optimizado para SEO basado en el título y keyword proporcionados.
-    El artículo debe tener entre 2000 y 2500 palabras.
+    El artículo debe tener entre 2000 y 3000 palabras.
     Utiliza formato HTML y clases de Tailwind CSS para crear un diseño vistoso y agradable (tablas, tarjetas, comparativas).
     SUPER IMPORTANTE: 
     - No utilices emojis de ningún tipo.

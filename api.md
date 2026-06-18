@@ -20,7 +20,7 @@ Este documento describe cómo automatizar la generación en lote (batch) de 100 
 
 ### A. Plantilla de Instrucciones (`template_general.md`)
 Crea un archivo en la raíz llamado `template_general.md`. Este archivo contiene las directivas exactas que la IA debe seguir. Su estructura es crítica para evitar errores en el parseado del blog:
-- **Longitud**: Entre 2.500 y 3.500+ palabras de contenido útil.
+- **Longitud**: Entre 2.000 y 3.000 palabras de contenido útil.
 - **Sin emojis**: Prohibido usar emojis.
 - **Tailwind CSS + HTML**: Indicarle a la IA que use clases CSS específicas para tablas de comparación, grillas de tarjetas, llamadas de atención (callouts) y acordeones nativos de preguntas frecuentes (`<details>`).
 - **Salida JSON Estricta**: Pedirle a la IA que devuelva el contenido estructurado en un objeto JSON con las propiedades `title`, `meta_title`, `meta_description`, `excerpt` y `content` (cuerpo HTML usando comillas simples para las clases de CSS).
@@ -52,7 +52,7 @@ Hola. Necesito que automatices la generación de contenido para mi nueva web. Po
    - Habilite el formato JSON en la API y parsee las propiedades del JSON devuelto: 'title', 'meta_title', 'meta_description', 'excerpt' y 'content'.
    - Realice un UPDATE en la base de datos PostgreSQL para rellenar estos campos del artículo correspondiente.
    
-2. Usa el archivo 'template_general.md' en la raíz con directivas SEO estrictas: de 2500 a 3500+ palabras, estructurado en HTML con Tailwind CSS (tablas de comparativa, callouts), tono experto (EEAT) y sin emojis bajo ninguna circunstancia.
+2. Usa el archivo 'template_general.md' en la raíz con directivas SEO estrictas: de 2000 a 3000 palabras, estructurado en HTML con Tailwind CSS (tablas de comparativa, callouts), tono experto (EEAT) y sin emojis bajo ninguna circunstancia.
 
 3. Ejecuta el script localmente para procesar los artículos y actualizar la base de datos de producción/desarrollo de forma automática.
 ```

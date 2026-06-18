@@ -35,7 +35,7 @@ def create_document():
         "   - Llame de forma secuencial a la API de DeepSeek (model: 'deepseek-chat', endpoint: 'https://api.deepseek.com/chat/completions') pasándole la plantilla y los metadatos de cada artículo (título, keyword, categoría).\n"
         "   - Habilite el formato JSON en la API y parsee las propiedades del JSON devuelto: 'title', 'meta_title', 'meta_description', 'excerpt' y 'content'.\n"
         "   - Realice un UPDATE en la base de datos PostgreSQL para rellenar estos campos del artículo correspondiente.\n\n"
-        "2. Usa el archivo 'template_general.md' en la raíz con directivas SEO estrictas: de 2500 a 3500+ palabras, estructurado en HTML con Tailwind CSS (tablas de comparativa, callouts), tono experto (EEAT) y sin emojis bajo ninguna circunstancia.\n\n"
+        "2. Usa el archivo 'template_general.md' en la raíz con directivas SEO estrictas: de 2000 a 3000 palabras, estructurado en HTML con Tailwind CSS (tablas de comparativa, callouts), tono experto (EEAT) y sin emojis bajo ninguna circunstancia.\n\n"
         "3. Ejecuta el script localmente para procesar los artículos y actualizar la base de datos de producción/desarrollo de forma automática."
     )
 
