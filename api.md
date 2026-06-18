@@ -6,11 +6,11 @@ Este documento describe cómo automatizar la generación en lote (batch) de 100 
 
 ## 1. Requisitos Previos
 
-1. **API Key de la IA**: Cuenta con saldo en la plataforma de desarrollo de DeepSeek (puedes utilizar directamente la clave actual: `sk-177cec30fdd74db1ac9b23e204deade4`).
+1. **API Key de la IA**: Cuenta con saldo en la plataforma de desarrollo de DeepSeek.
 2. **PostgreSQL pre-poblado**: Una tabla `articles` que contenga los artículos planificados (título, keyword, slug, categoría, fecha, etc.) pero con el cuerpo (`content`) vacío (`''`).
 3. **Variables de Entorno**: El archivo `.env.local` debe contener:
    ```env
-   DEEPSEEK_API_KEY=sk-177cec30fdd74db1ac9b23e204deade4
+   DEEPSEEK_API_KEY=TU_DEEPSEEK_API_KEY
    DATABASE_URL=tu_conexion_postgresql_aqui
    ```
 
@@ -45,7 +45,7 @@ Cuando inicies una nueva web y quieras que una IA (como Antigravity, Claude, Cha
 Hola. Necesito que automatices la generación de contenido para mi nueva web. Por favor, haz lo siguiente:
 
 1. Crea un script en la carpeta 'scripts/generateArticles.mjs' que:
-   - Cargue las variables de entorno de '.env.local' (incluyendo DEEPSEEK_API_KEY (clave a usar: sk-177cec30fdd74db1ac9b23e204deade4) y DATABASE_URL).
+   - Cargue las variables de entorno de '.env.local' (incluyendo DEEPSEEK_API_KEY y DATABASE_URL).
    - Lea el archivo de plantilla llamado 'template_general.md' en la raíz.
    - Obtenga todos los artículos de la base de datos PostgreSQL que tengan el campo 'content' vacío ('').
    - Llame de forma secuencial a la API de DeepSeek (model: 'deepseek-chat', endpoint: 'https://api.deepseek.com/chat/completions') pasándole la plantilla y los metadatos de cada artículo (título, keyword, categoría).

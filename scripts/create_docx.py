@@ -29,7 +29,7 @@ def create_document():
         "=== INSTRUCCIONES DE AUTOMATIZACIÓN EDITORIAL ===\n\n"
         "Hola. Necesito que automatices la generación de contenido para mi nueva web. Por favor, haz lo siguiente:\n\n"
         "1. Crea un script en la carpeta 'scripts/generateArticles.mjs' que:\n"
-        "   - Cargue las variables de entorno de '.env.local' (incluyendo DEEPSEEK_API_KEY (clave a usar: sk-177cec30fdd74db1ac9b23e204deade4) y DATABASE_URL).\n"
+        "   - Cargue las variables de entorno de '.env.local' (incluyendo DEEPSEEK_API_KEY (clave a usar: TU_DEEPSEEK_API_KEY) y DATABASE_URL).\n"
         "   - Lea el archivo de plantilla llamado 'template_general.md' en la raíz.\n"
         "   - Obtenga todos los artículos de la base de datos PostgreSQL que tengan el campo 'content' vacío ('') o con longitud cero.\n"
         "   - Llame de forma secuencial a la API de DeepSeek (model: 'deepseek-chat', endpoint: 'https://api.deepseek.com/chat/completions') pasándole la plantilla y los metadatos de cada artículo (título, keyword, categoría).\n"
