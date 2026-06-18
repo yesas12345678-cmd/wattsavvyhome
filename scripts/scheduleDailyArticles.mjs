@@ -1,6 +1,7 @@
 import { Pool } from "pg";
 import fs from "fs";
 import path from "path";
+import nodemailer from "nodemailer";
 
 // Cargar variables de entorno de archivos locales si existen (.env.local, .env, .env.production)
 const envFiles = [".env.local", ".env", ".env.production"];
@@ -431,6 +432,8 @@ Devuelve únicamente el objeto JSON.
     "from-purple-600 to-indigo-600"
   ];
 
+  const generatedArticles = [];
+
   for (let i = 0; i < lasDosPropuestas.length; i++) {
     const prop = lasDosPropuestas[i];
     console.log(`\n--------------------------------------------------`);
@@ -556,12 +559,91 @@ Recuerda devolver estrictamente un objeto JSON que siga la estructura exacta def
 
     console.log(`[OK] Guardado completado con éxito para slug: ${prop.slug}`);
     
+    generatedArticles.push({
+      title: result.title || prop.title,
+      slug: prop.slug,
+      category: prop.category_name,
+      keyword: prop.keyword
+    });
+
     // Espera entre llamadas
     await new Promise(res => setTimeout(res, 4000));
   }
 
+  // Enviar correo de notificación
+  if (generatedArticles.length > 0) {
+    await sendNotificationEmail(generatedArticles);
+  }
+
   console.log("\n=== PLANIFICADOR DIARIO COMPLETADO CON ÉXITO ===");
   await pool.end();
+}
+
+async function sendNotificationEmail(articles) {
+  const host = process.env.SMTP_HOST;
+  const port = process.env.SMTP_PORT || 587;
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASSWORD;
+  const toEmail = process.env.NOTIFICATION_EMAIL;
+
+  if (!host || !user || !pass || !toEmail) {
+    console.log("\n[SMTP] OMITIDO: Para recibir notificaciones por correo, configure las siguientes variables en Dokploy/entorno:");
+    console.log("  - SMTP_HOST (ej. smtp.gmail.com)");
+    console.log("  - SMTP_PORT (ej. 587)");
+    console.log("  - SMTP_USER (ej. tu_correo@gmail.com)");
+    console.log("  - SMTP_PASSWORD (ej. tu_contraseña_aplicación)");
+    console.log("  - NOTIFICATION_EMAIL (ej. receptor@correo.com)");
+    return;
+  }
+
+  console.log(`\n>> Enviando notificación por correo a ${toEmail}...`);
+  try {
+    const transporter = nodemailer.createTransport({
+      host,
+      port: parseInt(port, 10),
+      secure: parseInt(port, 10) === 465,
+      auth: {
+        user,
+        pass
+      }
+    });
+
+    const itemsHtml = articles.map(art => `
+      <li style="margin-bottom: 15px;">
+        <strong style="color: #db2777; font-size: 16px;">${art.title}</strong><br/>
+        <span style="font-size: 12px; color: #64748b;">Categoría: ${art.category} | Palabra clave: <code>${art.keyword}</code></span><br/>
+        <a href="https://mihogarasegurado.com/articulos/${art.slug}" style="font-size: 13px; color: #db2777; text-decoration: underline;">Leer Artículo en la Web</a>
+      </li>
+    `).join("");
+
+    const mailOptions = {
+      from: `"WattSavvyHome Alerts" <${user}>`,
+      to: toEmail,
+      subject: `📢 WattSavvyHome: ${articles.length} Nuevos Artículos Publicados`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #fbcfe8; border-radius: 8px;">
+          <div style="text-align: center; border-bottom: 2px solid #fbcfe8; padding-bottom: 15px; margin-bottom: 20px;">
+            <h1 style="color: #db2777; margin: 0; font-size: 24px;">WattSavvyHome</h1>
+            <p style="margin: 5px 0 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; font-family: monospace;">Energy Panel Alert</p>
+          </div>
+          <p style="font-size: 14px; color: #334155; line-height: 1.5;">Hola,</p>
+          <p style="font-size: 14px; color: #334155; line-height: 1.5;">El planificador diario automático ha redactado y publicado con éxito <strong>${articles.length} nuevos artículos</strong> en la base de datos:</p>
+          <ul style="padding-left: 20px; list-style-type: none; margin: 20px 0;">
+            ${itemsHtml}
+          </ul>
+          <p style="font-size: 14px; color: #334155; line-height: 1.5; margin-top: 30px;">El sistema ha maquetado el contenido en HTML de alta gama utilizando Tailwind CSS y ha asignado portadas únicas de Unsplash.</p>
+          <div style="border-top: 1px solid #f1f5f9; padding-top: 15px; margin-top: 25px; font-size: 11px; color: #94a3b8; text-align: center;">
+            &copy; ${new Date().getFullYear()} WattSavvyHome. Alertas de Publicación Automatizada.
+          </div>
+        </div>
+      `
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[SMTP] Correo enviado con éxito. ID: ${info.messageId}`);
+  } catch (err) {
+    console.error("[SMTP] Error al enviar el correo:", err.message);
+  }
 }
 
 main().catch(async (err) => {
