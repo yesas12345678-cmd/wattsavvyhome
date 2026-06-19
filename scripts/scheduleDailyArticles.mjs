@@ -448,6 +448,9 @@ Parámetros de Entrada para este Artículo:
 *   Palabras Clave Principales (Keywords): ${prop.keyword}
 *   Categoría: ${prop.category_name}
 
+REGLA DE EXTENSIÓN CRÍTICA:
+Por favor, asegúrate de que el contenido en la propiedad "content" sea extremadamente extenso. Escribe obligatoriamente entre 2200 y 2700 palabras de contenido técnico real (añadiendo detalles, explicaciones, análisis en profundidad, guías prácticas paso a paso, ejemplos de casos de uso y comparativas). Desarrolla múltiples párrafos largos por sección para garantizar que el recuento total de palabras final supere las 2000 palabras holgadamente sin ser cortado.
+
 Recuerda devolver estrictamente un objeto JSON que siga la estructura exacta definida en la sección 4 de las instrucciones.
 `;
 
