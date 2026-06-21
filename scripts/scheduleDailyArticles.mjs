@@ -29,9 +29,27 @@ for (const file of envFiles) {
 const connectionString = process.env.DATABASE_URL || "postgresql://postgres:ttu0km5hxfjepvj8@187.127.233.89:5434/postgres";
 const apiKey = process.env.DEEPSEEK_API_KEY;
 
+const pool = new Pool({
+  connectionString,
+  ssl: false,
+});
+
+async function logCronExecution(status, errorMessage = null, details = null) {
+  try {
+    await pool.query(
+      `INSERT INTO cron_logs (script_name, status, error_message, details)
+       VALUES ($1, $2, $3, $4)`,
+      ["scheduleDailyArticles.mjs", status, errorMessage, details]
+    );
+  } catch (e) {
+    console.error("Failed to write cron log to DB:", e.message);
+  }
+}
+
 if (!apiKey) {
+  const errMsg = "ERROR: No se ha encontrado la variable DEEPSEEK_API_KEY.";
   console.error("\n=====================================================================");
-  console.error("ERROR: No se ha encontrado la variable DEEPSEEK_API_KEY.");
+  console.error(errMsg);
   console.error("Para solucionarlo en producción (Dokploy/VPS):");
   console.error("1. Ve al panel de Dokploy de esta aplicación.");
   console.error("2. Haz clic en la pestaña 'Environment' (como en tu captura).");
@@ -40,13 +58,10 @@ if (!apiKey) {
   console.error("   - Value: [Tu clave de API de DeepSeek]");
   console.error("4. Guarda los cambios (Save) y haz clic en 'Deploy' para redesplegar.");
   console.error("=====================================================================\n");
+  await logCronExecution("ERROR", errMsg, "Missing DEEPSEEK_API_KEY environment variable.");
+  await pool.end();
   process.exit(1);
 }
-
-const pool = new Pool({
-  connectionString,
-  ssl: false,
-});
 
 // Banco de imágenes premium por categoría para garantizar estética de alta gama
 const CATEGORY_IMAGES = {
@@ -579,6 +594,7 @@ Recuerda devolver estrictamente un objeto JSON que siga la estructura exacta def
   }
 
   console.log("\n=== PLANIFICADOR DIARIO COMPLETADO CON ÉXITO ===");
+  await logCronExecution("SUCCESS", null, `Se generaron y publicaron ${generatedArticles.length} artículos: ${JSON.stringify(generatedArticles)}`);
   await pool.end();
 }
 
@@ -615,7 +631,7 @@ async function sendNotificationEmail(articles) {
       <li style="margin-bottom: 15px;">
         <strong style="color: #db2777; font-size: 16px;">${art.title}</strong><br/>
         <span style="font-size: 12px; color: #64748b;">Categoría: ${art.category} | Palabra clave: <code>${art.keyword}</code></span><br/>
-        <a href="https://mihogarasegurado.com/articulos/${art.slug}" style="font-size: 13px; color: #db2777; text-decoration: underline;">Leer Artículo en la Web</a>
+        <a href="https://wattsavvyhome.com/articulos/${art.slug}" style="font-size: 13px; color: #db2777; text-decoration: underline;">Leer Artículo en la Web</a>
       </li>
     `).join("");
 
@@ -651,5 +667,10 @@ async function sendNotificationEmail(articles) {
 
 main().catch(async (err) => {
   console.error("Excepción general en el proceso:", err);
+  try {
+    await logCronExecution("ERROR", err.message, err.stack);
+  } catch (e) {
+    console.error("Error logging exception:", e);
+  }
   await pool.end();
 });
