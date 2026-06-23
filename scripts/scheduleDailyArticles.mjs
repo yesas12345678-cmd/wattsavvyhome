@@ -217,7 +217,7 @@ const CATEGORY_IMAGES = {
 // Formateador de fecha en español (ej. "17 Jun 2026")
 function formatSpanishDate(d) {
   const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  return `${d.getUTCDate()} ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
 }
 
 // Limpiador/Extractor de JSON y HTML
@@ -521,14 +521,18 @@ Recuerda devolver estrictamente un objeto JSON que siga la estructura exacta def
 
     // Calcular hora de publicación aleatoria
     const timeLimit = randomTimes[i];
-    const pubDate = new Date();
+    // Obtener la fecha actual en la zona horaria de España
+    const formatterStr = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Madrid" }); // "YYYY-MM-DD"
+    const [yr, mo, dy] = formatterStr.split("-").map(Number);
+
+    const pubDate = new Date(Date.UTC(yr, mo - 1, dy));
     const randomHour = timeLimit.startHour + Math.floor(Math.random() * (timeLimit.endHour - timeLimit.startHour));
     const randomMinute = Math.floor(Math.random() * 60);
     
-    pubDate.setHours(randomHour);
-    pubDate.setMinutes(randomMinute);
-    pubDate.setSeconds(0);
-    pubDate.setMilliseconds(0);
+    pubDate.setUTCHours(randomHour);
+    pubDate.setUTCMinutes(randomMinute);
+    pubDate.setUTCSeconds(0);
+    pubDate.setUTCMilliseconds(0);
 
     const dateStr = formatSpanishDate(pubDate);
 
