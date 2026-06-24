@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Outfit, Inter } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
+
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -40,6 +42,12 @@ export default function RootLayout({
       className={`${outfit.variable} ${inter.variable} h-full antialiased font-sans`}
     >
       <body className="min-h-full flex flex-col bg-[#020617] text-slate-100 selection:bg-emerald-500/20 selection:text-emerald-400">
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6737064906428173"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         {children}
       </body>
     </html>
