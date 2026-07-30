@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import VampireCalculator from "./VampireCalculator";
+import { useSearchParams } from "next/navigation";
 
 const getAuthorPhoto = (authorName: string) => {
   if (authorName === "Alex R.") return "/alex_author.png";
@@ -29,6 +30,22 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
   
   // Estado para limitar artículos y ver más
   const [visibleCount, setVisibleCount] = useState<number>(12);
+
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+      // Desplazamiento suave al blog
+      setTimeout(() => {
+        const element = document.getElementById("content-hub");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  }, [categoryParam]);
 
   // Estado para el consentimiento de cookies
   const [cookieConsent, setCookieConsent] = useState<string | null>(null);
@@ -57,8 +74,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
     document.cookie = "wsh_analytics_enabled=; max-age=0; path=/";
   };
   
-  // Estado para el artículo activo en el lector de panel de control
-  const [activeArticle, setActiveArticle] = useState<Article | null>(null);
+  // activeArticle state has been removed in favor of standalone pages
   
   // Estado para simular la fecha/hora en tiempo real en el Dashboard HUD
   const [timeStr, setTimeStr] = useState("00:00:00");
@@ -457,9 +473,9 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
             else if (article.category.slug === "guias-de-ahorro") CategoryIcon = TrendingDown;
 
             return (
-              <article 
+              <Link 
                 key={article.id}
-                onClick={() => setActiveArticle(article)}
+                href={`/articulos/${article.id}`}
                 className="group relative flex flex-col justify-between rounded-xl border border-slate-150 bg-white hover:border-pink-300 hover:shadow-md transition-all-premium overflow-hidden cursor-pointer animate-fade-in"
               >
                 {/* Imagen de Portada o Degradado superior decorativo */}
@@ -525,7 +541,7 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
                   </div>
 
                 </div>
-              </article>
+              </Link>
             );
           })}
         </div>
@@ -564,171 +580,6 @@ export default function HomeClient({ initialArticles }: HomeClientProps) {
 
       </section>
 
-      {/* ARTICLE READER MODAL (FULL SCREEN) */}
-      {activeArticle && (
-        <div className="fixed inset-0 z-50 bg-white text-slate-955 animate-fade-in overflow-y-auto flex flex-col">
-          
-          {/* Constrained Container */}
-          <div className="w-full max-w-4xl mx-auto flex-1 flex flex-col min-h-screen bg-white">
-            
-            {/* Header del Lector */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-pink-100 bg-white sticky top-0 z-10">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-pink-50 border border-pink-200 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-pink-600" />
-                </div>
-                <div>
-                  <div className="flex flex-col">
-                    <span className="text-xs text-pink-600 font-semibold">
-                      Estás leyendo en WattSavvyHome
-                    </span>
-                    <span className="text-[11px] text-slate-500 font-medium">
-                      Categoría: {activeArticle.category.name}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Botón Cerrar */}
-              <button
-                onClick={() => setActiveArticle(null)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-250 text-slate-650 hover:text-pink-600 hover:border-pink-300 hover:bg-pink-50 transition-all font-mono text-xs shadow-sm cursor-pointer font-bold"
-                title="Cerrar artículo"
-              >
-                <X className="w-4 h-4" />
-                <span className="hidden sm:inline">CERRAR</span>
-              </button>
-            </div>
-
-            {/* Contenido Escrito */}
-            <div className="flex-1 p-6 sm:p-10 font-sans space-y-6 bg-white">
-              
-              {/* Encabezado del Artículo */}
-              <div className="border-b border-pink-100 pb-6">
-                
-                {/* Título */}
-                <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-slate-955 mb-4 leading-tight">
-                  {activeArticle.title}
-                </h2>
-
-                {/* Metadata */}
-                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-505">
-                  <div className="flex items-center gap-1.5">
-                    {getAuthorPhoto(activeArticle.author) ? (
-                      <img 
-                        src={getAuthorPhoto(activeArticle.author) || ""} 
-                        alt={activeArticle.author} 
-                        className="w-6 h-6 rounded-full border border-pink-200 object-cover shadow-sm animate-fade-in"
-                      />
-                    ) : (
-                      <User className="w-4 h-4 text-pink-600" />
-                    )}
-                    <span>Escrito por: <strong className="text-slate-955 font-bold">{activeArticle.author}</strong></span>
-                  </div>
-                  <div className="hidden sm:block text-slate-200">•</div>
-                  <div>Fecha: {activeArticle.date}</div>
-                  <div className="hidden sm:block text-slate-200">•</div>
-                  <div>{activeArticle.readTime}</div>
-                </div>
-              </div>
-
-              {/* Imagen de Portada Hero */}
-              {activeArticle.imageUrl && (
-                <div className="w-full h-64 sm:h-80 rounded-xl overflow-hidden bg-slate-100 shadow-sm mb-6">
-                  <img 
-                    src={activeArticle.imageUrl} 
-                    alt={activeArticle.title} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-
-              {/* Cuerpo del Artículo formateado */}
-              <div className="prose prose-slate prose-pink max-w-none text-slate-955 leading-relaxed text-sm sm:text-base space-y-6">
-                {activeArticle.content ? (
-                  activeArticle.content.trim().startsWith("<") ? (
-                    <div dangerouslySetInnerHTML={{ __html: activeArticle.content }} />
-                  ) : (
-                    activeArticle.content.split("\n\n").map((paragraph, index) => {
-                      if (paragraph.startsWith("## ")) {
-                        return (
-                          <h3 key={index} className="font-display font-bold text-lg sm:text-xl text-slate-955 pt-4 border-b border-pink-100 pb-2">
-                            {paragraph.replace("## ", "")}
-                          </h3>
-                        );
-                      }
-                      if (paragraph.startsWith("* ") || paragraph.startsWith("- ")) {
-                        return (
-                          <ul key={index} className="list-disc list-inside space-y-2 text-slate-955 pl-2">
-                            {paragraph.split("\n").map((item, subIdx) => (
-                              <li key={subIdx} className="marker:text-pink-600">
-                                {item.replace(/^[*-\s]+/, "")}
-                              </li>
-                            ))}
-                          </ul>
-                        );
-                      }
-                      if (/^\d+\.\s/.test(paragraph)) {
-                        return (
-                          <ol key={index} className="list-decimal list-inside space-y-2 text-slate-955 pl-2">
-                            {paragraph.split("\n").map((item, subIdx) => (
-                              <li key={subIdx} className="marker:text-pink-600">
-                                {item.replace(/^\d+\.\s+/, "")}
-                              </li>
-                            ))}
-                          </ol>
-                        );
-                      }
-                      
-                      // Normal text with bold support
-                      const parts = paragraph.split(/(\*\*.*?\*\*)/g);
-                      return (
-                        <p key={index} className="leading-relaxed">
-                          {parts.map((part, partIdx) => {
-                            if (part.startsWith("**") && part.endsWith("**")) {
-                              return <strong key={partIdx} className="text-slate-955 font-bold">{part.slice(2, -2)}</strong>;
-                            }
-                            return part;
-                          })}
-                        </p>
-                      );
-                    })
-                  )
-                ) : (
-                  <div className="py-12 border border-dashed border-pink-200 rounded bg-pink-50/20 text-center font-mono text-xs text-pink-700">
-                    Cuerpo del artículo actualmente vacío (0 palabras).
-                  </div>
-                )}
-              </div>
-
-              {/* Descargo de Responsabilidad en el Lector (E-E-A-T) */}
-              <div className="mt-10 p-5 rounded-2xl bg-pink-50/50 border border-pink-100 font-mono text-[11px] text-slate-700 space-y-2">
-                <div className="flex items-center gap-2 text-pink-600 font-bold">
-                  <Shield className="w-4 h-4 text-pink-600" />
-                  <span>TRANSPARENCIA INFORMATIVA</span>
-                </div>
-                <p className="leading-relaxed text-slate-650">
-                  Este análisis técnico es independiente. No recibimos pagos de fabricantes para alterar valoraciones. Si realizas una compra a través de enlaces en este sitio, podríamos percibir una comisión de afiliación que ayuda a mantener el servidor activo, sin coste extra para ti.
-                </p>
-              </div>
-            </div>
-
-            {/* Footer del Lector */}
-            <div className="flex items-center justify-between p-4 bg-white border-t border-pink-100 sticky bottom-0">
-              <span className="text-xs text-slate-550">
-                Gracias por leer WattSavvyHome.
-              </span>
-              <button
-                onClick={() => setActiveArticle(null)}
-                className="px-5 py-2 bg-pink-500 text-white hover:bg-pink-600 transition-colors font-mono text-xs font-bold uppercase rounded-lg cursor-pointer shadow-sm"
-              >
-                CERRAR LECTOR
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
 
       {/* SECCIÓN DE CONTACTO FUTURISTA */}
       <section className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

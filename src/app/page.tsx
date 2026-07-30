@@ -1,6 +1,7 @@
 import { pool, initDB } from "@/lib/db";
 import HomeClient from "@/components/HomeClient";
 import { Article } from "@/data/articles";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -40,5 +41,14 @@ export default async function HomePage() {
     console.error("Error loading articles from PostgreSQL in homepage:", err);
   }
 
-  return <HomeClient initialArticles={articles} />;
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center font-mono text-xs text-slate-550">
+        Cargando Panel...
+      </div>
+    }>
+      <HomeClient initialArticles={articles} />
+    </Suspense>
+  );
 }
+
