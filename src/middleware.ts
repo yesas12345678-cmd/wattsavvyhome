@@ -14,7 +14,13 @@ export async function middleware(request: NextRequest) {
   // If requesting administrative panel paths, check authentication
   if (request.nextUrl.pathname.startsWith("/admin")) {
     const sessionCookie = request.cookies.get("admin_session");
-    const adminPassword = process.env.ADMIN_PASSWORD || "Manuel1214$";
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    
+    if (!adminPassword) {
+      console.error("[SECURITY ERROR] ADMIN_PASSWORD environment variable is not defined!");
+      const loginUrl = new URL("/login", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
     
     // Calculate correct hash of the password
     const correctHash = await getSHA256Hash(adminPassword);

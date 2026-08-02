@@ -3,8 +3,49 @@
 import { pool } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { cookies, headers } from "next/headers";
+import crypto from "crypto";
+import { isRateLimited } from "@/lib/rateLimit";
+
+// Get client IP helper
+async function getClientIp(): Promise<string> {
+  const headersList = await headers();
+  const forwardedFor = headersList.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0].trim();
+  }
+  return headersList.get("x-real-ip") || "127.0.0.1";
+}
+
+// Verify admin authorization helper
+async function verifyAuth(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("admin_session");
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  // Require ADMIN_PASSWORD to be defined in production env
+  if (!adminPassword) {
+    return false;
+  }
+
+  const correctHash = crypto.createHash("sha256").update(adminPassword).digest("hex");
+  return !!(sessionCookie && sessionCookie.value === correctHash);
+}
 
 export async function editArticle(prevState: any, formData: FormData) {
+  const ip = await getClientIp();
+
+  // 1. Rate Limiting: max 15 article updates per minute per IP
+  if (isRateLimited(`edit_article_${ip}`, 15, 60 * 1000)) {
+    return { error: "Demasiadas peticiones de edición. Por favor, espera un minuto." };
+  }
+
+  // 2. Authorization check
+  const authorized = await verifyAuth();
+  if (!authorized) {
+    return { error: "Acceso no autorizado. Sesión inválida o expirada." };
+  }
+
   const currentId = formData.get("currentId") as string;
   const newSlug = formData.get("slug") as string;
   const title = formData.get("title") as string;
@@ -23,18 +64,60 @@ export async function editArticle(prevState: any, formData: FormData) {
     return { error: "Todos los campos de texto obligatorios deben estar completos." };
   }
 
+  // 3. Input Validation
+  // Validate slug format (lowercase letters, numbers, and hyphens only, 3 to 100 chars)
+  if (!/^[a-z0-9-]+$/.test(newSlug) || newSlug.length < 3 || newSlug.length > 100) {
+    return { error: "El formato del URL Slug es inválido (solo letras minúsculas, números y guiones, de 3 a 100 caracteres)." };
+  }
+
+  // Validate currentId format
+  if (!/^[a-z0-9-]+$/.test(currentId)) {
+    return { error: "El ID del artículo actual es inválido." };
+  }
+
+  // Validate allowed categories
   const categoryNames: Record<string, string> = {
     "monitores-de-energia": "Monitores de Energía",
     "enchufes-inteligentes": "Enchufes Inteligentes",
     "monitorizacion-solar": "Monitorización Solar",
     "guias-de-ahorro": "Guías de Ahorro",
   };
-  const categoryName = categoryNames[categorySlug] || "Información";
+  if (!categoryNames[categorySlug]) {
+    return { error: "La categoría seleccionada no es válida." };
+  }
+  const categoryName = categoryNames[categorySlug];
+
+  // Validate length constraints
+  if (title.length < 5 || title.length > 150) {
+    return { error: "El título debe tener entre 5 y 150 caracteres." };
+  }
+  if (excerpt.length > 300) {
+    return { error: "El extracto no puede superar los 300 caracteres." };
+  }
+  if (author.length < 3 || author.length > 50) {
+    return { error: "El nombre del autor debe tener entre 3 y 50 caracteres." };
+  }
+  if (readTime.length > 50) {
+    return { error: "El tiempo de lectura es demasiado largo." };
+  }
+  if (keyword && keyword.length > 100) {
+    return { error: "La palabra clave es demasiado larga." };
+  }
 
   let publishedAtVal = new Date();
   if (publishedDate) {
+    // Validate publishedDate format (YYYY-MM-DD)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(publishedDate)) {
+      return { error: "El formato de la fecha de publicación no es válido." };
+    }
     const timeStr = publishedTime || "12:00";
+    if (!/^\d{2}:\d{2}$/.test(timeStr)) {
+      return { error: "El formato de la hora de publicación no es válido." };
+    }
     publishedAtVal = new Date(`${publishedDate}T${timeStr}:00`);
+    if (isNaN(publishedAtVal.getTime())) {
+      return { error: "La fecha o hora de publicación no es una fecha válida." };
+    }
   }
 
   const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
@@ -124,6 +207,21 @@ export async function editArticle(prevState: any, formData: FormData) {
 }
 
 export async function resetDemoArticles() {
+  const ip = await getClientIp();
+
+  // 1. Rate Limiting: max 2 resets per 10 minutes per IP
+  if (isRateLimited(`reset_articles_${ip}`, 2, 10 * 60 * 1000)) {
+    redirect("/admin");
+    return;
+  }
+
+  // 2. Authorization check
+  const authorized = await verifyAuth();
+  if (!authorized) {
+    redirect("/login");
+    return;
+  }
+
   const { forceResetDB } = await import("@/lib/db");
   try {
     await forceResetDB();

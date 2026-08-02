@@ -22,7 +22,10 @@ try {
   console.warn("No se pudo leer .env.local:", e.message);
 }
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres:ttu0km5hxfjepvj8@187.127.233.89:5434/postgres";
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not defined in the environment variables!");
+}
 const pool = new Pool({ connectionString, ssl: false });
 
 async function run() {

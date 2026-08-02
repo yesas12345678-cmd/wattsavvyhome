@@ -1,10 +1,12 @@
 import { Pool } from "pg";
 import { EDITORIAL_PLAN_ARTICLES } from "./editorialPlan";
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres:ttu0km5hxfjepvj8@187.127.233.89:5434/postgres";
+const connectionString = process.env.DATABASE_URL;
 
+// Do not throw at module load level to allow compilation/build time page collection.
+// Connection attempts will fail at runtime if DATABASE_URL is missing.
 export const pool = new Pool({
-  connectionString,
+  connectionString: connectionString || undefined,
   ssl: false,
 });
 
